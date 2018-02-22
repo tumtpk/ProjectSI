@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from 'react-router';
-import { instanceOf } from 'prop-types';
-import cookies from 'react-cookies'
+import { Redirect } from 'react-router'
 
 class FormLogin extends Component {
 
@@ -35,18 +33,15 @@ class FormLogin extends Component {
     }
 
     handleAuth(event){
-      
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = () => {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-          let responses = JSON.parse(xhttp.response);
-          cookies.save('token', responses.access_token);
           this.setState({redirect: true});
         }else{
           this.setState({message: 'username or password invalid!'});
         }
       };
-      xhttp.open("POST", "http://192.168.75.131:45455/token", true);
+      xhttp.open("POST", "http://192.168.74.111:45455/token", true);
       xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhttp.send("grant_type=password&username="+this.state.username+"&password="+this.state.password);
     }
