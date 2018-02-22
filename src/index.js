@@ -9,6 +9,7 @@ import reducers from "./reducers";
 
 import Login from "./pages/login";
 import Content from "./pages/content";
+import Usermanagement from "./pages/usermanagement/usermanagement";
 
 import MainLayout from "./components/main-layout";
 import Empty from "./components/layout/empty";
@@ -30,6 +31,8 @@ ReactDOM.render(
         <Switch>
           <AppRoute exact path="/" layout={Empty} component={Login} />
           <AppRoute exact path="/dashboard" layout={MainLayout} component={Content} />
+
+          <AppRoute exact path="/usermanagement" layout={MainLayout} component={Usermanagement} />
         </Switch>
       </div>
     </BrowserRouter>

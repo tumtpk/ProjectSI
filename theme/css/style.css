@@ -364,15 +364,15 @@ ul.sidebar-menu li a{
 }
 
 ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
-    background: #68dff0;
-    color: #fff;
-    display: block;
+    background: #8a8c8c !important;
+    color: #fff !important;
+    display: block !important;
 
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    -ms-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease !important;
+    -moz-transition: all 0.3s ease !important;
+    -o-transition: all 0.3s ease !important;
+    -ms-transition: all 0.3s ease !important;
+    transition: all 0.3s ease !important;
 }
 
 
@@ -2223,10 +2223,10 @@ label {
     background: #68dff0;
     color: #fff;
     padding: 10px 0;
-    position: absolute;
+    /* position: absolute;
     bottom: 0;
     width: 100%;
-    z-index: -1;
+    z-index: -1; */
 }
 
 
