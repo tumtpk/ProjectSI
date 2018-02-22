@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 
 class LeftMenu extends Component {
     render() {
@@ -45,9 +46,9 @@ class LeftMenu extends Component {
                           <span>Administration</span>
                       </a>
                       <ul className="sub">
-                          <li><a  href="calendar.html">การจัดการผู้ใช้งาน</a></li>
-                          <li><a  href="gallery.html">การจัดการรอบการปรับปรุง</a></li>
-                          <li><a  href="todo_list.html">การจัดการหมวดหมู่</a></li>
+                          <li><Link to={ {pathname: `/usermanagement`} } activeClassName="active">การจัดการผู้ใช้งาน</Link></li>
+                          <li><Link to={ {pathname: `/circle`} } activeClassName="active">การจัดการรอบการปรับปรุง</Link></li>
+                          <li><Link to={ {pathname: `/category`} } activeClassName="active">การจัดการหมวดหมู่</Link></li>
                           <li><a  href="todo_list.html">การจัดการแบบประเมิน</a></li>
                       </ul>
                   </li>

@@ -7,7 +7,7 @@ class Header extends Component {
               <div className="sidebar-toggle-box">
                   <div className="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
               </div>
-            <a href="index.html" className="logo"><b>Tools For Personal Process Improvement</b></a>
+            <a href="index.html" className="logo"><b>SI System</b></a>
             
             <div className="top-menu">
               <ul className="nav pull-right top-menu">
