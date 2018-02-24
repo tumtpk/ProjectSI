@@ -15,6 +15,11 @@ import UserCreate from "./pages/usermanagement/create";
 import UserUpdate from "./pages/usermanagement/update";
 import UserDetail from "./pages/usermanagement/detail";
 
+import Circlemanagement from "./pages/circle/circlemanagement";
+import CircleCreate from "./pages/circle/create";
+import CircleUpdate from "./pages/circle/update";
+import CircleDetail from "./pages/circle/detail";
+
 import MainLayout from "./components/main-layout";
 import Empty from "./components/layout/empty";
 
@@ -40,6 +45,11 @@ ReactDOM.render(
           <AppRoute exact path="/usermanagement/create" layout={MainLayout} component={UserCreate} />
           <AppRoute exact path="/usermanagement/update" layout={MainLayout} component={UserUpdate} />
           <AppRoute exact path="/usermanagement/view" layout={MainLayout} component={UserDetail} />
+
+          <AppRoute exact path="/circlemanagement" layout={MainLayout} component={Circlemanagement} />
+          <AppRoute exact path="/circle/create" layout={MainLayout} component={CircleCreate} />
+          <AppRoute exact path="/circle/update" layout={MainLayout} component={CircleUpdate} />
+          <AppRoute exact path="/circle/view" layout={MainLayout} component={CircleDetail} />
           
         </Switch>
       </div>
