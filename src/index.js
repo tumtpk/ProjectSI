@@ -22,6 +22,7 @@ import CircleDetail from "./pages/circle/detail";
 
 import MainLayout from "./components/main-layout";
 import Empty from "./components/layout/empty";
+import NotFound from "./components/notfound";
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -51,6 +52,7 @@ ReactDOM.render(
           <AppRoute exact path="/circle/update" layout={MainLayout} component={CircleUpdate} />
           <AppRoute exact path="/circle/view" layout={MainLayout} component={CircleDetail} />
           
+          <Route exact path="*" component={NotFound} status={404} />
         </Switch>
       </div>
     </BrowserRouter>

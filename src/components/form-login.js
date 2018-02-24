@@ -46,7 +46,7 @@ class FormLogin extends Component {
           this.setState({message: 'username or password invalid!'});
         }
       };
-      xhttp.open("POST", "http://192.168.74.111:45455/token", true);
+      xhttp.open("POST", "http://localhost:52522/token", true);
       xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhttp.send("grant_type=password&username="+this.state.username+"&password="+this.state.password);
     }

@@ -7,7 +7,7 @@ class CommonApi {
     constructor() {
 
         this.instance = axios.create({
-            baseURL: 'http://192.168.74.111:45455/api/',
+            baseURL: 'http://localhost:52522/api/',
             timeout: 5000,
             headers: {
                 'Content-Type': 'application/json',

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import MainLayout from "../components/main-layout";
+import cookies from 'react-cookies'
+import {Redirect} from 'react-router';
 
 class Content extends Component {
     render() {
