@@ -20,6 +20,11 @@ import CircleCreate from "./pages/circle/create";
 import CircleUpdate from "./pages/circle/update";
 import CircleDetail from "./pages/circle/detail";
 
+import Categorymanagement from "./pages/category/categorymanagement";
+import CategoryCreate from "./pages/category/create";
+import CategoryUpdate from "./pages/category/update";
+import CategoryDetail from "./pages/category/detail";
+
 import MainLayout from "./components/main-layout";
 import Empty from "./components/layout/empty";
 import NotFound from "./components/notfound";
@@ -51,6 +56,11 @@ ReactDOM.render(
           <AppRoute exact path="/circle/create" layout={MainLayout} component={CircleCreate} />
           <AppRoute exact path="/circle/update" layout={MainLayout} component={CircleUpdate} />
           <AppRoute exact path="/circle/view" layout={MainLayout} component={CircleDetail} />
+
+          <AppRoute exact path="/categorymanagement" layout={MainLayout} component={Categorymanagement} />
+          <AppRoute exact path="/category/create" layout={MainLayout} component={CategoryCreate} />
+          <AppRoute exact path="/category/update" layout={MainLayout} component={CategoryUpdate} />
+          <AppRoute exact path="/category/view" layout={MainLayout} component={CategoryDetail} />
           
           <Route exact path="*" component={NotFound} status={404} />
         </Switch>
