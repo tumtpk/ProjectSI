@@ -25,6 +25,11 @@ import CategoryCreate from "./pages/category/create";
 import CategoryUpdate from "./pages/category/update";
 import CategoryDetail from "./pages/category/detail";
 
+import Evaluationmanagement from "./pages/evaluation/evaluationmanagement";
+import EvaluationCreate from "./pages/evaluation/create";
+import EvaluationUpdate from "./pages/evaluation/update";
+import EvaluationDetail from "./pages/evaluation/detail";
+
 import MainLayout from "./components/main-layout";
 import Empty from "./components/layout/empty";
 import NotFound from "./components/notfound";
@@ -62,6 +67,12 @@ ReactDOM.render(
           <AppRoute exact path="/category/update" layout={MainLayout} component={CategoryUpdate} />
           <AppRoute exact path="/category/view" layout={MainLayout} component={CategoryDetail} />
           
+          <AppRoute exact path="/evaluationmanagement" layout={MainLayout} component={Evaluationmanagement} />
+          <AppRoute exact path="/evaluation/create" layout={MainLayout} component={EvaluationCreate} />
+          <AppRoute exact path="/evaluation/update" layout={MainLayout} component={EvaluationUpdate} />
+          <AppRoute exact path="/evaluation/view" layout={MainLayout} component={EvaluationDetail} />
+          
+
           <Route exact path="*" component={NotFound} status={404} />
         </Switch>
       </div>

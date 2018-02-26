@@ -47,9 +47,9 @@ class LeftMenu extends Component {
                       </a>
                       <ul className="sub">
                           <li><Link to={ {pathname: `/usermanagement`} } activeClassName="active">การจัดการผู้ใช้งาน</Link></li>
-                          <li><Link to={ {pathname: `/circlemanagement`} } activeClassName="active">การจัดการรอบการปรับปรุง</Link></li>
-                          <li><Link to={ {pathname: `/category`} } activeClassName="active">การจัดการหมวดหมู่</Link></li>
-                          <li><a  href="todo_list.html">การจัดการแบบประเมิน</a></li>
+                          <li><Link to={ {pathname: `/circlemanagement`} } activeClassName="active">การจัดการรอบดำเนินงาน</Link></li>
+                          <li><Link to={ {pathname: `/categorymanagement`} } activeClassName="active">การจัดการหมวดหมู่</Link></li>
+                          <li><Link to={ {pathname: `/evaluationmanagement`} } activeClassName="active">การจัดการแบบประเมิน</Link></li>
                       </ul>
                   </li>
             </ul>

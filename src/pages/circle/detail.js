@@ -9,7 +9,6 @@ class CircleDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            circleCode: "",
             circleName: "",
             circleTime: "",
             status: 0,
@@ -26,13 +25,12 @@ class CircleDetail extends Component {
         this.apiGetUset(id);
       }
 
-      apiGetUset(circleCode){
-        CommonApi.instance.get('/circle/getcircle/'+circleCode)
+      apiGetUset(id){
+        CommonApi.instance.get('/circle/getcircle/'+id)
         .then(response => {
             let responseData = response.data;
             this.setState(
               {
-                circleCode : responseData.circleCode,
                 circleName: responseData.circleName,
                 circleTime: responseData.circleTime,
                 status: responseData.status
@@ -76,23 +74,17 @@ class CircleDetail extends Component {
 
             <div className="row"> 
                 <div className="col-md-12">
-                    <h3><i className="fa fa-angle-right"></i> ดูรายละเอียดรอบการปรับปรุงกระบวนการ</h3>
+                    <h3><i className="fa fa-angle-right"></i> ดูรายละเอียดรอบการดำเนินงาน</h3>
                 </div>
             </div>
 
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
-                    <h4 className="mb"><i className="fa fa-angle-right"></i> รายละเอียดรอบการปรับปรุงกระบวนการ</h4>
+                    <h4 className="mb"><i className="fa fa-angle-right"></i> รายละเอียดรอบการดำเนินงาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                              <label className="col-sm-3 col-sm-3 control-label">รหัสรอบการปรับปรุงกระบวนการ</label>
-                              <div className="col-sm-5">
-                                    <input type="text" className="form-control" name="circleCode" value={this.state.circleCode} onChange={this.handleChange} disabled />
-                              </div>
-                        </div>
-                        <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการปรับปรุงกระบวนการ</label>
+                            <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการดำเนินงาน</label>
                             <div className="col-sm-5">
                                 <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} disabled />
                             </div>
@@ -100,7 +92,7 @@ class CircleDetail extends Component {
 
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">ระยะเวลาที่กำหนด</label>
-                            <div className="col-sm-5">
+                            <div className="col-sm-3">
                                 <input type="text" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} disabled />
                             </div>
                             <label className="col-sm-3 col-sm-3 control-label">วัน</label>

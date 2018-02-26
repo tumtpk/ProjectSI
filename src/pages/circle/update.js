@@ -9,7 +9,6 @@ class CircleUpdate extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            circleCode: "",
             circleName: "",
             circleTime: "",
             id: null,
@@ -78,22 +77,15 @@ class CircleUpdate extends Component {
 
             <div className="row"> 
                 <div className="col-md-12">
-                    <h3><i className="fa fa-angle-right"></i> แก้ไขรอบการปรับปรุงกระบวนการ</h3>
+                    <h3><i className="fa fa-angle-right"></i> แก้ไขรอบการดำเนินงาน</h3>
                 </div>
             </div>
 
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
-                    <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลรอบการปรับปรุงกระบวนการ</h4>
+                    <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลรอบการดำเนินงาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
-                        <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">รหัสรอบการปรับปรุงกระบวนการ</label>
-                            <div className="col-sm-5">
-                                <input type="text" className="form-control" name="circleCode" value={this.state.circleCode} onChange={this.handleChange}/>
-                            </div>
-                        </div>
-
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการปรับปรุงกระบวนการ</label>
                             <div className="col-sm-5">
