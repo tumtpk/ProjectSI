@@ -21,12 +21,16 @@ class LeftMenu extends Component {
                       </a>
                   </li>
 
-                  <li className="sub-menu">
-                    <a href="javascript:;">
-                        <i className="fa fa-tasks"></i>
-                        <span>เป้าหมายของฉัน</span>
-                    </a>
+                 <li className="sub-menu">
+                      <a href="javascript:;" >
+                          <i className="fa fa-tasks"></i>
+                          <span>เป้าหมายของฉัน</span>
+                      </a>
+                      <ul className="sub">
+                          <li><Link to={ {pathname: `/goalmanagement`} } activeClassName="active">การจัดการเป้าหมาย</Link></li>
+                      </ul>
                   </li>
+
                   <li className="sub-menu">
                     <a href="javascript:;">
                         <i className="fa fa-book"></i>

@@ -41,7 +41,8 @@ class FormLogin extends Component {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
           let responses = JSON.parse(xhttp.response);
           cookies.save('token', responses.access_token);
-          this.setState({redirect: true});
+          // this.setState({redirect: true});
+          window.location = "/dashboard";
         }else{
           this.setState({message: 'username or password invalid!'});
         }
