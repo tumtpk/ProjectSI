@@ -25,6 +25,16 @@ import CategoryCreate from "./pages/category/create";
 import CategoryUpdate from "./pages/category/update";
 import CategoryDetail from "./pages/category/detail";
 
+import Evaluationmanagement from "./pages/evaluation/evaluationmanagement";
+import EvaluationCreate from "./pages/evaluation/create";
+import EvaluationUpdate from "./pages/evaluation/update";
+import EvaluationDetail from "./pages/evaluation/detail";
+
+import Goalmanagement from "./pages/goal/goalmanagement";
+import GoalCreate from "./pages/goal/create";
+import GoalCreateOtherUser from "./pages/goal/createOtherUser";
+import GoalCreateOtherUserSelectUser from "./pages/goal/selectuser";
+
 import MainLayout from "./components/main-layout";
 import Empty from "./components/layout/empty";
 import NotFound from "./components/notfound";
@@ -62,6 +72,16 @@ ReactDOM.render(
           <AppRoute exact path="/category/update" layout={MainLayout} component={CategoryUpdate} />
           <AppRoute exact path="/category/view" layout={MainLayout} component={CategoryDetail} />
           
+          <AppRoute exact path="/evaluationmanagement" layout={MainLayout} component={Evaluationmanagement} />
+          <AppRoute exact path="/evaluation/create" layout={MainLayout} component={EvaluationCreate} />
+          <AppRoute exact path="/evaluation/update" layout={MainLayout} component={EvaluationUpdate} />
+          <AppRoute exact path="/evaluation/view" layout={MainLayout} component={EvaluationDetail} />
+          
+          <AppRoute exact path="/goalmanagement" layout={MainLayout} component={Goalmanagement} />
+          <AppRoute exact path="/goal/create" layout={MainLayout} component={GoalCreate} />
+          <AppRoute exact path="/goal/createotheruser" layout={MainLayout} component={GoalCreateOtherUser} />
+          <AppRoute exact path="/goal/selectuser" layout={MainLayout} component={GoalCreateOtherUserSelectUser} />
+
           <Route exact path="*" component={NotFound} status={404} />
         </Switch>
       </div>

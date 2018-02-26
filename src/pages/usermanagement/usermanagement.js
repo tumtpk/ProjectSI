@@ -22,6 +22,17 @@ class Usermanagement extends Component {
         this.handleClear = this.handleClear.bind(this);
       }
 
+      componentWillMount() {
+        CommonApi.instance.post('/user/search', {
+              firstname: this.state.firstname,
+              lastname: this.state.lastname,
+              status: this.state.status
+        })
+        .then(response => {
+            this.setState({dataSearch: response.data});
+        });
+      }
+
       handleSubmit(event) {
         this.handleSearch();
         event.preventDefault();
@@ -134,8 +145,6 @@ class Usermanagement extends Component {
                               </div>
                               <label className="col-sm-1 col-sm-1 control-label">สถานะ</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
                               <div className="btn-group">
-
-
                                 <select className="form-control" name="status" value={this.state.username} onChange={this.handleChange}>
                                     <option value="0">เลือกสถานะ</option>
                                     <option value="1">เปิดใช้งาน</option>

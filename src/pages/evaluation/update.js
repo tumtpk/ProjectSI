@@ -4,7 +4,7 @@ import CommonApi from "../../api/common-api"
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 
-class UserUpdate extends Component { 
+class EvaluationUpdate extends Component { 
 
     constructor(props) {
         super(props);
@@ -181,4 +181,4 @@ class UserUpdate extends Component {
     }
   }
   
-  export default UserUpdate;
+  export default EvaluationUpdate;

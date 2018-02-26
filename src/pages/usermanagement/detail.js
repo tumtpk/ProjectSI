@@ -96,29 +96,25 @@ class UserDetail extends Component {
                     <h4 className="mb"><i className="fa fa-angle-right"></i> รายละเอียดผู้ใช้งาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                              <label className="col-sm-1 col-sm-1 control-label">personalID</label>
-                              <div className="col-sm-5">
+                              <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว</label>
+                              <div className="col-sm-3">
                                     <input type="text" className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} disabled />
                               </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-sm-1 col-sm-1 control-label">ชื่อ</label>
-                            <div className="col-sm-5">
+                            <label className="col-sm-2 col-sm-2 control-label">ชื่อ</label>
+                            <div className="col-sm-4">
                                 <input type="text" className="form-control" name="firstname" value={this.state.firstname} onChange={this.handleChange} disabled />
                             </div>
                             <label className="col-sm-1 col-sm-1 control-label">นามสกุล</label>
-                            <div className="col-sm-5">
+                            <div className="col-sm-4">
                                 <input type="text" className="form-control" name="lastname" value={this.state.lastname} onChange={this.handleChange} disabled />
                             </div>
                         </div>
 
                         <div className="form-group">
-                            <label className="col-sm-1 col-sm-1 control-label">ชื่อเล่น</label>
-                            <div className="col-sm-5">
-                                <input type="text" className="form-control" name="nickname" value={this.state.nickname} onChange={this.handleChange} disabled />
-                            </div>
-                            <label className="col-sm-1 col-sm-1 control-label">อีเมล์</label>
-                            <div className="col-sm-5">
+                            <label className="col-sm-2 col-sm-2 control-label">อีเมล์</label>
+                            <div className="col-sm-4">
                                 <input type="email" className="form-control" name="email"  value={this.state.email} onChange={this.handleChange} disabled/>
                             </div>
                         </div>
@@ -171,7 +167,7 @@ class UserDetail extends Component {
                             <button type="submit" className="btn btn-success">บันทึก</button>
                             <Link to={ {pathname: `/usermanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
                         </div>
-                    </form>s
+                    </form>
                 </div>
               </div>
             </div>
