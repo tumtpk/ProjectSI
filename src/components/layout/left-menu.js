@@ -9,7 +9,7 @@ class LeftMenu extends Component {
             <ul className="sidebar-menu" id="nav-accordion">
                 <p className="centered">
                   <a href="profile.html">
-                    <img src="theme/img/ui-sam.jpg" className="img-circle"  />
+                    <img src="/theme/img/ui-sam.jpg" className="img-circle"  />
                   </a>
                 </p>
                 <h5 className="centered">ผู้ดูแลระบบ</h5>

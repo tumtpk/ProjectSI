@@ -2260,3 +2260,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.error-message{
+    color: red !important
+}

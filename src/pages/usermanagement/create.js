@@ -15,16 +15,20 @@ class UserCreate extends Component {
             personalID : "",
             firstname: "",
             lastname: "",
-            nickname: "",
-            role: 0,
+            role: 1,
+            status: 1,
             commander: "",
             redirect: false,
         }
+
+        // mixins: [Validation.FieldMixin]
   
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleValidate = this.handleValidate.bind(this);
 
       }
+      
 
       handleChange(event) {
         const target = event.target;
@@ -34,7 +38,19 @@ class UserCreate extends Component {
         this.setState({
           [name]: value
         });
+
+        document.getElementById(name).innerHTML = null;
       }
+
+    handleValidate(messages){
+        let require = ["personalID","firstname","lastname","email","role"];
+        require.forEach(element => {
+            document.getElementById(element).innerHTML = null;
+        });
+        messages.forEach(element => {
+            document.getElementById(element.key).innerHTML = element.message;
+        });
+    }
 
       handleSubmit(event) {
         event.preventDefault();
@@ -42,7 +58,11 @@ class UserCreate extends Component {
         CommonApi.instance.post('/user/create', this.state)
         .then(response => {
             if(response.status == 200){
-                this.setState({redirect: true});
+                let data = response.data;
+                if(data.error){
+                    this.handleValidate(data.message);
+                }
+                // this.setState({redirect: true});
             }
         });
       }
@@ -71,41 +91,46 @@ class UserCreate extends Component {
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลผู้ใช้งาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว</label>
+                              <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว <span className="error-message">*</span></label>
                               <div className="col-sm-3">
                                 <div className="btn-group">
                                     <input type="text" className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} />
+                                    <span id="personalID" className="error-message"></span>
                                 </div>
                               </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-sm-2 col-sm-2 control-label">ชื่อ</label>
+                            <label className="col-sm-2 col-sm-2 control-label">ชื่อ <span className="error-message">*</span></label>
                             <div className="col-sm-4">
                                 <input type="text" className="form-control" name="firstname" value={this.state.firstname} onChange={this.handleChange}/>
+                                <span id="firstname" className="error-message"></span>
                             </div>
-                            <label className="col-sm-1 col-sm-1 control-label">นามสกุล</label>
+                            <label className="col-sm-1 col-sm-1 control-label">นามสกุล <span className="error-message">*</span></label>
                             <div className="col-sm-4">
                                 <input type="text" className="form-control" name="lastname" value={this.state.lastname} onChange={this.handleChange}/>
+                                <span id="lastname" className="error-message"></span>
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-sm-2 col-sm-2 control-label">อีเมล์</label>
+                            <label className="col-sm-2 col-sm-2 control-label">อีเมล์ <span className="error-message">*</span></label>
                             <div className="col-sm-4">
-                                <input type="email" className="form-control" name="email"  value={this.state.email} onChange={this.handleChange}/>
+                                <input type="text" className="form-control" name="email"  value={this.state.email} onChange={this.handleChange}/>
+                                <span id="email" className="error-message"></span>
                             </div>
                         </div>
 
                             <div className="form-group">
-                                <label className="col-sm-2 col-sm-2 control-label">บทบาท</label>
+                                <label className="col-sm-2 col-sm-2 control-label">บทบาท <span className="error-message">*</span></label>
                                 <div className="col-sm-5">
                                     <div className="btn-group">
                                         <select className="form-control" name="role" value={this.state.role} onChange={this.handleChange}>
-                                            <option value="0">เลือกบทบาท</option>
+                                            {/* <option value="0">เลือกบทบาท</option> */}
                                             <option value="1">นักศึกษา</option>
                                             <option value="2">อาจารย์</option>
                                             <option value="3">ประธานหลักสูตร</option>
                                             <option value="4">ผู้ดูแลระบบ</option>
                                         </select>
+                                        <span id="role" className="error-message"></span>
                                     </div>
                                 </div>
                             </div>
