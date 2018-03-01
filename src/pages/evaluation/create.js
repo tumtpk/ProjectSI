@@ -11,12 +11,14 @@ class EvaluationCreate extends Component {
         this.state = {
             evaluationName: "",
             description: "",
-            question: ""
+            questions: [{value: ''}]
         }
   
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        this.handleAddQuestions = this.handleAddQuestions.bind(this);
+        this.handleRemoveQuestions = this.handleRemoveQuestions.bind(this);
+        this.handleQuestionsValueChange = this.handleQuestionsValueChange.bind(this);
       }
 
       handleChange(event) {
@@ -29,17 +31,41 @@ class EvaluationCreate extends Component {
         });
       }
 
-      handleSubmit(event) {
-        event.preventDefault();
-
-        CommonApi.instance.post('/evalation/create', this.state)
-        .then(response => {
-            if(response.status == 200){
-                this.setState({redirect: true});
-            }
+      handleAddQuestions = () => {
+        this.setState({
+            questions: this.state.questions.concat([{ value: '' }])
         });
       }
 
+      handleRemoveQuestions = (index) => () => {
+        this.setState({
+            questions: this.state.questions.filter((s, sidx) => index !== sidx)
+        });
+      }
+
+      handleQuestionsValueChange = (index) => (evt) => {
+        const newQuestion = this.state.questions.map((question, sidx) => {
+          if (index !== sidx) return question;
+          return { ...question, value: evt.target.value };
+        });
+    
+        this.setState({ questions: newQuestion });
+      }
+
+      handleSubmit(event) {
+        event.preventDefault();
+
+        console.log(this.state);
+
+        // CommonApi.instance.post('/evalation/create', this.state)
+        // .then(response => {
+        //     if(response.status == 200){
+        //         this.setState({redirect: true});
+        //     }
+        // });
+      }
+
+      
     render() {
 
       const { redirect } = this.state;
@@ -75,18 +101,28 @@ class EvaluationCreate extends Component {
                                 <textarea className="form-control rounded-0" rows="5" name="description" value={this.state.description} onChange={this.handleChange}/>
                             </div>
                         </div>
-                        <div className="form-group">
+                        <div className="row">
                             <label className="col-sm-2 col-sm-2 control-label">คำถาม</label>
                             <div className="col-sm-5">
-                                <input type="text" className="form-control" name="question"  value={this.state.question} onChange={this.handleChange}/>
-                             
-                            </div><button type="button" className="btn btn-primary" onClick="CreateTextbox()">เพิ่ม</button>
+                                <button type="button" className="btn btn-primary" onClick={this.handleAddQuestions}>เพิ่ม</button>
+                            </div>
                         </div>
-
-                           
-                        
-                           
-                        
+                        {this.state.questions.map((question, index) => (
+                        <div className="row">
+                            <label className="col-sm-2 col-sm-2 control-label"></label>
+                            <div className="col-sm-5">
+                                <div className="input-group">
+                                    <input type="text" className="form-control" placeholder={`คำถามที่ ${index + 1}`}
+                                            value={question.value} 
+                                            onChange={this.handleQuestionsValueChange(index)} />
+                                    <span className="input-group-btn">
+                                        <button className="btn btn-danger" type="button" onClick={this.handleRemoveQuestions(index)} disabled={index==0 ? 'disabled' : ''}>ลบ</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        ))}
+                          
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>
                             <Link to={ {pathname: `/evaluationmanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
