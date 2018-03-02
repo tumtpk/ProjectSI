@@ -47,6 +47,7 @@ class UserCreate extends Component {
         require.forEach(element => {
             document.getElementById(element).innerHTML = null;
         });
+        console.log(messages);
         messages.forEach(element => {
             document.getElementById(element.key).innerHTML = element.message;
         });
@@ -62,7 +63,7 @@ class UserCreate extends Component {
                 if(data.error){
                     this.handleValidate(data.message);
                 }
-                // this.setState({redirect: true});
+                this.setState({redirect: true});
             }
         });
       }

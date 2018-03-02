@@ -11,7 +11,7 @@ class EvaluationCreate extends Component {
         this.state = {
             evaluationName: "",
             description: "",
-            questions: [{value: ''}]
+            questions: [{value: null}]
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -19,6 +19,7 @@ class EvaluationCreate extends Component {
         this.handleAddQuestions = this.handleAddQuestions.bind(this);
         this.handleRemoveQuestions = this.handleRemoveQuestions.bind(this);
         this.handleQuestionsValueChange = this.handleQuestionsValueChange.bind(this);
+        this.handleValidate = this.handleValidate.bind(this);
       }
 
       handleChange(event) {
@@ -33,7 +34,7 @@ class EvaluationCreate extends Component {
 
       handleAddQuestions = () => {
         this.setState({
-            questions: this.state.questions.concat([{ value: '' }])
+            questions: this.state.questions.concat([{ value: null }])
         });
       }
 
@@ -57,13 +58,28 @@ class EvaluationCreate extends Component {
 
         console.log(this.state);
 
-        // CommonApi.instance.post('/evalation/create', this.state)
-        // .then(response => {
-        //     if(response.status == 200){
-        //         this.setState({redirect: true});
-        //     }
-        // });
+        CommonApi.instance.post('/evaluation/create', this.state)
+        .then(response => {
+            if(response.status == 200 && response.data.result){
+                this.setState({redirect: true});
+            }else{
+                this.handleValidate(response.data.message);
+            }
+        });
       }
+
+    handleValidate(messages){
+        let require = ["evaluationName","description"];
+        require.forEach(element => {
+            document.getElementById(element).innerHTML = null;
+        });
+        this.state.questions.map((question, sidx) => {
+            document.getElementById('questions['+sidx+']').innerHTML = null;
+        });
+        messages.forEach(element => {
+            document.getElementById(element.key).innerHTML = element.message;
+        });
+    }
 
       
     render() {
@@ -93,12 +109,14 @@ class EvaluationCreate extends Component {
                               <label className="col-sm-2 col-sm-2 control-label">ชื่อแบบประเมิน</label>
                               <div className="col-sm-5">
                                     <input type="text" className="form-control" name="evaluationName" value={this.state.evaluationName} onChange={this.handleChange} />
+                                    <span id="evaluationName" className="error-message"></span>
                               </div>
                         </div>
                         <div className="form-group">
                             <label className="col-sm-2 col-sm-2 control-label">คำชี้แจง</label>
                             <div className="col-sm-5">
                                 <textarea className="form-control rounded-0" rows="5" name="description" value={this.state.description} onChange={this.handleChange}/>
+                                <span id="description" className="error-message"></span>
                             </div>
                         </div>
                         <div className="row">
@@ -115,6 +133,7 @@ class EvaluationCreate extends Component {
                                     <input type="text" className="form-control" placeholder={`คำถามที่ ${index + 1}`}
                                             value={question.value} 
                                             onChange={this.handleQuestionsValueChange(index)} />
+                                    <span id={'questions['+index+']'} className="error-message"></span>
                                     <span className="input-group-btn">
                                         <button className="btn btn-danger" type="button" onClick={this.handleRemoveQuestions(index)} disabled={index==0 ? 'disabled' : ''}>ลบ</button>
                                     </span>
