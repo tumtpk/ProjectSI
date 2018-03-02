@@ -9,9 +9,7 @@ class CategoryUpdate extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            categoryCode: "",
             categoryName: "",
-            id: null,
             status: 1,
             redirect: false,
         }
@@ -33,9 +31,8 @@ class CategoryUpdate extends Component {
             let responseData = response.data;
             this.setState(
               {
-                categoryCode : responseData.categoryCode,
                 categoryName: responseData.categoryName,
-                // status: responseData.status
+                status: responseData.status
               }
             );
         });
@@ -85,13 +82,6 @@ class CategoryUpdate extends Component {
                 <div className="form-panel">
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลหมวดหมู่</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
-                        <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">รหัสหมวดหมู่</label>
-                            <div className="col-sm-5">
-                                <input type="text" className="form-control" name="categoryCode" value={this.state.categoryCode} onChange={this.handleChange}/>
-                            </div>
-                        </div>
-
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">ชื่อหมวดหมู่</label>
                             <div className="col-sm-5">

@@ -4,10 +4,10 @@ import CommonApi from "../../api/common-api"
 import { Link } from 'react-router-dom';
 
 const initialState = {
-  evaluationName: null,
-  description: null,
-  question: null,
-  //status: 0
+  evaluationName : null,
+  description : null,
+  status : 0,
+  dataSearch: null
 };
 
 class Evaluationmanagement extends Component { 
@@ -24,12 +24,14 @@ class Evaluationmanagement extends Component {
 
       componentWillMount() {
         CommonApi.instance.post('/evaluation/search', {
-          evaluationName: this.state.evaluationName,
-    })
-    .then(response => {
-        this.setState({dataSearch: response.data});
-    });
-  }
+              evaluationName: this.state.evaluationName,
+              description: this.state.description,
+              status: this.state.status
+        })
+        .then(response => {
+            this.setState({dataSearch: response.data});
+        });
+      }
 
       handleSubmit(event) {
         this.handleSearch();
@@ -51,16 +53,17 @@ class Evaluationmanagement extends Component {
         this.setState(initialState);
       }
 
-      handleSearch(){
-        console.log(this.state);
-          // CommonApi.instance.defaults.headers.common['Authorization'] = 'Bearer tGOL83hqWSlBZAXBxonr3sN_OThf1YGQGMoPLrb1lscOW-LeyC2JImp-Chd_udagbPiosPb-6nzGU_lF1JPr2VXoKn0HTJ4bEvP6-yBkQrkfRGKz62H69QXJKIhJn9x2hGi--etIc9RVO-dTl5wu_w03oovndT8EN2BVm8Mda9p-k03g5EKt4KSw2qcEqnj-JGwSW0_23SK2Yc6fjOhIjMoqyvPMpPtzlBqb_5-LTyKqReshbvVtKPWoXNf2ld71IxYLdkbpwLWX2kd30k7b3FdEM8XgEVBSKri9ert_DgVoEBl6g1PO8PEgIiofwqYw1L8yPDQrjpsz-FoELUdVZl9uMEoSIGA7EibdHX4Ltsqm2cB62C3nM7eUaphtRwH7RZ-QHMwXlEfiAB86BMzo0OxvK7Q4j_5atJOUg_0ZGr0Eb5yU2CHjqEjrh8zztS5W_g9nvR5Ed6HEjp5O-HfwDs3-t730YVhcvCyCoHXnhR4';
-          CommonApi.instance.post('evaluation/search', {
-                evaluationName: this.state.evaluationName,
-          })
-          .then(response => {
-              this.setState({dataSearch: response.data});
-          });
-      }
+    handleSearch(){
+        CommonApi.instance.post('/evaluation/search', {
+              evaluationName: this.state.evaluationName,
+              description: this.state.description,
+              status: this.state.status
+        })
+        .then(response => {
+            this.setState({dataSearch: response.data});
+        });
+    }
+
 
     renderTable(){
       return _.map(this.state.dataSearch, data => {
@@ -121,7 +124,7 @@ class Evaluationmanagement extends Component {
                   <div className="form-panel">
                   
                   
-                      <form className="form-horizontal style-form" id="search-user" onSubmit={this.handleSubmit}>
+                      <form className="form-horizontal style-form" id="search-evaluation" onSubmit={this.handleSubmit}>
                           <div className="form-group">
                             <br></br>
                               <label className="col-sm-2 col-sm-2 control-label">ชื่อแบบประเมิน</label>
@@ -148,4 +151,4 @@ class Evaluationmanagement extends Component {
     }
   }
   
-  export default Evaluationmanagement;
+  export default Evaluationmanagement; 

@@ -12,7 +12,7 @@ class CircleDetail extends Component {
             circleName: "",
             circleTime: "",
             status: 0,
-            redirect: false,
+            redirect: false, 
         }
   
         this.handleChange = this.handleChange.bind(this);

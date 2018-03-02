@@ -9,7 +9,6 @@ class CategoryCreate extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            categoryCode: "",
             categoryName: "",
             status: "",
             redirect: false,
@@ -65,19 +64,11 @@ class CategoryCreate extends Component {
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลหมวดหมู่</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">รหัสหมวดหมู่</label>
-                            <div className="col-sm-5">
-                                <input type="text" className="form-control" name="categoryCode" value={this.state.categoryCode} onChange={this.handleChange}/>
-                            </div>
-                        </div>
-
-                        <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">ชื่อหมวดหมู่</label>
                             <div className="col-sm-5">
                                 <input type="text" className="form-control" name="categoryName" value={this.state.categoryName} onChange={this.handleChange} />
                             </div>
                         </div>
-
                             <div className="form-group">
                                 <label className="col-sm-3 col-sm-3 control-label">สถานะ</label>
                                 <div className="col-sm-5">

@@ -12,13 +12,17 @@ class CircleCreate extends Component {
             circleName: "",
             circleTime: "",
             status: 1,
-            redirect: false,
+            redirect: false
         }
+
+        // mixins: [Validation.FieldMixin]
   
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleValidate = this.handleValidate.bind(this);
 
       }
+      
 
       handleChange(event) {
         const target = event.target;
@@ -28,20 +32,36 @@ class CircleCreate extends Component {
         this.setState({
           [name]: value
         });
+
+        document.getElementById(name).innerHTML = null;
       }
+
+    handleValidate(messages){
+        let require = ["circleName","circleTime"];
+        require.forEach(element => {
+            document.getElementById(element).innerHTML = null;
+        });
+        console.log(messages);
+        messages.forEach(element => {
+            document.getElementById(element.key).innerHTML = element.message;
+        });
+    }
 
       handleSubmit(event) {
         event.preventDefault();
-        
 
         CommonApi.instance.post('/circle/create', this.state)
         .then(response => {
             if(response.status == 200){
-                this.setState({redirect: true});
+                let data = response.data;
+                if(data.error){
+                    this.handleValidate(data.message);
+                }
+               // this.setState({redirect: true});
             }
         });
       }
-
+      
     render() {
 
       const { redirect } = this.state;
@@ -67,16 +87,18 @@ class CircleCreate extends Component {
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
 
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการดำเนินงาน</label>
+                            <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการดำเนินงาน<span className="error-message">*</span></label>
                             <div className="col-sm-5">
                                 <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} />
+                                <span id="circleName" className="error-message"></span>
                             </div>
                         </div>
 
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">ระยะเวลาที่กำหนด</label>
+                            <label className="col-sm-3 col-sm-3 control-label">ระยะเวลาที่กำหนด<span className="error-message">*</span></label>
                             <div className="col-sm-3">
                                 <input type="text" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} />
+                                <span id="circleTime" className="error-message"></span>
                             </div>
                             <label className="col-sm-3 col-sm-3 control-label">วัน</label>
                         </div>

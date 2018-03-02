@@ -164,7 +164,6 @@ class UserDetail extends Component {
                             </div>
                         
                         <div className="text-right">
-                            <button type="submit" className="btn btn-success">บันทึก</button>
                             <Link to={ {pathname: `/usermanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
                         </div>
                     </form>

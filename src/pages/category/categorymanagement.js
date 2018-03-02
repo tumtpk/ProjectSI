@@ -4,7 +4,6 @@ import CommonApi from "../../api/common-api"
 import { Link } from 'react-router-dom';
 
 const initialState = {
-  categoryCode: null,
   categoryName: null,
   status: 0,
   dataSearch: null
@@ -20,6 +19,16 @@ class Categorymanagement extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
+      }
+
+      componentWillMount() {
+        CommonApi.instance.post('/category/search', {
+              categoryName: this.state.categoryName,
+              status: this.state.status
+        })
+        .then(response => {
+            this.setState({dataSearch: response.data});
+        });
       }
 
       handleSubmit(event) {
@@ -43,10 +52,10 @@ class Categorymanagement extends Component {
       }
 
     handleSearch(){
+      console.log(this.state);
         // CommonApi.instance.defaults.headers.common['Authorization'] = 'Bearer tGOL83hqWSlBZAXBxonr3sN_OThf1YGQGMoPLrb1lscOW-LeyC2JImp-Chd_udagbPiosPb-6nzGU_lF1JPr2VXoKn0HTJ4bEvP6-yBkQrkfRGKz62H69QXJKIhJn9x2hGi--etIc9RVO-dTl5wu_w03oovndT8EN2BVm8Mda9p-k03g5EKt4KSw2qcEqnj-JGwSW0_23SK2Yc6fjOhIjMoqyvPMpPtzlBqb_5-LTyKqReshbvVtKPWoXNf2ld71IxYLdkbpwLWX2kd30k7b3FdEM8XgEVBSKri9ert_DgVoEBl6g1PO8PEgIiofwqYw1L8yPDQrjpsz-FoELUdVZl9uMEoSIGA7EibdHX4Ltsqm2cB62C3nM7eUaphtRwH7RZ-QHMwXlEfiAB86BMzo0OxvK7Q4j_5atJOUg_0ZGr0Eb5yU2CHjqEjrh8zztS5W_g9nvR5Ed6HEjp5O-HfwDs3-t730YVhcvCyCoHXnhR4';
         CommonApi.instance.post('/category/search', {
-              circleCode: this.state.categoryCode,
-              circleName: this.state.categoryName,
+              categoryName: this.state.categoryName,
               status: this.state.status
         })
         .then(response => {
@@ -58,7 +67,6 @@ class Categorymanagement extends Component {
       return _.map(this.state.dataSearch, data => {
         return (
           <tr>
-            <td>{ data.categoryCode }</td>
             <td>{ data.categoryName }</td>
             <td>{ data.status }</td>
             <td>
@@ -77,12 +85,11 @@ class Categorymanagement extends Component {
         <div className="row mt">
               <div className="col-lg-12">
                       <div className="content-panel">
-                          <h4><i className="fa fa-angle-right"></i> รายการรอบการปรับปรุงกระบวนการ</h4>
+                          <h4><i className="fa fa-angle-right"></i> รายการหมวดหมู่</h4>
                           <hr />
                           <table className="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
-                                  <th> รหัสรอบ</th>
                                   <th> ชื่อหมวดหมู่</th>
                                   <th> สถานะ</th>
                                   <th></th>
@@ -120,29 +127,24 @@ class Categorymanagement extends Component {
                       <form className="form-horizontal style-form" id="search-category" onSubmit={this.handleSubmit}>
                           <div className="form-group">
                             <br></br>
-                              <label className="col-sm-3 col-sm-3 control-label">รหัสหมวดหมู่</label>
-                              <div className="col-sm-3">
-                                  <input type="text" className="form-control" name="circleCode" value={this.state.circleCode} onChange={this.handleChange}/>
+                              <label className="col-sm-2 col-sm-2 control-label">ชื่อหมวดหมู่</label>
+                              <div className="col-sm-4">
+                                  <input type="text" className="form-control" name="categoryName" value={this.state.categoryName} onChange={this.handleChange} /> 
                               </div>
-                              <label className="col-sm-3 col-sm-3 control-label">ชื่อหมวดหมู่</label>
-                              <div className="col-sm-3">
-                                  <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} /> 
-                              </div>
-                              <br></br><br></br><br></br>
-                              <label className="col-sm-3 col-sm-3 control-label">สถานะ</label>
-                              <div className="btn-group" className="col-sm-2">
+                          <br></br><br></br><br></br>
+                              <label className="col-sm-2 col-sm-2 control-label">สถานะ</label>
+                               <div className="btn-group"  className="col-sm-2"> 
                                 <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange}>
                                     <option value="0">--เลือกสถานะ--</option>
                                     <option value="1">เปิดใช้งาน</option>
                                     <option value="2">ปิดใช้งาน</option>
                                 </select>
-                                
-                              </div>
-                            </div>                
+                               </div> 
+                                </div>           
                             <div className="text-center">
                               <button type="submit" className="btn btn-round btn-primary" >ค้นหา</button>
                               <button type="button" className="btn btn-round btn-danger" onClick={this.handleClear}>ยกเลิก</button>
-                            </div>                                                                                     
+                              </div>                                                                                     
                       </form>
 
                   </div>

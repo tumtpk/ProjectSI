@@ -25,6 +25,7 @@ class UserUpdate extends Component {
   
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        
 
       }
 
@@ -99,31 +100,35 @@ class UserUpdate extends Component {
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
 
                         <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว</label>
+                              <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว<span className="error-message">*</span></label>
                               <div className="col-sm-3">
                                     <input type="text" className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} />
+                                    <span id="personalID" className="error-message"></span>
                               </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-sm-2 col-sm-2 control-label">ชื่อ</label>
+                            <label className="col-sm-2 col-sm-2 control-label">ชื่อ<span className="error-message">*</span></label>
                             <div className="col-sm-4">
                                 <input type="text" className="form-control" name="firstname" value={this.state.firstname} onChange={this.handleChange}/>
+                                <span id="firstname" className="error-message"></span>
                             </div>
-                            <label className="col-sm-1 col-sm-1 control-label">นามสกุล</label>
+                            <label className="col-sm-1 col-sm-1 control-label">นามสกุล<span className="error-message">*</span></label>
                             <div className="col-sm-4">
                                 <input type="text" className="form-control" name="lastname" value={this.state.lastname} onChange={this.handleChange}/>
+                                <span id="lastname" className="error-message"></span>
                             </div>
                         </div>
 
                         <div className="form-group">
-                            <label className="col-sm-2 col-sm-2 control-label">อีเมล์</label>
+                            <label className="col-sm-2 col-sm-2 control-label">อีเมล์<span className="error-message">*</span></label>
                             <div className="col-sm-4">
                                 <input type="email" className="form-control" name="email"  value={this.state.email} onChange={this.handleChange} disabled/>
+                                <span id="email" className="error-message"></span>
                             </div>
                         </div>
 
                             <div className="form-group">
-                                <label className="col-sm-2 col-sm-2 control-label">บทบาท</label>
+                                <label className="col-sm-2 col-sm-2 control-label">บทบาท<span className="error-message">*</span></label>
                                 <div className="col-sm-5">
                                     <div className="btn-group">
                                         <select className="form-control" name="role" value={this.state.role} onChange={this.handleChange}>
@@ -133,6 +138,7 @@ class UserUpdate extends Component {
                                             <option value="3">ประธานหลักสูตร</option>
                                             <option value="4">ผู้ดูแลระบบ</option>
                                         </select>
+                                        <span id="role" className="error-message"></span>
                                     </div>
                                 </div>
                             </div>

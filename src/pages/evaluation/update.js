@@ -9,45 +9,35 @@ class EvaluationUpdate extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
-            password: "",
-            ConfirmPassword: "",
-            personalID : "",
-            firstname: "",
-            lastname: "",
-            nickname: "",
-            role: 0,
-            commander: "",
-            userID: null,
-            status: 1,
+            evaluationName: "",
+            description: "",
+            questions: [{value: null}],
             redirect: false,
         }
   
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        this.handleAddQuestions = this.handleAddQuestions.bind(this);
+        this.handleRemoveQuestions = this.handleRemoveQuestions.bind(this);
+        this.handleQuestionsValueChange = this.handleQuestionsValueChange.bind(this);
+        this.handleValidate = this.handleValidate.bind(this);
       }
 
       componentWillMount() {
-        let userID = this.props.location.query.userID;
-        this.setState({userID: userID});
-        this.apiGetUset(userID);
+        let id = this.props.location.query.id;
+        this.setState({id: id});
+        this.apiGetUset(id);
       }
 
-      apiGetUset(userID){
-        CommonApi.instance.get('/user/getuser/'+userID)
+      apiGetUset(id){
+        CommonApi.instance.get('/evaluation/getevaluation/'+id)
         .then(response => {
             let responseData = response.data;
             this.setState(
               {
-                personalID : responseData.personalID,
-                firstname: responseData.firstname,
-                lastname: responseData.lastname,
-                nickname: responseData.nickname,
-                role: responseData.role,
-                commander: responseData.commander,
-                email: responseData.email,
-                // status: responseData.status
+                evaluationName: "",
+                description: "",
+                questions: [{value: null}]
               }
             );
         });
@@ -63,23 +53,62 @@ class EvaluationUpdate extends Component {
         });
       }
 
+      handleAddQuestions = () => {
+        this.setState({
+            questions: this.state.questions.concat([{ value: null }])
+        });
+      }
+
+      handleRemoveQuestions = (index) => () => {
+        this.setState({
+            questions: this.state.questions.filter((s, sidx) => index !== sidx)
+        });
+      }
+
+      handleQuestionsValueChange = (index) => (evt) => {
+        const newQuestion = this.state.questions.map((question, sidx) => {
+          if (index !== sidx) return question;
+          return { ...question, value: evt.target.value };
+        });
+    
+        this.setState({ questions: newQuestion });
+      }
+
       handleSubmit(event) {
         event.preventDefault();
 
-        CommonApi.instance.post('/user/update', this.state)
+        console.log(this.state);
+
+        CommonApi.instance.post('/evaluation/update', this.state)
         .then(response => {
-            if(response.status == 200){
+            if(response.status == 200 && response.data.result){
                 this.setState({redirect: true});
+            }else{
+                this.handleValidate(response.data.message);
             }
         });
       }
 
+    handleValidate(messages){
+        let require = ["evaluationName","description"];
+        require.forEach(element => {
+            document.getElementById(element).innerHTML = null;
+        });
+        this.state.questions.map((question, sidx) => {
+            document.getElementById('questions['+sidx+']').innerHTML = null;
+        });
+        messages.forEach(element => {
+            document.getElementById(element.key).innerHTML = element.message;
+        });
+    }
+
+      
     render() {
 
       const { redirect } = this.state;
 
       if (redirect) {
-        return <Redirect to='/usermanagement'/>;
+        return <Redirect to='/evaluationmanagement'/>;
       }
 
       return (
@@ -88,87 +117,55 @@ class EvaluationUpdate extends Component {
 
             <div className="row"> 
                 <div className="col-md-12">
-                    <h3><i className="fa fa-angle-right"></i> แก้ไขผู้ใช้งาน</h3>
+                    <h3><i className="fa fa-angle-right"></i> แก้ไขแบบประเมิน</h3>
                 </div>
             </div>
 
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
-                    <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลผู้ใช้งาน</h4>
+                    <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลแบบประเมิน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
-
                         <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว</label>
-                              <div className="col-sm-3">
-                                    <input type="text" className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} />
-                              </div>
-                        </div>
-                        <div className="form-group">
-                            <label className="col-sm-2 col-sm-2 control-label">ชื่อ</label>
-                            <div className="col-sm-4">
-                                <input type="text" className="form-control" name="firstname" value={this.state.firstname} onChange={this.handleChange}/>
-                            </div>
-                            <label className="col-sm-1 col-sm-1 control-label">นามสกุล</label>
-                            <div className="col-sm-4">
-                                <input type="text" className="form-control" name="lastname" value={this.state.lastname} onChange={this.handleChange}/>
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="col-sm-2 col-sm-2 control-label">อีเมล์</label>
-                            <div className="col-sm-4">
-                                <input type="email" className="form-control" name="email"  value={this.state.email} onChange={this.handleChange} disabled/>
-                            </div>
-                        </div>
-
-                            <div className="form-group">
-                                <label className="col-sm-2 col-sm-2 control-label">บทบาท</label>
-                                <div className="col-sm-5">
-                                    <div className="btn-group">
-                                        <select className="form-control" name="role" value={this.state.role} onChange={this.handleChange}>
-                                            <option value="0">เลือกบทบาท</option>
-                                            <option value="1">นักศึกษา</option>
-                                            <option value="2">อาจารย์</option>
-                                            <option value="3">ประธานหลักสูตร</option>
-                                            <option value="4">ผู้ดูแลระบบ</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">ผู้บังคับบัญชา</label>
+                              <label className="col-sm-2 col-sm-2 control-label">ชื่อแบบประเมิน</label>
                               <div className="col-sm-5">
-                                <div className="btn-group">
-
-                                    <select className="form-control" name="commander" value={this.state.commander} onChange={this.handleChange}>
-                                        <option value="0">เลือกผู้บังคับบัญชา</option>
-                                        <option value="1">ผศ.เยาวเรศ ศิริสถิตย์กุล</option>
-                                        <option value="2">ผศ.ดร.ฐิมาพร เพชรแก้ว</option>
-                                        <option value="3">ผศ.อุหมาด หมัดอาด้ำ</option>
-                                        <option value="4">ดร.กรัณรัตน์ ธรรมรักษ์</option>
-                                        <option value="5">ดร.พุทธิพร ธนธรรมเมธี</option>
-                                    </select>
-                                </div>
+                                    <input type="text" className="form-control" name="evaluationName" value={this.state.evaluationName} onChange={this.handleChange} />
+                                    <span id="evaluationName" className="error-message"></span>
                               </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-sm-2 col-sm-2 control-label">คำชี้แจง</label>
+                            <div className="col-sm-5">
+                                <textarea className="form-control rounded-0" rows="5" name="description" value={this.state.description} onChange={this.handleChange}/>
+                                <span id="description" className="error-message"></span>
                             </div>
-
-                            <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">สถานะ</label>
-                              <div className="col-sm-5">
-                                <div className="btn-group">
-                                    <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange}>
-                                        <option value="1">เปิดใช้งาน</option>
-                                        <option value="2">ปิดใช้งาน</option>
-                                    </select>
+                        </div>
+                        <div className="row">
+                            <label className="col-sm-2 col-sm-2 control-label">คำถาม</label>
+                            <div className="col-sm-5">
+                                <button type="button" className="btn btn-primary" onClick={this.handleAddQuestions}>เพิ่ม</button>
+                            </div>
+                        </div>
+                        {this.state.questions.map((question, index) => (
+                        <div className="row">
+                            <label className="col-sm-2 col-sm-2 control-label"></label>
+                            <div className="col-sm-5">
+                                <div className="input-group">
+                                    <input type="text" className="form-control" placeholder={`คำถามที่ ${index + 1}`}
+                                            value={question.value} 
+                                            onChange={this.handleQuestionsValueChange(index)} />
+                                    <span id={'questions['+index+']'} className="error-message"></span>
+                                    <span className="input-group-btn">
+                                        <button className="btn btn-danger" type="button" onClick={this.handleRemoveQuestions(index)} disabled={index==0 ? 'disabled' : ''}>ลบ</button>
+                                    </span>
                                 </div>
-                              </div>
                             </div>
-
+                        </div>
+                        ))}
+                          
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>
-                            <Link to={ {pathname: `/usermanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
+                            <Link to={ {pathname: `/evaluationmanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
                         </div>
                     </form>
                 </div>
