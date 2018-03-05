@@ -15,9 +15,8 @@ class UserUpdate extends Component {
             personalID : "",
             firstname: "",
             lastname: "",
-            nickname: "",
-            role: 0,
-            commander: "",
+            userTypeID: 1,
+            commanderID: 0,
             userID: null,
             status: 1,
             redirect: false,
@@ -25,6 +24,7 @@ class UserUpdate extends Component {
   
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleValidate = this.handleValidate.bind(this);
         
 
       }
@@ -45,10 +45,10 @@ class UserUpdate extends Component {
                 firstname: responseData.firstname,
                 lastname: responseData.lastname,
                 nickname: responseData.nickname,
-                role: responseData.role,
-                commander: responseData.commander,
+                userTypeID: responseData.userTypeID,
+                commanderID: responseData.commanderID,
                 email: responseData.email,
-                // status: responseData.status
+                status: responseData.status
               }
             );
         });
@@ -62,18 +62,37 @@ class UserUpdate extends Component {
         this.setState({
           [name]: value
         });
+
+        document.getElementById(name).innerHTML = null;
       }
+
 
       handleSubmit(event) {
         event.preventDefault();
 
-        CommonApi.instance.post('/user/update', this.state)
+        console.log(this.state);
+
+        CommonApi.instance.post('/user/create', this.state)
         .then(response => {
-            if(response.status == 200){
+            if(response.status == 200 && response.data.result){
                 this.setState({redirect: true});
+            }else{
+                this.handleValidate(response.data.message);
             }
         });
       }
+
+      
+      handleValidate(messages){
+        let require = ["personalID","firstname","lastname","email","userTypeID"];
+        require.forEach(element => {
+            document.getElementById(element).innerHTML = null;
+        });
+        console.log(messages);
+        messages.forEach(element => {
+            document.getElementById(element.key).innerHTML = element.message;
+        });
+    }
 
     render() {
 
@@ -131,14 +150,14 @@ class UserUpdate extends Component {
                                 <label className="col-sm-2 col-sm-2 control-label">บทบาท<span className="error-message">*</span></label>
                                 <div className="col-sm-5">
                                     <div className="btn-group">
-                                        <select className="form-control" name="role" value={this.state.role} onChange={this.handleChange}>
+                                        <select className="form-control" name="userTypeID" value={this.state.userTypeID} onChange={this.handleChange}>
                                             <option value="0">เลือกบทบาท</option>
                                             <option value="1">นักศึกษา</option>
                                             <option value="2">อาจารย์</option>
                                             <option value="3">ประธานหลักสูตร</option>
                                             <option value="4">ผู้ดูแลระบบ</option>
                                         </select>
-                                        <span id="role" className="error-message"></span>
+                                        <span id="userTypeID" className="error-message"></span>
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +167,7 @@ class UserUpdate extends Component {
                               <div className="col-sm-5">
                                 <div className="btn-group">
 
-                                    <select className="form-control" name="commander" value={this.state.commander} onChange={this.handleChange}>
+                                    <select className="form-control" name="commanderID" value={this.state.commanderID} onChange={this.handleChange}>
                                         <option value="0">เลือกผู้บังคับบัญชา</option>
                                         <option value="1">ผศ.เยาวเรศ ศิริสถิตย์กุล</option>
                                         <option value="2">ผศ.ดร.ฐิมาพร เพชรแก้ว</option>

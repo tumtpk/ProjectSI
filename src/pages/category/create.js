@@ -10,14 +10,17 @@ class CategoryCreate extends Component {
         super(props);
         this.state = {
             categoryName: "",
-            status: "",
+            status: 1,
             redirect: false,
         }
   
+  
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleValidate = this.handleValidate.bind(this);
 
       }
+      
 
       handleChange(event) {
         const target = event.target;
@@ -27,15 +30,32 @@ class CategoryCreate extends Component {
         this.setState({
           [name]: value
         });
+
+        document.getElementById(name).innerHTML = null;
       }
 
-      handleSubmit(event) {
+    handleValidate(messages){
+        let require = ["categoryName"];
+        require.forEach(element => {
+            document.getElementById(element).innerHTML = null;
+        });
+        console.log(messages);
+        messages.forEach(element => {
+            document.getElementById(element.key).innerHTML = element.message;
+        });
+    }
+
+    handleSubmit(event) {
         event.preventDefault();
+
+        console.log(this.state);
 
         CommonApi.instance.post('/category/create', this.state)
         .then(response => {
-            if(response.status == 200){
+            if(response.status == 200 && response.data.result){
                 this.setState({redirect: true});
+            }else{
+                this.handleValidate(response.data.message);
             }
         });
       }
@@ -64,9 +84,10 @@ class CategoryCreate extends Component {
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลหมวดหมู่</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">ชื่อหมวดหมู่</label>
+                            <label className="col-sm-3 col-sm-3 control-label">ชื่อหมวดหมู่<span className="error-message">*</span></label>
                             <div className="col-sm-5">
                                 <input type="text" className="form-control" name="categoryName" value={this.state.categoryName} onChange={this.handleChange} />
+                                <span id="categoryName" className="error-message"></span>
                             </div>
                         </div>
                             <div className="form-group">

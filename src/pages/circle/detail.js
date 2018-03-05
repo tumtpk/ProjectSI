@@ -4,15 +4,15 @@ import CommonApi from "../../api/common-api"
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 
-class CircleDetail extends Component { 
+class CircleUpdate extends Component { 
 
     constructor(props) {
         super(props);
         this.state = {
             circleName: "",
-            circleTime: "",
+            circleTime: 0,
             status: 0,
-            redirect: false, 
+            redirect: false
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -60,6 +60,7 @@ class CircleDetail extends Component {
         });
       }
 
+
     render() {
 
       const { redirect } = this.state;
@@ -84,32 +85,32 @@ class CircleDetail extends Component {
                     <h4 className="mb"><i className="fa fa-angle-right"></i> รายละเอียดรอบการดำเนินงาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการดำเนินงาน</label>
+                            <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการปรับปรุงกระบวนการ</label>
                             <div className="col-sm-5">
-                                <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} disabled />
+                                <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} disabled/>
+
                             </div>
                         </div>
 
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">ระยะเวลาที่กำหนด</label>
                             <div className="col-sm-3">
-                                <input type="text" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} disabled />
+                                <input type="text" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} disabled/>
                             </div>
                             <label className="col-sm-3 col-sm-3 control-label">วัน</label>
                         </div>
 
                             <div className="form-group">
-                              <label className="col-sm-3 col-sm-3 control-label">สถานะ</label>
-                              <div className="col-sm-5">
-                                <div className="btn-group">
-                                    <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange} disabled >
-                                        <option value="1">เปิดใช้งาน</option>
-                                        <option value="2">ปิดใช้งาน</option>
-                                    </select>
+                                <label className="col-sm-3 col-sm-3 control-label">สถานะ</label>
+                                <div className="col-sm-5">
+                                    <div className="btn-group">
+                                        <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange} disabled>
+                                            <option value="1">เปิดใช้งาน</option>
+                                            <option value="2">ปิดใช้งาน</option>
+                                        </select>
+                                    </div>
                                 </div>
-                              </div>
                             </div>
-                        
                         <div className="text-right">
                             <Link to={ {pathname: `/circlemanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
                         </div>
@@ -124,4 +125,4 @@ class CircleDetail extends Component {
     }
   }
   
-  export default CircleDetail;
+  export default CircleUpdate;

@@ -30,6 +30,7 @@ class EvaluationCreate extends Component {
         this.setState({
           [name]: value
         });
+        document.getElementById(name).innerHTML = null;
       }
 
       handleAddQuestions = () => {

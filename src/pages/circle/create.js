@@ -47,17 +47,17 @@ class CircleCreate extends Component {
         });
     }
 
-      handleSubmit(event) {
+    handleSubmit(event) {
         event.preventDefault();
+
+        console.log(this.state);
 
         CommonApi.instance.post('/circle/create', this.state)
         .then(response => {
-            if(response.status == 200){
-                let data = response.data;
-                if(data.error){
-                    this.handleValidate(data.message);
-                }
-               // this.setState({redirect: true});
+            if(response.status == 200 && response.data.result){
+                this.setState({redirect: true});
+            }else{
+                this.handleValidate(response.data.message);
             }
         });
       }

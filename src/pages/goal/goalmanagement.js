@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const initialState = {
   evaluationName: "",
   description: "",
-  question: "",
+ // question: "",
   status: 0,
   category: ""
 };
@@ -118,7 +118,7 @@ class Goalmanagement extends Component {
                 </div>
                 <div className="col-md-4 text-right" style={{marginTop: '15px'}}>
                   <Link to={ {pathname: `/goal/create`} }><button type="button" className="btn btn-primary" >เพิ่มเป้าหมาย</button></Link>
-                  <Link to={ {pathname: `/goal/createOtherUser`} }><button type="button" className="btn btn-primary" >เพิ่มเป้าหมายให้ผู้ใต้บังคับบัญชา</button></Link>
+                
                 </div>
             </div>
 

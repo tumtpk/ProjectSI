@@ -4,7 +4,7 @@ import CommonApi from "../../api/common-api"
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 
-class GoalCreate extends Component { 
+class GoalUpdate extends Component { 
 
     constructor(props) {
         super(props);
@@ -15,7 +15,9 @@ class GoalCreate extends Component {
             endDate: "",
             categoryID: "",
             circleID: "",
-            checklistName: [{value: null}]
+            checklistName: [{value: null}],
+            redirect: false,
+
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -24,6 +26,33 @@ class GoalCreate extends Component {
         this.handleRemoveChecklist= this.handleRemoveChecklist.bind(this);
         this.handleChecklistValueChange = this.handleChecklistValueChange.bind(this);
         this.handleValidate = this.handleValidate.bind(this);
+
+      }
+
+      componentWillMount() {
+        let id = this.props.location.query.id;
+        this.setState({id: id});
+        this.apiGetUset(id);
+      }
+
+      apiGetUset(id){
+        CommonApi.instance.get('/goal/getgoal/'+id)
+        .then(response => {
+            let responseData = response.data;
+            this.setState(
+              {
+                goalName : responseData.goalName,
+                description: responseData.description,
+                startDate: responseData.startDate,
+                startDate: responseData.startDate,
+                endDate: responseData.endDate,
+                categoryID: responseData.categoryID,
+                circleID: responseData.circleID,
+                checklistName: responseData.checklistName,
+
+              }
+            );
+        });
       }
 
       handleChange(event) {
@@ -62,7 +91,7 @@ class GoalCreate extends Component {
 
         console.log(this.state);
 
-        CommonApi.instance.post('/goal/create', this.state)
+        CommonApi.instance.post('/goal/update', this.state)
         .then(response => {
             if(response.status == 200 && response.data.result){
                 this.setState({redirect: true});
@@ -106,7 +135,7 @@ class GoalCreate extends Component {
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
-                    <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลเป้าหมาย</h4>
+                    <h4 className="mb"><i className="fa fa-angle-right"></i> แก้ไขข้อมูลเป้าหมาย</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
                               <label className="col-sm-2 col-sm-2 control-label">ชื่อแบบเป้าหมาย</label>
@@ -209,4 +238,4 @@ class GoalCreate extends Component {
     }
   }
   
-  export default GoalCreate;
+  export default GoalUpdate;

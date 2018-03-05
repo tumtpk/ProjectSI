@@ -32,6 +32,8 @@ import EvaluationDetail from "./pages/evaluation/detail";
 
 import Goalmanagement from "./pages/goal/goalmanagement";
 import GoalCreate from "./pages/goal/create";
+import GoalUpdate from "./pages/goal/update";
+import GoalDetail from "./pages/goal/detail";
 import GoalCreateOtherUser from "./pages/goal/createOtherUser";
 import GoalCreateOtherUserSelectUser from "./pages/goal/selectuser";
 
@@ -79,6 +81,8 @@ ReactDOM.render(
           
           <AppRoute exact path="/goalmanagement" layout={MainLayout} component={Goalmanagement} />
           <AppRoute exact path="/goal/create" layout={MainLayout} component={GoalCreate} />
+          <AppRoute exact path="/goal/update" layout={MainLayout} component={GoalUpdate} />
+          <AppRoute exact path="/goal/view" layout={MainLayout} component={GoalDetail} />
           <AppRoute exact path="/goal/createotheruser" layout={MainLayout} component={GoalCreateOtherUser} />
           <AppRoute exact path="/goal/selectuser" layout={MainLayout} component={GoalCreateOtherUserSelectUser} />
 

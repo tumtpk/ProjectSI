@@ -15,10 +15,10 @@ class UserCreate extends Component {
             personalID : "",
             firstname: "",
             lastname: "",
-            role: 1,
-            status: 1,
-            commander: "",
-            redirect: false,
+            userTypeID: 0,
+            commanderID: 0,
+            userID: null,
+            status: 1
         }
 
         // mixins: [Validation.FieldMixin]
@@ -42,8 +42,24 @@ class UserCreate extends Component {
         document.getElementById(name).innerHTML = null;
       }
 
-    handleValidate(messages){
-        let require = ["personalID","firstname","lastname","email","role"];
+
+    handleSubmit(event) {
+        event.preventDefault();
+
+        console.log(this.state);
+
+        CommonApi.instance.post('/user/create', this.state)
+        .then(response => {
+            if(response.status == 200 && response.data.result){
+                this.setState({redirect: true});
+            }else{
+                this.handleValidate(response.data.message);
+            }
+        });
+      }
+
+      handleValidate(messages){
+        let require = ["personalID","firstname","lastname","email"];
         require.forEach(element => {
             document.getElementById(element).innerHTML = null;
         });
@@ -52,21 +68,6 @@ class UserCreate extends Component {
             document.getElementById(element.key).innerHTML = element.message;
         });
     }
-
-      handleSubmit(event) {
-        event.preventDefault();
-
-        CommonApi.instance.post('/user/create', this.state)
-        .then(response => {
-            if(response.status == 200){
-                let data = response.data;
-                if(data.error){
-                    this.handleValidate(data.message);
-                }
-                this.setState({redirect: true});
-            }
-        });
-      }
 
     render() {
 
@@ -124,14 +125,14 @@ class UserCreate extends Component {
                                 <label className="col-sm-2 col-sm-2 control-label">บทบาท <span className="error-message">*</span></label>
                                 <div className="col-sm-5">
                                     <div className="btn-group">
-                                        <select className="form-control" name="role" value={this.state.role} onChange={this.handleChange}>
+                                        <select className="form-control" name="userTypeID" value={this.state.userTypeID} onChange={this.handleChange}>
                                             {/* <option value="0">เลือกบทบาท</option> */}
                                             <option value="1">นักศึกษา</option>
                                             <option value="2">อาจารย์</option>
                                             <option value="3">ประธานหลักสูตร</option>
                                             <option value="4">ผู้ดูแลระบบ</option>
                                         </select>
-                                        <span id="role" className="error-message"></span>
+                                        <span id="userTypeID" className="error-message"></span>
                                     </div>
                                 </div>
                             </div>
@@ -141,7 +142,7 @@ class UserCreate extends Component {
                               <div className="col-sm-5">
                                 <div className="btn-group">
 
-                                    <select className="form-control" name="commander" value={this.state.commander} onChange={this.handleChange}>
+                                    <select className="form-control" name="commanderID" value={this.state.commanderID} onChange={this.handleChange}>
                                         <option value="0">เลือกผู้บังคับบัญชา</option>
                                         <option value="1">ผศ.เยาวเรศ ศิริสถิตย์กุล</option>
                                         <option value="2">ผศ.ดร.ฐิมาพร เพชรแก้ว</option>

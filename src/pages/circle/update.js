@@ -11,13 +11,13 @@ class CircleUpdate extends Component {
         this.state = {
             circleName: "",
             circleTime: "",
-            id: null,
             status: 1,
-            redirect: false,
+            redirect: false
         }
   
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleValidate = this.handleValidate.bind(this);
 
       }
 
@@ -33,10 +33,9 @@ class CircleUpdate extends Component {
             let responseData = response.data;
             this.setState(
               {
-                circleCode : responseData.circleCode,
                 circleName: responseData.circleName,
                 circleTime: responseData.circleTime,
-                // status: responseData.status
+                status: responseData.status
               }
             );
         });
@@ -50,15 +49,33 @@ class CircleUpdate extends Component {
         this.setState({
           [name]: value
         });
+        document.getElementById(name).innerHTML = null;
       }
 
-      handleSubmit(event) {
+      handleValidate(messages){
+        let require = ["circleName","circleTime"];
+        require.forEach(element => {
+            document.getElementById(element).innerHTML = null;
+        });
+        console.log(messages);
+        messages.forEach(element => {
+            document.getElementById(element.key).innerHTML = element.message;
+        });
+    }
+
+
+
+    handleSubmit(event) {
         event.preventDefault();
+
+        console.log(this.state);
 
         CommonApi.instance.post('/circle/update', this.state)
         .then(response => {
-            if(response.status == 200){
+            if(response.status == 200 && response.data.result){
                 this.setState({redirect: true});
+            }else{
+                this.handleValidate(response.data.message);
             }
         });
       }
@@ -87,16 +104,18 @@ class CircleUpdate extends Component {
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลรอบการดำเนินงาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการปรับปรุงกระบวนการ</label>
+                            <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการปรับปรุงกระบวนการ<span className="error-message">*</span></label>
                             <div className="col-sm-5">
                                 <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} />
+                                <span id="circleName" className="error-message"></span>
                             </div>
                         </div>
 
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">ระยะเวลาที่กำหนด</label>
+                            <label className="col-sm-3 col-sm-3 control-label">ระยะเวลาที่กำหนด<span className="error-message">*</span></label>
                             <div className="col-sm-3">
                                 <input type="text" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} />
+                                <span id="circleTime" className="error-message"></span>
                             </div>
                             <label className="col-sm-3 col-sm-3 control-label">วัน</label>
                         </div>
