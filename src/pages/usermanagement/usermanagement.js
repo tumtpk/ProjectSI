@@ -7,6 +7,8 @@ const initialState = {
   firstname: null,
   lastname: null,
   status: 0,
+  email:null,
+  userTypeID:null,
   dataSearch: null
 };
 
@@ -26,7 +28,9 @@ class Usermanagement extends Component {
         CommonApi.instance.post('/user/search', {
               firstname: this.state.firstname,
               lastname: this.state.lastname,
-              status: this.state.status
+              status: this.state.status,
+              email: this.state.email,
+              userTypeID: this.state.userTypeID
         })
         .then(response => {
             this.setState({dataSearch: response.data});
@@ -58,7 +62,9 @@ class Usermanagement extends Component {
         CommonApi.instance.post('/user/search', {
               firstname: this.state.firstname,
               lastname: this.state.lastname,
-              status: this.state.status
+              status: this.state.status,
+              email: this.state.email,
+              userTypeID: this.state.userTypeID
         })
         .then(response => {
             this.setState({dataSearch: response.data});
@@ -71,9 +77,9 @@ class Usermanagement extends Component {
           <tr>
             <td>{ data.firstname }</td>
             <td>{ data.lastname }</td>
-            <td>{ data.nickname }</td>
+            <td>{ data.email }</td>
             <td>{ data.status }</td>
-            <td>{ data.role }</td>
+            <td>{ data.userTypeID }</td>
             <td>
               <Link to={ {pathname: `/usermanagement/view`, query: {userID: data.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/usermanagement/update`, query: {userID: data.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
