@@ -15,10 +15,11 @@ class UserCreate extends Component {
             personalID : "",
             firstname: "",
             lastname: "",
-            userTypeID: 0,
+            userTypeID: 1,
             commanderID: 0,
-            userID: null,
-            status: 1
+            userID: "",
+            status: 1,
+            redirect: false,
         }
 
         // mixins: [Validation.FieldMixin]
@@ -59,7 +60,7 @@ class UserCreate extends Component {
       }
 
       handleValidate(messages){
-        let require = ["personalID","firstname","lastname","email"];
+        let require = ["personalID","firstname","lastname","email","userTypeID"];
         require.forEach(element => {
             document.getElementById(element).innerHTML = null;
         });

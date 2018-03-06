@@ -64,6 +64,7 @@ class EvaluationCreate extends Component {
             if(response.status == 200 && response.data.result){
                 this.setState({redirect: true});
             }else{
+                console.log(response.data.message)
                 this.handleValidate(response.data.message);
             }
         });
