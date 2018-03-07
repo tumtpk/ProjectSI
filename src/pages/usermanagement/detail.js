@@ -17,7 +17,7 @@ class UserDetail extends Component {
             lastname: "",
             nickname: "",
             role: 0,
-            commander: "",
+            commanderID: 0,
             status: 0,
             redirect: false,
         }
@@ -43,7 +43,7 @@ class UserDetail extends Component {
                 lastname: responseData.lastname,
                 nickname: responseData.nickname,
                 role: responseData.role,
-                commander: responseData.commander,
+                commanderID: responseData.commanderID,
                 email: responseData.email,
                 status: responseData.status
               }
@@ -139,7 +139,7 @@ class UserDetail extends Component {
                               <div className="col-sm-5">
                                 <div className="btn-group">
 
-                                    <select className="form-control" name="commander" value={this.state.commander} onChange={this.handleChange} disabled >
+                                    <select className="form-control" name="commanderID" value={this.state.commanderID} onChange={this.handleChange} disabled >
                                         <option value="0">เลือกผู้บังคับบัญชา</option>
                                         <option value="1">ผศ.เยาวเรศ ศิริสถิตย์กุล</option>
                                         <option value="2">ผศ.ดร.ฐิมาพร เพชรแก้ว</option>

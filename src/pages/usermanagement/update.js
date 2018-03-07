@@ -26,7 +26,6 @@ class UserUpdate extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleValidate = this.handleValidate.bind(this);
         
-
       }
 
       componentWillMount() {
@@ -72,7 +71,7 @@ class UserUpdate extends Component {
 
         console.log(this.state);
 
-        CommonApi.instance.post('/user/create', this.state)
+        CommonApi.instance.post('/user/update', this.state)
         .then(response => {
             if(response.status == 200 && response.data.result){
                 this.setState({redirect: true});
