@@ -48,7 +48,8 @@ class Categorymanagement extends Component {
 
       handleClear(event){
         document.getElementById("search-category").reset();
-        this.setState(initialState);
+        this.state = initialState;
+        this.handleSearch();
       }
 
     handleSearch(){

@@ -50,7 +50,8 @@ class Evaluationmanagement extends Component {
 
       handleClear(event){
         document.getElementById("search-evaluation").reset();
-        this.setState(initialState);
+        this.state = initialState;
+        this.handleSearch();
       }
 
     handleSearch(){

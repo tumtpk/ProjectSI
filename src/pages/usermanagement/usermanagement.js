@@ -54,7 +54,8 @@ class Usermanagement extends Component {
 
       handleClear(event){
         document.getElementById("search-user").reset();
-        this.setState(initialState);
+        this.state = initialState;
+        this.handleSearch();
       }
 
     handleSearch(){
