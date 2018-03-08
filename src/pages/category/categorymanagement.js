@@ -2,6 +2,14 @@ import React, { Component } from "react";
 import axios from "axios";
 import CommonApi from "../../api/common-api"
 import { Link } from 'react-router-dom';
+import {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalClose,
+  ModalBody,
+  ModalFooter
+} from 'react-modal-bootstrap';
 
 const initialState = {
   categoryName: null,
@@ -19,6 +27,7 @@ class Categorymanagement extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
       }
 
       componentWillMount() {
@@ -45,6 +54,13 @@ class Categorymanagement extends Component {
           [name]: value
         });
       }
+
+      handleDelete = (id) => (evt) => {
+        CommonApi.instance.get('/category/delete/'+id) 
+        .then(response => {
+          this.handleSearch();
+        });
+    }
 
       handleClear(event){
         document.getElementById("search-category").reset();
@@ -73,7 +89,24 @@ class Categorymanagement extends Component {
             <td>
               <Link to={ {pathname: `/category/view`, query: {id : data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/category/update`, query: {id : data.id }} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <a href="delete"><button className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button></a>
+              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+data.id}></i></button>
+                                      <div id={data.id} className="modal fade" role="dialog">
+                                        <div className="modal-dialog">
+                                          <div className="modal-content">
+                                          <div className="modal-header">
+                                          <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                          <h4 className="modal-title">ลบหมวดหมู่</h4>
+                                          </div>
+                                          <div className="modal-body">
+                                          <p>{data.categoryName} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
+                                          </div>
+                                          <div className="modal-footer">
+                                          <button type="button" className="btn btn-default"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
+                                          <button type="button" className="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                                          </div>
+                                          </div>
+                                         </div>
+                                        </div>
             </td>
           </tr>
         );

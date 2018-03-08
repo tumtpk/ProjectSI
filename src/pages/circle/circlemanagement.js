@@ -2,8 +2,17 @@ import React, { Component } from "react";
 import axios from "axios";
 import CommonApi from "../../api/common-api"
 import { Link } from 'react-router-dom';
+import {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalClose,
+  ModalBody,
+  ModalFooter
+} from 'react-modal-bootstrap';
 
 const initialState = {
+  id: null,
   circleName: null,
   circleTime: null,
   status: 0,
@@ -20,10 +29,12 @@ class Circlemanagement extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
       }
 
       componentWillMount() {
         CommonApi.instance.post('/circle/search', {
+              id: this.state.id,
               circleName: this.state.circleName,
               circleTime: this.state.circleTime,
               status: this.state.status
@@ -48,6 +59,13 @@ class Circlemanagement extends Component {
         });
       }
 
+      handleDelete = (id) => (evt) => {
+        CommonApi.instance.get('/circle/delete/'+id) 
+        .then(response => {
+          this.handleSearch();
+        });
+    }
+
       handleClear(event){
         document.getElementById("search-circle").reset();
         this.state = initialState;
@@ -58,6 +76,7 @@ class Circlemanagement extends Component {
       console.log(this.state);
         // CommonApi.instance.defaults.headers.common['Authorization'] = 'Bearer tGOL83hqWSlBZAXBxonr3sN_OThf1YGQGMoPLrb1lscOW-LeyC2JImp-Chd_udagbPiosPb-6nzGU_lF1JPr2VXoKn0HTJ4bEvP6-yBkQrkfRGKz62H69QXJKIhJn9x2hGi--etIc9RVO-dTl5wu_w03oovndT8EN2BVm8Mda9p-k03g5EKt4KSw2qcEqnj-JGwSW0_23SK2Yc6fjOhIjMoqyvPMpPtzlBqb_5-LTyKqReshbvVtKPWoXNf2ld71IxYLdkbpwLWX2kd30k7b3FdEM8XgEVBSKri9ert_DgVoEBl6g1PO8PEgIiofwqYw1L8yPDQrjpsz-FoELUdVZl9uMEoSIGA7EibdHX4Ltsqm2cB62C3nM7eUaphtRwH7RZ-QHMwXlEfiAB86BMzo0OxvK7Q4j_5atJOUg_0ZGr0Eb5yU2CHjqEjrh8zztS5W_g9nvR5Ed6HEjp5O-HfwDs3-t730YVhcvCyCoHXnhR4';
         CommonApi.instance.post('/circle/search', {
+              id: this.state.id,
               circleName: this.state.circleName,
               circleTime: this.state.circleTime,
               status: this.state.status
@@ -66,6 +85,22 @@ class Circlemanagement extends Component {
             this.setState({dataSearch: response.data});
         });
     }
+
+    state = {
+      isOpen: false
+    };
+     
+    openModal = () => {
+      this.setState({
+        isOpen: true
+      });
+    };
+     
+    hideModal = () => {
+      this.setState({
+        isOpen: false
+      });
+    };
 
     renderTable(){
       return _.map(this.state.dataSearch, data => {
@@ -77,7 +112,24 @@ class Circlemanagement extends Component {
             <td>
               <Link to={ {pathname: `/circle/view`, query: {id : data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/circle/update`, query: {id : data.id }} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <a href="delete"><button className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button></a>
+              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+data.id}></i></button>
+                                      <div id={data.id} className="modal fade" role="dialog">
+                                        <div className="modal-dialog">
+                                          <div className="modal-content">
+                                          <div className="modal-header">
+                                          <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                          <h4 className="modal-title">ลบรอบการดำเนินงาน</h4>
+                                          </div>
+                                          <div className="modal-body">
+                                          <p>{data.circleName} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
+                                          </div>
+                                          <div className="modal-footer">
+                                          <button type="button" className="btn btn-default"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
+                                          <button type="button" className="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                                          </div>
+                                          </div>
+                                         </div>
+                                        </div>
             </td>
           </tr>
         );

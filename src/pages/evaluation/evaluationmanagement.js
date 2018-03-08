@@ -2,8 +2,17 @@ import React, { Component } from "react";
 import axios from "axios";
 import CommonApi from "../../api/common-api"
 import { Link } from 'react-router-dom';
+import {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalClose,
+  ModalBody,
+  ModalFooter
+} from 'react-modal-bootstrap';
 
 const initialState = {
+  id: null,
   evaluationName : null,
   description : null,
   status : 0,
@@ -20,10 +29,12 @@ class Evaluationmanagement extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
       }
 
       componentWillMount() {
         CommonApi.instance.post('/evaluation/search', {
+              id: this.state.id,
               evaluationName: this.state.evaluationName,
               description: this.state.description,
               status: this.state.status
@@ -48,6 +59,13 @@ class Evaluationmanagement extends Component {
         });
       }
 
+      handleDelete = (id) => (evt) => {
+        CommonApi.instance.get('/evaluation/delete/'+id) 
+        .then(response => {
+          this.handleSearch();
+        });
+    }
+
       handleClear(event){
         document.getElementById("search-evaluation").reset();
         this.state = initialState;
@@ -56,6 +74,7 @@ class Evaluationmanagement extends Component {
 
     handleSearch(){
         CommonApi.instance.post('/evaluation/search', {
+              id: this.state.id,
               evaluationName: this.state.evaluationName,
               description: this.state.description,
               status: this.state.status
@@ -71,10 +90,28 @@ class Evaluationmanagement extends Component {
         return (
           <tr>
             <td>{ data.evaluationName }</td>
+            <td>{ data.status }</td>
             <td>
               <Link to={ {pathname: `/evaluation/view`, query: {id: data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/evaluation/update`, query: {id: data.id}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <a href="delete"><button className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button></a>
+              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+data.id}></i></button>
+                                      <div id={data.id} className="modal fade" role="dialog">
+                                        <div className="modal-dialog">
+                                          <div className="modal-content">
+                                          <div className="modal-header">
+                                          <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                          <h4 className="modal-title">ลบแบบประเมิน</h4>
+                                          </div>
+                                          <div className="modal-body">
+                                          <p>{data.evaluationName} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
+                                          </div>
+                                          <div className="modal-footer">
+                                          <button type="button" className="btn btn-default"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
+                                          <button type="button" className="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                                          </div>
+                                          </div>
+                                         </div>
+                                        </div>
             </td>
           </tr>
         );
