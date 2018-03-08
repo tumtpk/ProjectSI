@@ -4,6 +4,7 @@ import CommonApi from "../../api/common-api"
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 
+
 class GoalCreate extends Component { 
 
     constructor(props) {
@@ -15,7 +16,9 @@ class GoalCreate extends Component {
             endDate: "2016-02-10",
             categoryID: 0,
             circleID: 0,
-            checklists: [{value: null}]
+            checklists: [{value: null}],
+            circleList: [],
+            categoryList: []
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -25,6 +28,22 @@ class GoalCreate extends Component {
         this.handleChecklistsValueChange = this.handleChecklistsValueChange.bind(this);
         this.handleValidate = this.handleValidate.bind(this);
       }
+
+      componentWillMount() {
+        CommonApi.instance.post('/circle/search', {
+            status: 1
+        })
+        .then(response => {
+            this.setState({circleList: response.data});
+        });
+        CommonApi.instance.post('/category/search', {
+            status: 1
+        })
+        .then(response => {
+            this.setState({categoryList: response.data});
+        });
+      }
+
 
       handleChange(event) {
         const target = event.target;
@@ -75,8 +94,10 @@ class GoalCreate extends Component {
       }
 
     handleValidate(messages){
-        let require = ["goalName","description"];
+        
+        let require = ["goalName","description","categoryID","circleID","startDate"];
         require.forEach(element => {
+           
             document.getElementById(element).innerHTML = null;
         });
         this.state.checklists.map((checklist, sidx) => {
@@ -95,6 +116,9 @@ class GoalCreate extends Component {
       if (redirect) {
         return <Redirect to='/goalmanagement'/>;
       }
+
+      let circleList = this.state.circleList;
+      let categoryList = this.state.categoryList;
 
       return (
         <section id="main-content">
@@ -155,12 +179,12 @@ class GoalCreate extends Component {
                               <label className="col-sm-2 col-sm-2 control-label">หมวดหมู่<span className="error-message">*</span></label>
                               <div className="col-sm-5">
                                 <div className="btn-group">
-                                    <select className="form-control" name="categoryID" value={this.state.categoryID} onChange={this.handleChange}>
-                                        <option value="0">--เลือกหมวดหมู่--</option>
-                                        <option value="1">Web Application</option>
-                                        <option value="2">Study</option>
-                                        <option value="3">Learning</option>
-                                        <option value="4">Web Moblie</option>
+                                <select className="form-control" name="categoryID" value={this.state.categoryID} onChange={this.handleChange}>
+                        
+                                    <option value="0">--เลือกหมวดหมู่--</option>
+                                    {categoryList.map((category, index) => (
+                                        <option value="{category.id}">{category.categoryName}</option>
+                                    ))}
                                     </select>
                                     <span id="categoryID" className="error-message"></span>
                                 </div>
@@ -172,10 +196,10 @@ class GoalCreate extends Component {
                               <div className="col-sm-5">
                                 <div className="btn-group">
                                     <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
-                                        <option value="0">--เลือกรอบการดำเนินงาน--</option>
-                                        <option value="1">รายสัปดาห์</option>
-                                        <option value="2">รายเดือน</option>
-                                        <option value="3">รายปี</option>
+                                    <option value="0">--เลือกรอบการดำเนินงาน--</option>
+                                    {circleList.map((circle, index) => (
+                                        <option value="{circle.id}">{circle.circleName}</option>
+                                    ))}
                                     </select>
                                     <span id="circleID" className="error-message"></span>
                                 </div>
