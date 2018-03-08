@@ -2,6 +2,14 @@ import React, { Component } from "react";
 import axios from "axios";
 import CommonApi from "../../api/common-api"
 import { Link } from 'react-router-dom';
+import {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalClose,
+  ModalBody,
+  ModalFooter
+} from 'react-modal-bootstrap';
 
 const initialState = {
   firstname: null,
@@ -22,6 +30,7 @@ class Usermanagement extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
       }
 
       componentWillMount() {
@@ -30,7 +39,9 @@ class Usermanagement extends Component {
               lastname: this.state.lastname,
               status: this.state.status,
               email: this.state.email,
-              userTypeID: this.state.userTypeID
+              userTypeID: this.state.userTypeID,
+              userID:this.state.userID
+
         })
         .then(response => {
             this.setState({dataSearch: response.data});
@@ -52,10 +63,16 @@ class Usermanagement extends Component {
         });
       }
 
+      handleDelete = (userID) => (evt) => {
+        CommonApi.instance.get('/user/delete/'+userID) 
+        .then(response => {
+          this.handleSearch();
+        });
+    }
+
       handleClear(event){
         document.getElementById("search-user").reset();
-        this.state = initialState;
-        this.handleSearch();
+        this.setState(initialState);
       }
 
     handleSearch(){
@@ -65,12 +82,29 @@ class Usermanagement extends Component {
               lastname: this.state.lastname,
               status: this.state.status,
               email: this.state.email,
-              userTypeID: this.state.userTypeID
+              userTypeID: this.state.userTypeID,
+              userID:this.state.userID
         })
         .then(response => {
             this.setState({dataSearch: response.data});
         });
     }
+
+    state = {
+      isOpen: false
+    };
+     
+    openModal = () => {
+      this.setState({
+        isOpen: true
+      });
+    };
+     
+    hideModal = () => {
+      this.setState({
+        isOpen: false
+      });
+    };
 
     renderTable(){
       return _.map(this.state.dataSearch, data => {
@@ -84,7 +118,25 @@ class Usermanagement extends Component {
             <td>
               <Link to={ {pathname: `/usermanagement/view`, query: {userID: data.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/usermanagement/update`, query: {userID: data.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <a href="delete"><button className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button></a>
+              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+data.userID}></i></button>
+                                      <div id={data.userID} className="modal fade" role="dialog">
+                                        <div className="modal-dialog">
+                                          <div className="modal-content">
+                                          <div className="modal-header">
+                                          <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                          <h4 className="modal-title">ลบผู้ใช้งาน</h4>
+                                          </div>
+                                          <div className="modal-body">
+                                          <p>{data.firstname}  {data.lastname} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
+                                          </div>
+                                          <div className="modal-footer">
+                                          <button type="button" className="btn btn-default"  data-dismiss="modal" onClick={this.handleDelete(data.userID)}>ตกลง</button>
+                                          <button type="button" className="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                                          </div>
+                                          </div>
+                                         </div>
+                                        </div>
+                                        
             </td>
           </tr>
         );
