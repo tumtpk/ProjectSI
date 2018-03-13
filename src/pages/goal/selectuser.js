@@ -7,6 +7,7 @@ const initialState = {
   firstname: null,
   lastname: null,
   status: 0,
+  userTypeID:null,
   dataSearch: null
 };
 
@@ -71,12 +72,11 @@ class GoalCreateOtherUserSelectUser extends Component {
           <tr>
             <td>{ data.firstname }</td>
             <td>{ data.lastname }</td>
+            <td>{data.userTypeID}</td>
             <td>{ data.status }</td>
             <td>
-              <Link to={ {pathname: `/usermanagement/view`, query: {userID: data.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/usermanagement/update`, query: {userID: data.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <button type="button" class="btn btn-theme02"><i class="fa fa-check"></i> เลือก</button>
-              <a href="delete"><button className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button></a>
+              <button type="button" className="btn btn-theme03"><i className="fa fa-check"></i> เลือก</button>
+              <button type="button" className="btn btn-theme04"><i className="glyphicon glyphicon-remove"></i> เอาออก</button>
             </td>
           </tr>
         );
@@ -89,23 +89,26 @@ class GoalCreateOtherUserSelectUser extends Component {
         <div className="row mt">
               <div className="col-lg-12">
                       <div className="content-panel">
-                          <h4><i className="fa fa-angle-right"></i> รายการผู้ใช้งาน</h4>
+                          <h4><i className="fa fa-angle-right"></i> รายการผู้ใต้บังคับบัญชา</h4>
                           <hr />
                           <table className="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
                                   <th> ชื่อ</th>
                                   <th> นามสกุล</th>
-                                  <th> ชื่อผู้ใช้</th>
+                                  <th>บทบาท </th>
                                   <th> สถานะ</th>
-                                  <th> บทบาท</th>
-                                  <th></th>
+                                  <th><button type="button" className="btn btn-theme03"> เลือกทั้งหมด</button>
+                                      <button type="button" className="btn btn-theme04"> เอาออกทั้งหมด</button></th>
                                 </tr>
                               </thead>
                               <tbody>
                                 { this.renderTable() }
                               </tbody>
                           </table>
+                          <div className="text-right" style={{marginRight: '10px'}}>
+                          <Link to={ {pathname: `/createOtherUser`} }><button type="button" className="btn btn-success"> บันทึก </button></Link>
+                          </div>
                       </div>
                   </div>
               </div>
@@ -118,48 +121,8 @@ class GoalCreateOtherUserSelectUser extends Component {
           <section className="wrapper">
             <div className="row"> 
                 <div className="col-md-8">
-                    <h3><i className="fa fa-angle-right"></i> การจัดการผู้ใช้งาน</h3>
+                    <h3><i className="fa fa-angle-right"></i> กำหนดผู้ดำเนินเป้าหมาย</h3>
                 </div>
-                <div className="col-md-4 text-right" style={{marginTop: '15px'}}>
-                  <Link to={ {pathname: `/usermanagement/create`} }><button type="button" className="btn btn-primary" >เพิ่มผู้ใช้งาน</button></Link>
-                </div>
-            </div>
-
-
-            <div className="row">
-                <div className="col-lg-12">
-                  <div className="form-panel">
-                  
-                  
-                      <form className="form-horizontal style-form" id="search-user" onSubmit={this.handleSubmit}>
-                          <div className="form-group">
-                            <br></br>
-                              <label className="col-sm-1 col-sm-1 control-label">ชื่อ</label>
-                              <div className="col-sm-3">
-                                  <input type="text" className="form-control" name="firstname" value={this.state.username} onChange={this.handleChange}/>
-                              </div>
-                              <label className="col-sm-1 col-sm-1 control-label">นามสกุล</label>
-                              <div className="col-sm-3">
-                                  <input type="text" className="form-control" name="lastname" value={this.state.username} onChange={this.handleChange} /> 
-                              </div>
-                              <label className="col-sm-1 col-sm-1 control-label">สถานะ</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
-                              <div className="btn-group">
-                                <select className="form-control" name="status" value={this.state.username} onChange={this.handleChange}>
-                                    <option value="0">เลือกสถานะ</option>
-                                    <option value="1">เปิดใช้งาน</option>
-                                    <option value="2">ปิดใช้งาน</option>
-                                </select>
-                                
-                                </div>
-                            </div>                
-                            <div className="text-center">
-                              <button type="submit" className="btn btn-round btn-primary" >ค้นหา</button>
-                              <button type="button" className="btn btn-round btn-danger" onClick={this.handleClear}>ยกเลิก</button>
-                            </div>                                                                                     
-                      </form>
-
-                  </div>
-              </div>    
             </div>
 
             {this.renderFromSearch()}
