@@ -35,6 +35,7 @@ class GoalCreateOtherUser extends Component {
         })
         .then(response => {
             this.setState({circleList: response.data});
+            
         });
         CommonApi.instance.post('/category/search', {
             status: 1
@@ -133,6 +134,9 @@ class GoalCreateOtherUser extends Component {
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
+                <div className="text-center">
+                <img src="/theme/img/pagenation1.jpg"  width="150" height="70" />
+            </div>
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลเป้าหมาย</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
@@ -226,19 +230,9 @@ class GoalCreateOtherUser extends Component {
                                   <p className="form-control-static" name="endDate">02/22/2018</p>
                               </div>
                           </div>
-
-                        <div className="form-group">
-                              <label className="col-lg-2 col-sm-2 control-label">กำหนดผู้ดำเนินเป้าหมาย</label>
-                            <div className="col-sm-5">
-                            <Link to={ {pathname: `/goal/selectuser`} }><button type="button" className="btn btn-primary" >เลือกผู้ใต้บังคับบัญชา</button></Link>
-                            </div>
-                                
-                        </div>
-                          
-
                         <div className="text-right">
-                            <button type="submit" className="btn btn-success">บันทึก</button>
                             <Link to={ {pathname: `/goal/createOtherUser`} }><button type="button" className="btn btn-info">กลับ</button></Link>
+                            <Link to={ {pathname: `/goal/selectuser`} }><button type="submit" className="btn btn-success">ถัดไป</button></Link>
                         </div>
                     </form>
                 </div>

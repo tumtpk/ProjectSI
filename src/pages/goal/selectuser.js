@@ -89,6 +89,9 @@ class GoalCreateOtherUserSelectUser extends Component {
         <div className="row mt">
               <div className="col-lg-12">
                       <div className="content-panel">
+                        <div className="text-center">
+                        <img src="/theme/img/pagenation2.jpg"  width="150" height="70" />
+                    </div>
                           <h4><i className="fa fa-angle-right"></i> รายการผู้ใต้บังคับบัญชา</h4>
                           <hr />
                           <table className="table table-striped table-advance table-hover">
@@ -96,7 +99,7 @@ class GoalCreateOtherUserSelectUser extends Component {
                                 <tr>
                                   <th> ชื่อ</th>
                                   <th> นามสกุล</th>
-                                  <th>บทบาท </th>
+                                  <th> บทบาท </th>
                                   <th> สถานะ</th>
                                   <th><button type="button" className="btn btn-theme03"> เลือกทั้งหมด</button>
                                       <button type="button" className="btn btn-theme04"> เอาออกทั้งหมด</button></th>
@@ -107,7 +110,7 @@ class GoalCreateOtherUserSelectUser extends Component {
                               </tbody>
                           </table>
                           <div className="text-right" style={{marginRight: '10px'}}>
-                          <Link to={ {pathname: `/createOtherUser`} }><button type="button" className="btn btn-success"> บันทึก </button></Link>
+                          <button type="submit" className="btn btn-success"> บันทึก </button>
                           </div>
                       </div>
                   </div>
