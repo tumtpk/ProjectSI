@@ -27,6 +27,7 @@ const initialState = {
   categoryID: 0,
   circleID: 0,
   checklists: [{value: null}],
+  checklistProgresses: [{value: null}],
   dataSearch: null
 };
 
@@ -41,6 +42,8 @@ class Goalmanagement extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleProgress = this.handleProgress.bind(this);
+
       }
 
       componentWillMount() {
@@ -53,6 +56,14 @@ class Goalmanagement extends Component {
         })
         .then(response => {
             this.setState({dataSearch: response.data});
+        });
+        
+      }
+      
+      handleProgress = (id) => (evt) => {
+        CommonApi.instance.get('/checklist/getchecklists/'+id)
+        .then(response => {
+            this.setState({checklists: response.data});
         });
       }
 
@@ -115,14 +126,29 @@ class Goalmanagement extends Component {
     };
 
     renderTable(){
+
       return _.map(this.state.dataSearch, data => {
+
+        let checklists = this.state.checklists;
+
+        function getCLP(clp) {
+          console.log("Test "+clp.checklistProgress + " " + clp.checklistName);
+          if (clp.checklistProgress == 2) {
+            console.log("Use "+clp.checklistProgress + " " + clp.checklistName);
+            return clp.checklistProgress;
+          }
+          else{
+            return "";
+          }
+        }
+
         return (
           <tr>
             <td>{ data.goalName }</td>
             <td>{ data.startDate }</td>
             <td>{ data.endDate }</td>
             <td>
-              <button className="btn btn-warning btn-xs"><i className="fa fa-tasks" data-toggle="modal" data-target={"#"+data.id}></i></button>
+              <button className="btn btn-warning btn-xs"><i className="fa fa-tasks" data-toggle="modal" data-target={"#"+data.id} onClick={this.handleProgress(data.id)}></i></button>
               <div id={data.id} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">
@@ -138,26 +164,33 @@ class Goalmanagement extends Component {
                                               <h5><i className="fa fa-tasks"></i> รายการตรวจสอบ</h5></div>
 	                 	                      </div>
 				  	                            	<div className="custom-check goleft mt">
-				                                 <table id="todo" className="table table-hover custom-check">
-				                                <tbody>
-				                                <tr>
-				            		                <td>
-				                                    <span class="check"><input type="checkbox" class="checked" /></span> เอกสารผู้ใช้งานระบบ 
-								                      	</td>
-                                        </tr>
-                                        <tr>
-                                        <td>
-				                                    <span class="check"><input type="checkbox" class="checked" /></span> เอกสารระบบ 
-								                      
-                                      	</td>
-				                               </tr>
-				                              </tbody>
-				                              </table>
+				                                <table id="todo" className="table table-hover custom-check">
+                                          <tbody>
+                                          {checklists.map((checklist,index) => (
+                                            <tr>
+                                              <td>
+                                                <span class="check"><input type="checkbox" class="checked" value={checklist.checklistProgress} defaultChecked={getCLP(checklist)}/>{checklist.checklistName},{checklist.checklistProgress},{checklist.goalHandlerID}</span> 
+                                              </td>
+                                            </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      <div className="form-group">
+                                         <label >แนบไฟล์</label>
+                                          <input type="file" className="form-control-file" id="attachFile" aria-describedby="fileHelp" name="attachFile"/>
+                                       </div>
+                                       <div className="widget-area no-padding blank">
+								                          <div className="status-upload">
+									                      <form>
+                                        <textarea className="form-control rounded-0" rows="5" name="comment" placeholder="แสดงความคิดเห็นของคุณ"/>
+									                    </form>
+							                    	</div>
+						                      	</div>
 						                          </div>
 					                     
                                           </div>
                                           <div className="modal-footer">
-                                          <button type="button" className="btn btn-default"  data-dismiss="modal" onClick={this.handleDelete()}>ตกลง</button>
+                                          <button type="button" className="btn btn-default"  data-dismiss="modal" >ตกลง</button>
                                           <button type="button" className="btn btn-default" data-dismiss="modal">ยกเลิก</button>
                                           </div>
                                           </div>
