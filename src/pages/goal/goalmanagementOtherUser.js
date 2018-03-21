@@ -14,10 +14,6 @@ import {
 import ProgressBar from "bootstrap-progress-bar";
 import DateTimeField from "react-bootstrap-datetimepicker";
 
-
-
-
-
 const initialState = {
   id: null,
   goalName: "",
@@ -235,7 +231,7 @@ class GoalmanagementOtherUser extends Component {
               <Link to={ {pathname: `/goalmanagementOtherUser`} }><button type="button" className="btn btn-warning btn-lg btn-block">เป้าหมายผู้ใต้บังคับบัญชา</button></Link>
 						  </div>
 						  <div className="btn-group">
-						    <button type="button" className="btn btn-default btn-lg btn-block">รายงานความสำเร็จ</button>
+						  <Link to={ {pathname: '/reportallgoal'}}><button type="button" className="btn btn-default btn-lg btn-block">รายงานความสำเร็จ</button></Link>
 						  </div>
 						</div>  
       				

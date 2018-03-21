@@ -247,13 +247,25 @@ class Goalmanagement extends Component {
       return (
         <section id="main-content">
           <section className="wrapper">
+          <br></br>
+						<div className="btn-group btn-group-justified">
+						  <div className="btn-group">
+              <Link to={ {pathname: `/goalmanagement`} }><button type="button" className="btn btn-warning btn-lg btn-block" >เป้าหมายของฉัน</button></Link>
+						  </div>
+						  <div className="btn-group">
+              <Link to={ {pathname: `/goalmanagementOtherUser`} }><button type="button" className="btn btn-default btn-lg btn-block">เป้าหมายผู้ใต้บังคับบัญชา</button></Link>
+						  </div>
+						  <div className="btn-group">
+						  <Link to={ {pathname: '/reportallgoal'}}><button type="button" className="btn btn-default btn-lg btn-block">รายงานความสำเร็จ</button></Link>
+						  </div>
+						</div> 
+
             <div className="row"> 
                 <div className="col-md-8">
                     <h3><i className="fa fa-angle-right"></i> การจัดการเป้าหมาย</h3>
                 </div>
                 <div className="col-md-4 text-right" style={{marginTop: '15px'}}>
                   <Link to={ {pathname: `/goal/create`} }><button type="button" className="btn btn-primary" >เพิ่มเป้าหมาย</button></Link>
-                  <Link to={ {pathname: `/goal/createOtherUser`} }><button type="button" className="btn btn-primary" >เพิ่มเป้าหมายให้ผู้ใต้บังคับบัญชา</button></Link>
                 </div>        
             </div>
 
