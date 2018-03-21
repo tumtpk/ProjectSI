@@ -2264,3 +2264,11 @@ label {
 .error-message{
     color: red !important
 }
+
+.hidden {
+    display: none !important;
+}
+
+.show {
+    display: inherit !important;
+}

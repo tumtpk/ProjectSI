@@ -1,44 +1,72 @@
 import React, { Component } from "react";
-import axios from "axios";
+import MainLayout from "../../components/main-layout";
 import CommonApi from "../../api/common-api"
+import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
-
-const initialState = {
-  firstname: null,
-  lastname: null,
-  status: 0,
-  userTypeID:null,
-  dataSearch: null
-};
 
 class GoalCreateOtherUserSelectUser extends Component { 
 
     constructor(props) {
         super(props);
-        this.state = initialState;
+        this.state = {
+        goalName: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        categoryID: "",
+        circleID: "",
+        checklists: [{value: null}],
+        redirect: false,
+        firstname: null,
+        lastname: null,
+        status: 0,
+        email:null,
+        userTypeID:null,
+        dataSearch: [],
+        users: [],
+        userID: null,
+        redirect: false,
+       }
+    
   
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleSearch = this.handleSearch.bind(this);
-        this.handleClear = this.handleClear.bind(this);
+        // this.handleAddUsers = this.handleAddUsers.bind(this);
+        // this.handleRemoveUsers = this.handleRemoveUsers.bind(this);
+        this.handleAddTodoItem = this.handleAddTodoItem.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handledelTodoItem = this.handledelTodoItem.bind(this);
+        this.handleAddAll= this.handleAddAll.bind(this);
+        this.handledelAll = this.handledelAll.bind(this);   
       }
 
       componentWillMount() {
+        // console.log(this.props.location.query);
+        this.state.goalName = this.props.location.query.goalName;
+        this.state.description = this.props.location.query.description;
+        this.state.categoryID = this.props.location.query.categoryID;
+        this.state.circleID = this.props.location.query.circleID;
+        this.state.startDate = this.props.location.query.startDate;
+        this.state.endDate = this.props.location.query.endDate;  
+        this.state.checklists = this.props.location.query.checklists;
+        this.setState(this.state);
         CommonApi.instance.post('/user/search', {
-              firstname: this.state.firstname,
-              lastname: this.state.lastname,
-              status: this.state.status
-        })
-        .then(response => {
-            this.setState({dataSearch: response.data});
-        });
+               firstname: this.state.firstname,
+               lastname: this.state.lastname,
+               status: this.state.status,
+               email: this.state.email,
+               userTypeID: this.state.userTypeID,
+               userID:this.state.userID
+
+         })
+         .then(response => {
+             this.setState({dataSearch: response.data});
+             console.log(this.state.dataSearch);
+         });
+
       }
 
-      handleSubmit(event) {
-        this.handleSearch();
-        event.preventDefault();
-      }
-  
+      
       handleChange(event) {
         const target = event.target;
         const value = target.value;
@@ -47,44 +75,95 @@ class GoalCreateOtherUserSelectUser extends Component {
         this.setState({
           [name]: value
         });
+
+        document.getElementById(name).innerHTML = null;
       }
 
-      handleClear(event){
-        document.getElementById("search-user").reset();
-        this.setState(initialState);
-      }
 
-    handleSearch(){
-        // CommonApi.instance.defaults.headers.common['Authorization'] = 'Bearer tGOL83hqWSlBZAXBxonr3sN_OThf1YGQGMoPLrb1lscOW-LeyC2JImp-Chd_udagbPiosPb-6nzGU_lF1JPr2VXoKn0HTJ4bEvP6-yBkQrkfRGKz62H69QXJKIhJn9x2hGi--etIc9RVO-dTl5wu_w03oovndT8EN2BVm8Mda9p-k03g5EKt4KSw2qcEqnj-JGwSW0_23SK2Yc6fjOhIjMoqyvPMpPtzlBqb_5-LTyKqReshbvVtKPWoXNf2ld71IxYLdkbpwLWX2kd30k7b3FdEM8XgEVBSKri9ert_DgVoEBl6g1PO8PEgIiofwqYw1L8yPDQrjpsz-FoELUdVZl9uMEoSIGA7EibdHX4Ltsqm2cB62C3nM7eUaphtRwH7RZ-QHMwXlEfiAB86BMzo0OxvK7Q4j_5atJOUg_0ZGr0Eb5yU2CHjqEjrh8zztS5W_g9nvR5Ed6HEjp5O-HfwDs3-t730YVhcvCyCoHXnhR4';
-        CommonApi.instance.post('/user/search', {
-              firstname: this.state.firstname,
-              lastname: this.state.lastname,
-              status: this.state.status
+      handleChange(e) {
+        this.setState({
+          textvalue:e.target.value
         })
-        .then(response => {
-            this.setState({dataSearch: response.data});
-        });
-    }
+      }
 
-    renderTable(){
-      return _.map(this.state.dataSearch, data => {
-        return (
-          <tr>
-            <td>{ data.firstname }</td>
-            <td>{ data.lastname }</td>
-            <td>{data.userTypeID}</td>
-            <td>{ data.status }</td>
-            <td>
-              <button type="button" className="btn btn-theme03"><i className="fa fa-check"></i> เลือก</button>
-              <button type="button" className="btn btn-theme04"><i className="glyphicon glyphicon-remove"></i> เอาออก</button>
-            </td>
-          </tr>
-        );
-      });
-  
-    }
+      handleAddAll = () => (evt) => {
+        for (let index = 0; index < this.state.dataSearch.length; index++) {
+            this.state.dataSearch[index].isShow = false;
+            this.state.users.push(this.state.dataSearch[index].users);
+        }
+
+        this.setState({ 
+          users: this.state.users, 
+          dataSearch: this.state.dataSearch
+        });
+
+        console.log(this.state.users);
+      }
+
+      
+
+      handleAddTodoItem = (id, index) => (evt) => {
+        this.state.users.push(id);
+        this.state.dataSearch[index].isShow = false;
+        // this.state.dataSearch[index].push({isShow: false});
+        this.setState({
+          users: this.state.users,
+          dataSearch: this.state.dataSearch
+        })
+
+        console.log(this.state.users);
+      }
+
+      handledelAll = () => (evt) => {
+        for (let index = 0; index < this.state.dataSearch.length; index++) {
+            this.state.dataSearch[index].isShow = true;
+        }
+        this.state.users = [];
+        this.setState({ 
+          users: this.state.users, 
+          dataSearch: this.state.dataSearch
+        });
+
+        console.log(this.state.users);
+      }
+
+      handledelTodoItem = (id, userIndex) => (evt) =>{
+        this.state.dataSearch[userIndex].isShow = true;
+
+        for (let index = 0; index < this.state.users.length; index++) {
+          if(this.state.users[index] == id){
+            this.state.users.splice(index, 1);
+          }
+        }
+
+        this.setState({
+          users: this.state.users,
+          dataSearch: this.state.dataSearch
+        })
+
+        console.log(this.state.users);
+      }
+
+      handleSubmit(event) {
+     //   event.preventDefault();
+     console.log(this.state.users);
+        CommonApi.instance.post('/goal/create',this.state)
+        .then(response => {
+            if(response.status == 200 && response.data.result){
+                this.setState({redirect: true});
+            }else{
+                console.log(response.data.message)
+            }
+        });
+      }
 
     renderFromSearch(){
+      const { redirect } = this.state;
+
+      if (redirect) {
+        return <Redirect to='/goalmanagementOtherUser'/>;
+      }
+
       return (
         <div className="row mt">
               <div className="col-lg-12">
@@ -101,16 +180,30 @@ class GoalCreateOtherUserSelectUser extends Component {
                                   <th> นามสกุล</th>
                                   <th> บทบาท </th>
                                   <th> สถานะ</th>
-                                  <th><button type="button" className="btn btn-theme03"> เลือกทั้งหมด</button>
-                                      <button type="button" className="btn btn-theme04"> เอาออกทั้งหมด</button></th>
+                                  <th><button type="button" className="btn btn-theme03" onClick={this.handleAddAll()} > เลือกทั้งหมด</button>
+                                      <button type="button" className="btn btn-theme04" onClick={this.handledelAll()} > เอาออกทั้งหมด</button></th>
                                 </tr>
                               </thead>
+                              
                               <tbody>
-                                { this.renderTable() }
+                              { this.state.dataSearch.map((data,index) => (
+                                <tr>
+                                  <td>{ data.firstname }</td>
+                                  <td>{ data.lastname }</td>
+                                  <td>{ data.userTypeID}</td>
+                                  <td>{ data.status }</td>
+                                  <td>
+                                    <button type="button" className={ data.isShow == undefined || data.isShow == true  ? "btn btn-theme03 show ":"btn btn-theme04 hidden" } onClick={this.handleAddTodoItem(data.userID, index)}><i className="fa fa-check"> </i> เลือก</button>
+                                    <button type="button" className={ data.isShow == undefined || data.isShow == true  ? "btn btn-theme04 hidden ":"btn btn-theme04 show" } onClick={this.handledelTodoItem(data.userID, index)}><i className="glyphicon glyphicon-remove"></i> เอาออก</button>
+                                  </td>
+                                </tr>
+                              ))}
                               </tbody>
+                              
                           </table>
                           <div className="text-right" style={{marginRight: '10px'}}>
-                          <button type="submit" className="btn btn-success"> บันทึก </button>
+                          <Link to={ {pathname: `/goal/createOtherUser`, query: {goalName:this.state.goalName, description:this.state.description, startDate:this.state.startDate, endDate:this.state.endDate, checklists:this.state.checklists, category:this.state.categoryID, circle:this.state.circleID, userID:this.state.userID}} }><button type="button" className="btn btn-info">กลับ</button></Link>
+                          <button type="button" className="btn btn-success" onClick={this.handleSubmit}> บันทึก </button>
                           </div>
                       </div>
                   </div>

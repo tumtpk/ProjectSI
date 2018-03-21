@@ -18,7 +18,8 @@ class GoalCreateOtherUser extends Component {
             circleID: 0,
             checklists: [{value: null}],
             circleList: [],
-            categoryList: []
+            categoryList: [],
+            userID:[],
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -43,6 +44,8 @@ class GoalCreateOtherUser extends Component {
         .then(response => {
             this.setState({categoryList: response.data});
         });
+
+
       }
 
 
@@ -80,18 +83,7 @@ class GoalCreateOtherUser extends Component {
 
       handleSubmit(event) {
         event.preventDefault();
-
         console.log(this.state);
-
-        CommonApi.instance.post('/goal/create', this.state)
-        .then(response => {
-            if(response.status == 200 && response.data.result){
-                this.setState({redirect: true});
-            }else{
-                console.log(response.data.message)
-                this.handleValidate(response.data.message);
-            }
-        });
       }
 
     handleValidate(messages){
@@ -115,7 +107,7 @@ class GoalCreateOtherUser extends Component {
       const { redirect } = this.state;
 
       if (redirect) {
-        return <Redirect to='/goalmanagement'/>;
+        return <Redirect to='/goalmanagementOtherUser'/>;
       }
 
       let circleList = this.state.circleList;
@@ -127,7 +119,7 @@ class GoalCreateOtherUser extends Component {
 
             <div className="row"> 
                 <div className="col-md-12">
-                    <h3><i className="fa fa-angle-right"></i> เป้าหมายของฉัน</h3>
+                    <h3><i className="fa fa-angle-right"></i> กำหนดเป้าหมายให้ผู้ใต้บังคับบัญชา</h3>
                 </div>
             </div>
 
@@ -187,7 +179,7 @@ class GoalCreateOtherUser extends Component {
                         
                                     <option value="0">--เลือกหมวดหมู่--</option>
                                     {categoryList.map((category, index) => (
-                                        <option value="{category.id}">{category.categoryName}</option>
+                                        <option value={category.id}>{category.categoryName}</option>
                                     ))}
                                     </select>
                                     <span id="categoryID" className="error-message"></span>
@@ -202,7 +194,7 @@ class GoalCreateOtherUser extends Component {
                                     <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
                                     <option value="0">--เลือกรอบการดำเนินงาน--</option>
                                     {circleList.map((circle, index) => (
-                                        <option value="{circle.id}">{circle.circleName}</option>
+                                        <option value={circle.id}>{circle.circleName}</option>
                                     ))}
                                     </select>
                                     <span id="circleID" className="error-message"></span>
@@ -214,7 +206,7 @@ class GoalCreateOtherUser extends Component {
                             <label className="col-sm-2 col-sm-2 control-label">วันเริ่มต้นเป้าหมาย</label>
                             <div className="col-sm-3">
                             <div className='input-group date' id='datetimepicker1'>
-                                <input type='text' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} />
+                                <input type='date' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} />
                             <span className="input-group-addon">
                                 <span className="glyphicon glyphicon-calendar"></span>
                              </span>
@@ -231,8 +223,8 @@ class GoalCreateOtherUser extends Component {
                               </div>
                           </div>
                         <div className="text-right">
-                            <Link to={ {pathname: `/goal/createOtherUser`} }><button type="button" className="btn btn-info">กลับ</button></Link>
-                            <Link to={ {pathname: `/goal/selectuser`} }><button type="submit" className="btn btn-success">ถัดไป</button></Link>
+                            <Link to={ {pathname: `/goalmanagementOtherUser`} }><button type="button" className="btn btn-info">กลับ</button></Link>
+                            <Link to={ {pathname: `/goal/selectuser`, query: {goalName:this.state.goalName, description:this.state.description, startDate:this.state.startDate, endDate:this.state.endDate, checklists:this.state.checklists, categoryID:this.state.categoryID, circleID:this.state.circleID}} }><button type="submit" className="btn btn-success">ถัดไป</button></Link>
                         </div>
                     </form>
                 </div>

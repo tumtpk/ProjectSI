@@ -11,7 +11,8 @@ class EvaluationCreate extends Component {
         this.state = {
             evaluationName: "",
             description: "",
-            questions: [{value: null}]
+            questions: [{value: null}],
+            choices: [[]]
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -19,6 +20,9 @@ class EvaluationCreate extends Component {
         this.handleAddQuestions = this.handleAddQuestions.bind(this);
         this.handleRemoveQuestions = this.handleRemoveQuestions.bind(this);
         this.handleQuestionsValueChange = this.handleQuestionsValueChange.bind(this);
+        this.handleAddChoices = this.handleAddChoices.bind(this);
+        this.handleRemoveChoices = this.handleRemoveChoices.bind(this);
+        this.handleChoicesValueChange = this.handleChoicesValueChange.bind(this);
         this.handleValidate = this.handleValidate.bind(this);
       }
 
@@ -37,6 +41,7 @@ class EvaluationCreate extends Component {
         this.setState({
             questions: this.state.questions.concat([{ value: null }])
         });
+        this.state.choices.push([]);
       }
 
       handleRemoveQuestions = (index) => () => {
@@ -52,6 +57,31 @@ class EvaluationCreate extends Component {
         });
     
         this.setState({ questions: newQuestion });
+      }
+
+      handleAddChoices = (index) => () => {
+        this.state.choices[index].push("");
+        this.setState({
+            choices: this.state.choices
+        });
+      }
+
+      handleRemoveChoices = (index, cindex) => () => {
+        this.state.choices[index].splice(cindex, 1);
+        this.setState({
+            choices: this.state.choices
+        });
+        
+  
+      }
+
+      handleChoicesValueChange = (index) => (evt) => {
+        const newChoice = this.state.choices.map((choice, sidx) => {
+          if (index !== sidx) return choice;
+          return { ...choice, value: evt.target.value };
+        });
+    
+        this.setState({ choices: newChoice });
       }
 
       handleSubmit(event) {
@@ -78,6 +108,9 @@ class EvaluationCreate extends Component {
         this.state.questions.map((question, sidx) => {
             document.getElementById('questions['+sidx+']').innerHTML = null;
         });
+ //       this.state.choices.map((choice, sidx) => {
+ //           document.getElementById('choices['+sidx+']').innerHTML = null;
+ //       });
         messages.forEach(element => {
             document.getElementById(element.key).innerHTML = element.message;
         });
@@ -141,9 +174,29 @@ class EvaluationCreate extends Component {
                                     </span>
                                 </div>
                             </div>
-                        </div>
+                              <button type="button" className="btn btn-round btn-warning" onClick={this.handleAddChoices(index)}>เพิ่มตัวเลือก</button>
+                            
+                              {this.state.choices[index].map((choice, cIndex) => (
+                                <div className="row">
+                                    <label className="col-sm-3 col-sm-3 control-label"></label>
+                                    <div className="col-sm-5">
+                                        <div className="input-group">
+                                            <input type="text" className="form-control" placeholder={`ตัวเลือกที่ ${cIndex + 1}`}
+                                                    value={choice} 
+                                                    onChange={this.handleChoicesValueChange(cIndex)} />
+                                            <span id={'choices['+cIndex+']'} className="error-message"></span>
+                                            <span className="input-group-btn">
+                                                <button className="btn btn-danger" type="button" onClick={this.handleRemoveChoices(index,cIndex)} >ลบ</button>
+                                            </span>
+                                            </div>
+                                    </div>
+                                </div>
+                                ))}
+                            
+                            </div>
                         ))}
-                          
+
+
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>
                             <Link to={ {pathname: `/evaluationmanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>

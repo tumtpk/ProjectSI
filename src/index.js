@@ -37,6 +37,7 @@ import GoalDetail from "./pages/goal/detail";
 import GoalCreateOtherUser from "./pages/goal/createOtherUser";
 import GoalCreateOtherUserSelectUser from "./pages/goal/selectuser";
 import GoalmanagementOtherUser from "./pages/goal/goalmanagementOtherUser"
+import ReportAllGoal from "./pages/goal/reportallgoal";
 
 import MainLayout from "./components/main-layout";
 import Empty from "./components/layout/empty";
@@ -87,6 +88,7 @@ ReactDOM.render(
           <AppRoute exact path="/goal/createotheruser" layout={MainLayout} component={GoalCreateOtherUser} />
           <AppRoute exact path="/goal/selectuser" layout={MainLayout} component={GoalCreateOtherUserSelectUser} />
           <AppRoute exact path="/goalmanagementOtherUser" layout={MainLayout} component={GoalmanagementOtherUser} />
+          <AppRoute exact path="/reportallgoal" layout={MainLayout} component={ReportAllGoal} />
 
           <Route exact path="*" component={NotFound} status={404} />
         </Switch>
