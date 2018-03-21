@@ -18,7 +18,8 @@ class GoalCreate extends Component {
             circleID: 0,
             checklists: [{value: null}],
             circleList: [],
-            categoryList: []
+            categoryList: [],
+            userList:[{value: null}]
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -183,7 +184,7 @@ class GoalCreate extends Component {
                         
                                     <option value="0">--เลือกหมวดหมู่--</option>
                                     {categoryList.map((category, index) => (
-                                        <option value="{category.id}">{category.categoryName}</option>
+                                        <option value={category.id}>{category.categoryName}</option>
                                     ))}
                                     </select>
                                     <span id="categoryID" className="error-message"></span>
@@ -198,7 +199,7 @@ class GoalCreate extends Component {
                                     <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
                                     <option value="0">--เลือกรอบการดำเนินงาน--</option>
                                     {circleList.map((circle, index) => (
-                                        <option value="{circle.id}">{circle.circleName}</option>
+                                        <option value={circle.id}>{circle.circleName}</option>
                                     ))}
                                     </select>
                                     <span id="circleID" className="error-message"></span>

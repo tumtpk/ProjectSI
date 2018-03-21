@@ -43,7 +43,8 @@ class Goalmanagement extends Component {
         this.handleClear = this.handleClear.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleProgress = this.handleProgress.bind(this);
-
+        this.handleSaveProgress = this.handleSaveProgress.bind(this);
+        this.handlechangeProgress = this.handlechangeProgress.bind(this);
       }
 
       componentWillMount() {
@@ -59,11 +60,44 @@ class Goalmanagement extends Component {
         });
         
       }
+
+      handlechangeProgress = (clpId) => (evt) => {
+        this.state.checklistProgresses.forEach( (checklistP,index) => {
+          if(checklistP.clpId == clpId){
+            if(checklist.checklistProgress1 == 1){
+              checklist.checklistProgress1 = 2;
+            }
+            else{
+              checklist.checklistProgress1 = 1;
+            }
+          }
+          console.log(checklist);
+        });
+      }
+
+      handleSaveProgress(event) {
+        CommonApi.instance.post('/checklistprogress/saveProgress' ,this.state.checklistProgresses)
+        .then(response => {
+          if(response.status == 200 && response.data.result){
+              this.setState({redirect: true});
+          }else{
+              console.log(response.data.message)
+          }
+        });
+      }
       
       handleProgress = (id) => (evt) => {
         CommonApi.instance.get('/checklist/getchecklists/'+id)
         .then(response => {
-            this.setState({checklists: response.data});
+          this.setState({checklists: response.data});
+          // let ischecked = '';
+          // let clTable = '';
+          // if(checklists.checklistProgress1 == 2){
+          //   ischecked = "checked";
+          // }
+          // clTable += '<input type="checkbox" class="checked" value='+checklists.clpId+' '
+          // + ischecked + '/>' + checklists.checklistName;
+          // document.getElementById("checkPid").innerHTML = clTable;
         });
       }
 
@@ -79,7 +113,6 @@ class Goalmanagement extends Component {
         });
     }
 
-  
       handleChange(event) {
         const target = event.target;
         const value = target.value;
@@ -125,22 +158,27 @@ class Goalmanagement extends Component {
       });
     };
 
+    renderTableChecklist(){
+
+      return _.map(this.state.checklists, data => {
+        console.log(data);
+        return (
+          <tr>
+            <td>
+              <span class="check">
+                {React.createElement('input',{type: 'checkbox', checked:data.checklistProgress1 === 2 ? true : false})}
+                &nbsp;{data.checklistName}
+              </span>
+            </td>
+          </tr>
+        );
+      });
+  
+    }
+
     renderTable(){
 
       return _.map(this.state.dataSearch, data => {
-
-        let checklists = this.state.checklists;
-
-        function getCLP(clp) {
-          console.log("Test "+clp.checklistProgress + " " + clp.checklistName);
-          if (clp.checklistProgress == 2) {
-            console.log("Use "+clp.checklistProgress + " " + clp.checklistName);
-            return clp.checklistProgress;
-          }
-          else{
-            return "";
-          }
-        }
 
         return (
           <tr>
@@ -148,54 +186,8 @@ class Goalmanagement extends Component {
             <td>{ data.startDate }</td>
             <td>{ data.endDate }</td>
             <td>
-              <button className="btn btn-warning btn-xs"><i className="fa fa-tasks" data-toggle="modal" data-target={"#"+data.id} onClick={this.handleProgress(data.id)}></i></button>
-              <div id={data.id} className="modal fade" role="dialog">
-                                        <div className="modal-dialog">
-                                          <div className="modal-content">
-                                          <div className="modal-header">
-                                          <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                          <h4 className="modal-title">ปรับปรุงความคืบหน้ารายการตรวจสอบ</h4>
-                                          </div>
-                                          <div className="modal-body">
-                                          <ProgressBar width="50%" message="50%"/>
-                                       
-	                	                        <div className="panel-heading">
-	                                            <div className="pull-left">
-                                              <h5><i className="fa fa-tasks"></i> รายการตรวจสอบ</h5></div>
-	                 	                      </div>
-				  	                            	<div className="custom-check goleft mt">
-				                                <table id="todo" className="table table-hover custom-check">
-                                          <tbody>
-                                          {checklists.map((checklist,index) => (
-                                            <tr>
-                                              <td>
-                                                <span class="check"><input type="checkbox" class="checked" value={checklist.checklistProgress} defaultChecked={getCLP(checklist)}/>{checklist.checklistName},{checklist.checklistProgress},{checklist.goalHandlerID}</span> 
-                                              </td>
-                                            </tr>
-                                            ))}
-                                          </tbody>
-                                        </table>
-                                      <div className="form-group">
-                                         <label >แนบไฟล์</label>
-                                          <input type="file" className="form-control-file" id="attachFile" aria-describedby="fileHelp" name="attachFile"/>
-                                       </div>
-                                       <div className="widget-area no-padding blank">
-								                          <div className="status-upload">
-									                      <form>
-                                        <textarea className="form-control rounded-0" rows="5" name="comment" placeholder="แสดงความคิดเห็นของคุณ"/>
-									                    </form>
-							                    	</div>
-						                      	</div>
-						                          </div>
-					                     
-                                          </div>
-                                          <div className="modal-footer">
-                                          <button type="button" className="btn btn-default"  data-dismiss="modal" >ตกลง</button>
-                                          <button type="button" className="btn btn-default" data-dismiss="modal">ยกเลิก</button>
-                                          </div>
-                                          </div>
-                                         </div>
-                                        </div>
+              <button className="btn btn-warning btn-xs"><i className="fa fa-tasks" data-toggle="modal" data-target="#modal" onClick={this.handleProgress(data.id)}></i></button>
+              
               <Link to={ {pathname: `/goal/view`, query: {id: data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/goal/update`, query: {id: data.id}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
               <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+data.goalName}></i></button>
@@ -265,7 +257,6 @@ class Goalmanagement extends Component {
                 </div>        
             </div>
 
-
             <div className="row">
                 <div className="col-lg-12">
                   <div className="form-panel">           
@@ -320,7 +311,51 @@ class Goalmanagement extends Component {
             {this.renderFromSearch()}
 
           </section>
+          
+          <div id="modal" className="modal fade" role="dialog" >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <button type="button" className="close" data-dismiss="modal">&times;</button>
+                  <h4 className="modal-title">ปรับปรุงความคืบหน้ารายการตรวจสอบ</h4>
+                </div>
+                <div className="modal-body">
+                <ProgressBar width="50%" message="50%"/>
+              
+                  <div className="panel-heading">
+                    <div className="pull-left">
+                    <h5><i className="fa fa-tasks"></i> รายการตรวจสอบ</h5></div>
+                  </div>
+                  <div className="custom-check goleft mt">
+                    <table className="table table-hover custom-check" id="tableModal">
+                      <tbody>
+                        { this.renderTableChecklist() }
+                      </tbody>
+                    </table>
+                    <div className="form-group">
+                      <label >แนบไฟล์</label>
+                      <input type="file" className="form-control-file" id="attachFile" aria-describedby="fileHelp" name="attachFile"/>
+                    </div>
+                    <div className="widget-area no-padding blank">
+                      <div className="status-upload">
+                      <form>
+                        <textarea className="form-control rounded-0" rows="5" name="comment" placeholder="แสดงความคิดเห็นของคุณ"/>
+                      </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="modal-footer">
+                <button type="submit" className="btn btn-default"  data-dismiss="modal" onClick={this.handleSaveProgress}>ตกลง</button>
+                <button type="button" className="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </section>
+
       );
     }
   }
