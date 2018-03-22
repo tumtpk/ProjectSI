@@ -98,7 +98,7 @@ class UserUpdate extends Component {
 
       
       handleValidate(messages){
-        let require = ["personalID","firstname","lastname","email","userTypeID"];
+        let require = ["firstname","lastname","userTypeID"];
         require.forEach(element => {
             document.getElementById(element).innerHTML = null;
         });
@@ -159,7 +159,6 @@ class UserUpdate extends Component {
                             <label className="col-sm-2 col-sm-2 control-label">อีเมล์<span className="error-message">*</span></label>
                             <div className="col-sm-4">
                                 <input type="email" className="form-control" name="email"  value={this.state.email} onChange={this.handleChange} disabled/>
-                                <span id="email" className="error-message"></span>
                             </div>
                         </div>
 
