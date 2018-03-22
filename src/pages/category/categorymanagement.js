@@ -14,7 +14,8 @@ import {
 const initialState = {
   categoryName: null,
   status: 0,
-  dataSearch: null
+  dataSearch: null,
+  number:1
 };
 
 class Categorymanagement extends Component { 
@@ -81,9 +82,12 @@ class Categorymanagement extends Component {
     }
 
     renderTable(){
+      this.state.number = 0
       return _.map(this.state.dataSearch, data => {
+        this.state.number = this.state.number+1
         return (
           <tr>
+            <td>{this.state.number}</td>
             <td>{ data.categoryName }</td>
             <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
             <td>
@@ -124,6 +128,7 @@ class Categorymanagement extends Component {
                           <table className="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
+                                  <th> ลำดับ </th>
                                   <th> ชื่อหมวดหมู่</th>
                                   <th> สถานะ</th>
                                   <th></th>

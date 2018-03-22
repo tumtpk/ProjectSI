@@ -16,7 +16,8 @@ const initialState = {
   circleName: null,
   circleTime: null,
   status: 0,
-  dataSearch: null
+  dataSearch: null,
+  number:1
 };
 
 class Circlemanagement extends Component { 
@@ -103,9 +104,12 @@ class Circlemanagement extends Component {
     };
 
     renderTable(){
+      this.state.number = 0
       return _.map(this.state.dataSearch, data => {
+        this.state.number = this.state.number+1
         return (
           <tr>
+            <td>{ this.state.number}</td>
             <td>{ data.circleName }</td>
             <td>{ data.circleTime }</td>
             <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
@@ -147,6 +151,7 @@ class Circlemanagement extends Component {
                           <table className="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
+                                  <th> ลำดับ </th>
                                   <th> ชื่อรอบ</th>
                                   <th> ระยะเวลา</th>
                                   <th> สถานะ</th>
