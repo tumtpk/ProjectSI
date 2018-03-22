@@ -19,7 +19,6 @@ class GoalCreate extends Component {
             checklists: [{value: null}],
             circleList: [],
             categoryList: [],
-            userList:[{value: null}]
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -36,6 +35,7 @@ class GoalCreate extends Component {
         })
         .then(response => {
             this.setState({circleList: response.data});
+            
         });
         CommonApi.instance.post('/category/search', {
             status: 1
@@ -43,6 +43,8 @@ class GoalCreate extends Component {
         .then(response => {
             this.setState({categoryList: response.data});
         });
+
+
       }
 
 
@@ -110,8 +112,8 @@ class GoalCreate extends Component {
         });
     }
 
-    render() {
 
+    render() {
       const { redirect } = this.state;
 
       if (redirect) {
@@ -211,7 +213,7 @@ class GoalCreate extends Component {
                             <label className="col-sm-2 col-sm-2 control-label">วันเริ่มต้นเป้าหมาย</label>
                             <div className="col-sm-3">
                             <div className='input-group date' id='datetimepicker1'>
-                                <input type='text' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} />
+                                <input type='date' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} />
                             <span className="input-group-addon">
                                 <span className="glyphicon glyphicon-calendar"></span>
                              </span>
@@ -229,8 +231,9 @@ class GoalCreate extends Component {
                           </div>
                 
                         <div className="text-right">
-                            <button type="submit" className="btn btn-success">บันทึก</button>
+                            
                             <Link to={ {pathname: `/goalmanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
+                            <button type="submit" className="btn btn-success">บันทึก</button>
                         </div>
                     </form>
                 </div>

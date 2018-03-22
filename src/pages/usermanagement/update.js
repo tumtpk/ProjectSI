@@ -15,10 +15,12 @@ class UserUpdate extends Component {
             personalID : "",
             firstname: "",
             lastname: "",
-            userTypeID: 1,
-            commanderID: 0,
-            userID: null,
-            status: 1,
+            userTypeID: "",
+            commanderID: "",
+            userID: "",
+            status: "",
+            roleList: [],
+            commanderList: [],
             redirect: false,
         }
   
@@ -32,6 +34,19 @@ class UserUpdate extends Component {
         let userID = this.props.location.query.userID;
         this.setState({userID: userID});
         this.apiGetUset(userID);
+        CommonApi.instance.post('usertype/search', {
+            status: 1
+        })
+        .then(response => {
+            this.setState({roleList: response.data}); 
+        });
+
+        CommonApi.instance.get('user/getuserCommander', {
+
+        })
+        .then(response => {
+            this.setState({commanderList: response.data}); 
+        });
       }
 
       apiGetUset(userID){
@@ -100,7 +115,8 @@ class UserUpdate extends Component {
       if (redirect) {
         return <Redirect to='/usermanagement'/>;
       }
-
+      let roleList = this.state.roleList;
+      let commanderList = this.state.commanderList;
       return (
         <section id="main-content">
           <section className="wrapper">
@@ -150,11 +166,10 @@ class UserUpdate extends Component {
                                 <div className="col-sm-5">
                                     <div className="btn-group">
                                         <select className="form-control" name="userTypeID" value={this.state.userTypeID} onChange={this.handleChange}>
-                                            <option value="0">เลือกบทบาท</option>
-                                            <option value="1">นักศึกษา</option>
-                                            <option value="2">อาจารย์</option>
-                                            <option value="3">ประธานหลักสูตร</option>
-                                            <option value="4">ผู้ดูแลระบบ</option>
+                                        <option value="0">-- เลือกบทบาท --</option>
+                                            {roleList.map((role, index) => (
+                                        <option value={role.UserTypeId}>{role.UserTypeName}</option>
+                                        ))}
                                         </select>
                                         <span id="userTypeID" className="error-message"></span>
                                     </div>
@@ -167,12 +182,10 @@ class UserUpdate extends Component {
                                 <div className="btn-group">
 
                                     <select className="form-control" name="commanderID" value={this.state.commanderID} onChange={this.handleChange}>
-                                        <option value="0">เลือกผู้บังคับบัญชา</option>
-                                        <option value="1">ผศ.เยาวเรศ ศิริสถิตย์กุล</option>
-                                        <option value="2">ผศ.ดร.ฐิมาพร เพชรแก้ว</option>
-                                        <option value="3">ผศ.อุหมาด หมัดอาด้ำ</option>
-                                        <option value="4">ดร.กรัณรัตน์ ธรรมรักษ์</option>
-                                        <option value="5">ดร.พุทธิพร ธนธรรมเมธี</option>
+                                    <option value="0">-- เลือกผู้บังคับบัญชา --</option>
+                                            {commanderList.map((commander, index) => (
+                                        <option value={commander.userID}>{commander.firstname} {commander.lastname}</option>
+                                        ))}
                                     </select>
                                 </div>
                               </div>

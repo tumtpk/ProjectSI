@@ -182,7 +182,7 @@ class EvaluationCreate extends Component {
                                     <div className="col-sm-5">
                                         <div className="input-group">
                                             <input type="text" className="form-control" placeholder={`ตัวเลือกที่ ${cIndex + 1}`}
-                                                    value={choice} 
+                                                    value={choice.value} 
                                                     onChange={this.handleChoicesValueChange(cIndex)} />
                                             <span id={'choices['+cIndex+']'} className="error-message"></span>
                                             <span className="input-group-btn">

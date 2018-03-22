@@ -9,12 +9,15 @@ class GoalDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id:null,
             goalName: "",
             description: "",
             startDate: "",
             endDate: "",
             categoryID: "",
+            categoryName:"",
             circleID: "",
+            circleName:"",
             checklistName: [{value: null}],
             redirect: false
 
@@ -23,12 +26,10 @@ class GoalDetail extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
-
       }
 
       componentWillMount() {
         let id = this.props.location.query.id;
-        this.setState({id: id});
         this.apiGetUset(id);
       }
 
@@ -38,16 +39,11 @@ class GoalDetail extends Component {
             let responseData = response.data;
             this.setState(
               {
-                goalName : responseData.goalName,
-                description: responseData.description,
-                startDate: responseData.startDate,
-                startDate: responseData.startDate,
-                endDate: responseData.endDate,
-                categoryID: responseData.categoryID,
-                circleID: responseData.circleID,
-                checklistName: responseData.checklistName
-
-                // status: responseData.status
+                goalName: responseData.goalName,
+                description:responseData.description,
+                category:responseData.categoryName,
+                circle: responseData.circleName,
+                status: responseData.status
               }
             );
         });
@@ -63,18 +59,13 @@ class GoalDetail extends Component {
         });
       }
 
-
       handleSubmit(event) {
         event.preventDefault();
 
-        console.log(this.state);
-
-        CommonApi.instance.post('/goal/update', this.state)
+        CommonApi.instance.post('/goal/create', this.state)
         .then(response => {
-            if(response.status == 200 && response.data.result){
+            if(response.status == 200){
                 this.setState({redirect: true});
-            }else{
-                this.handleValidate(response.data.message);
             }
         });
       }

@@ -74,10 +74,8 @@ class Evaluationmanagement extends Component {
 
     handleSearch(){
         CommonApi.instance.post('/evaluation/search', {
-              id: this.state.id,
               evaluationName: this.state.evaluationName,
-              description: this.state.description,
-              status: this.state.status
+
         })
         .then(response => {
             this.setState({dataSearch: response.data});
