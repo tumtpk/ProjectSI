@@ -134,11 +134,13 @@ class UserUpdate extends Component {
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
 
                         <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว<span className="error-message">*</span></label>
-                              <div className="col-sm-3">
+                              <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว</label>
+                              <div className="col-sm-6">
+                              <div className="btn-group">
                                     <input type="text" className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} />
-                                    <span id="personalID" className="error-message"></span>
                               </div>
+                              <label className="error-message">&nbsp;&nbsp; * กรอกรหัสประจำตัวกรณีเป็น<u>นักศึกษา</u> </label>
+                            </div>
                         </div>
                         <div className="form-group">
                             <label className="col-sm-2 col-sm-2 control-label">ชื่อ<span className="error-message">*</span></label>
@@ -177,7 +179,7 @@ class UserUpdate extends Component {
                             </div>
                         
                             <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">ผู้บังคับบัญชา</label>
+                              <label className="col-sm-2 col-sm-2 control-label">ผู้บังคับบัญชา /<br></br>อาจารย์ที่ปรึกษาทางวิชาการ</label>
                               <div className="col-sm-5">
                                 <div className="btn-group">
 
@@ -205,7 +207,7 @@ class UserUpdate extends Component {
 
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>
-                            <Link to={ {pathname: `/usermanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
+                            <Link to={ {pathname: `/usermanagement`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>
                         </div>
                     </form>
                 </div>

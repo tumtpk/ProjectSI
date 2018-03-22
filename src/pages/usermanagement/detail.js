@@ -113,7 +113,9 @@ class UserDetail extends Component {
                         <div className="form-group">
                               <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว</label>
                               <div className="col-sm-3">
+                              <div className="btn-group">
                                     <input type="text" className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} disabled />
+                              </div>
                               </div>
                         </div>
                         <div className="form-group">
@@ -149,7 +151,7 @@ class UserDetail extends Component {
                             </div>
                         
                             <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">ผู้บังคับบัญชา</label>
+                              <label className="col-sm-2 col-sm-2 control-label">ผู้บังคับบัญชา / <br></br>อาจารย์ที่ปรึกษาทางวิชาการ</label>
                               <div className="col-sm-5">
                                 <div className="btn-group">
 
