@@ -12,12 +12,18 @@ import {
 } from 'react-modal-bootstrap';
 
 const initialState = {
+  personalID: null,
   firstname: null,
   lastname: null,
   status: 0,
   email:null,
   userTypeID:null,
-  dataSearch: null
+  dataSearch: null,
+  studentList: [],
+  teacherList: [],
+  adminList: [],
+  headList: [],
+  number:1
 };
 
 class Usermanagement extends Component { 
@@ -35,16 +41,30 @@ class Usermanagement extends Component {
 
       componentWillMount() {
         CommonApi.instance.post('/user/search', {
-              firstname: this.state.firstname,
-              lastname: this.state.lastname,
-              status: this.state.status,
-              email: this.state.email,
-              userTypeID: this.state.userTypeID,
-              userID:this.state.userID
+              userTypeID: 1
 
         })
         .then(response => {
-            this.setState({dataSearch: response.data});
+            this.setState({studentList: response.data});
+            console.log({studentList: response.data});
+        });
+        CommonApi.instance.post('/user/search', {
+          userTypeID: 2
+        })
+        .then(response => {
+        this.setState({teacherList: response.data});
+        });
+        CommonApi.instance.post('/user/search', {
+          userTypeID: 3
+        })
+        .then(response => {
+        this.setState({headList: response.data});
+        });
+        CommonApi.instance.post('/user/search', {
+          userTypeID: 4
+        })
+        .then(response => {
+        this.setState({adminList: response.data});
         });
       }
 
@@ -73,6 +93,7 @@ class Usermanagement extends Component {
       handleClear(event){
         document.getElementById("search-user").reset();
         this.setState(initialState);
+        this.handleSearch();
       }
 
     handleSearch(){
@@ -81,13 +102,39 @@ class Usermanagement extends Component {
               firstname: this.state.firstname,
               lastname: this.state.lastname,
               status: this.state.status,
-              email: this.state.email,
-              userTypeID: this.state.userTypeID,
-              userID:this.state.userID
+              userTypeID: 1,
         })
         .then(response => {
-            this.setState({dataSearch: response.data});
+            this.setState({studentList: response.data});
         });
+        CommonApi.instance.post('/user/search', {
+          firstname: this.state.firstname,
+          lastname: this.state.lastname,
+          status: this.state.status,
+          userTypeID: 2,
+       })
+      .then(response => {
+        this.setState({teacherList: response.data});
+      }); 
+      CommonApi.instance.post('/user/search', {
+        firstname: this.state.firstname,
+        lastname: this.state.lastname,
+        status: this.state.status,
+        userTypeID: 3,
+      })
+      .then(response => {
+      this.setState({headList: response.data});
+      }); 
+      CommonApi.instance.post('/user/search', {
+        firstname: this.state.firstname,
+        lastname: this.state.lastname,
+        status: this.state.status,
+        userTypeID: 4,
+      })
+      .then(response => {
+      this.setState({adminList: response.data});
+      }); 
+      
     }
 
     state = {
@@ -106,20 +153,23 @@ class Usermanagement extends Component {
       });
     };
 
-    renderTable(){
-      return _.map(this.state.dataSearch, data => {
+    renderTableStudent(){
+      this.state.number = 0
+      return _.map(this.state.studentList, studentList=> {
+        this.state.number = this.state.number+1
         return (
           <tr>
-            <td>{ data.firstname }</td>
-            <td>{ data.lastname }</td>
-            <td>{ data.email }</td>
-            <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
-            <td>{ data.userTypeID }</td>
+            <td>{ this.state.number}</td> ))}
+            <td>{ studentList.personalID}</td>
+            <td>{ studentList.firstname }</td>
+            <td>{ studentList.lastname }</td>
+            <td>{ studentList.email }</td>
+            <td>{ (studentList.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
             <td>
-              <Link to={ {pathname: `/usermanagement/view`, query: {userID: data.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/usermanagement/update`, query: {userID: data.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+data.userID}></i></button>
-                                      <div id={data.userID} className="modal fade" role="dialog">
+              <Link to={ {pathname: `/usermanagement/view`, query: {userID: studentList.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/usermanagement/update`, query: {userID: studentList.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+studentList.userID}></i></button>
+                                      <div id={studentList.userID} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">
                                           <div className="modal-header">
@@ -127,11 +177,52 @@ class Usermanagement extends Component {
                                           <h4 className="modal-title">ลบผู้ใช้งาน</h4>
                                           </div>
                                           <div className="modal-body">
-                                          <p>{data.firstname}  {data.lastname} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
+                                          <p>{studentList.firstname}  {studentList.lastname} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
                                           </div>
                                           <div className="modal-footer">
-                                          <button type="button" className="btn btn-default"  data-dismiss="modal" onClick={this.handleDelete(data.userID)}>ตกลง</button>
-                                          <button type="button" className="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                                          <button type="button" className="btn btn-success"  data-dismiss="modal" onClick={this.handleDelete(studentList.userID)}>ตกลง</button>
+                                          <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                                          </div>
+                                          </div>
+                                         </div>
+                                        </div>
+                                      
+            </td>
+            
+          </tr>
+        
+        );
+      });
+    }
+
+    renderTableTeacher(){
+      this.state.number = 0
+      return _.map(this.state.teacherList, teacherList => {
+        this.state.number = this.state.number+1
+        return (
+          <tr>
+            <td>{ this.state.number}</td>
+            <td>{ teacherList.firstname }</td>
+            <td>{ teacherList.lastname }</td>
+            <td>{ teacherList.email }</td>
+            <td>{ (teacherList.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
+            <td>
+              <Link to={ {pathname: `/usermanagement/view`, query: {userID: teacherList.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/usermanagement/update`, query: {userID: teacherList.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+teacherList.userID}></i></button>
+                                      <div id={teacherList.userID} className="modal fade" role="dialog">
+                                        <div className="modal-dialog">
+                                          <div className="modal-content">
+                                          <div className="modal-header">
+                                          <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                          <h4 className="modal-title">ลบผู้ใช้งาน</h4>
+                                          </div>
+                                          <div className="modal-body">
+                                          <p>{teacherList.firstname}  {teacherList.lastname} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
+                                          </div>
+                                          <div className="modal-footer">
+                                          <button type="button" className="btn btn-success"  data-dismiss="modal" onClick={this.handleDelete(teacherList.userID)}>ตกลง</button>
+                                          <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
                                           </div>
                                           </div>
                                          </div>
@@ -144,26 +235,187 @@ class Usermanagement extends Component {
   
     }
 
-    renderFromSearch(){
+    renderTableHead(){
+      this.state.number = 0
+      return _.map(this.state.headList, headList => {
+        this.state.number = this.state.number+1
+        return (
+          <tr>
+            <td>{ this.state.number}</td>
+            <td>{ headList.firstname }</td>
+            <td>{ headList.lastname }</td>
+            <td>{ headList.email }</td>
+            <td>{ (headList.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
+            <td>
+              <Link to={ {pathname: `/usermanagement/view`, query: {userID: headList.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/usermanagement/update`, query: {userID: headList.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+headList.userID}></i></button>
+                                      <div id={headList.userID} className="modal fade" role="dialog">
+                                        <div className="modal-dialog">
+                                          <div className="modal-content">
+                                          <div className="modal-header">
+                                          <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                          <h4 className="modal-title">ลบผู้ใช้งาน</h4>
+                                          </div>
+                                          <div className="modal-body">
+                                          <p>{headList.firstname}  {headList.lastname} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
+                                          </div>
+                                          <div className="modal-footer">
+                                          <button type="button" className="btn btn-success"  data-dismiss="modal" onClick={this.handleDelete(headList.userID)}>ตกลง</button>
+                                          <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                                          </div>
+                                          </div>
+                                         </div>
+                                        </div>
+                                        
+            </td>
+          </tr>
+        );
+      });
+  
+    }
+
+    renderTableAdmin(){
+      return _.map(this.state.adminList, adminList => {
+        return (
+          <tr>
+            <td>{ this.state.number}</td>
+            <td>{ adminList.firstname }</td>
+            <td>{ adminList.lastname }</td>
+            <td>{ adminList.email }</td>
+            <td>{ (adminList.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
+            <td>
+              <Link to={ {pathname: `/usermanagement/view`, query: {userID: adminList.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/usermanagement/update`, query: {userID: adminList.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+adminList.userID}></i></button>
+                                      <div id={adminList.userID} className="modal fade" role="dialog">
+                                        <div className="modal-dialog">
+                                          <div className="modal-content">
+                                          <div className="modal-header">
+                                          <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                          <h4 className="modal-title">ลบผู้ใช้งาน</h4>
+                                          </div>
+                                          <div className="modal-body">
+                                          <p>{adminList.firstname}  {adminList.lastname} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
+                                          </div>
+                                          <div className="modal-footer">
+                                          <button type="button" className="btn btn-success"  data-dismiss="modal" onClick={this.handleDelete(adminList.userID)}>ตกลง</button>
+                                          <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                                          </div>
+                                          </div>
+                                         </div>
+                                        </div>                
+            </td>
+          </tr>
+        );
+      });
+    }
+
+    renderFromSearchStudent(){
       return (
         <div className="row mt">
               <div className="col-lg-12">
                       <div className="content-panel">
-                          <h4><i className="fa fa-angle-right"></i> รายการผู้ใช้งาน</h4>
+                          <h4><i className="fa fa-angle-right"></i> รายการนักศึกษา</h4>
                           <hr />
                           <table className="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
-                                  <th> ชื่อ</th>
+                                  <th> ลำดับ</th>
+                                  <th> รหัส </th>
+                                  <th> ชื่อ </th>
                                   <th> นามสกุล</th>
                                   <th> ชื่อผู้ใช้</th>
                                   <th> สถานะ</th>
-                                  <th> บทบาท</th>
                                   <th></th>
                                 </tr>
                               </thead>
                               <tbody>
-                                { this.renderTable() }
+                                { this.renderTableStudent() }
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+      );
+    }
+
+    renderFromSearchTeacher(){
+      return (
+        <div className="row mt">
+              <div className="col-lg-12">
+                      <div className="content-panel">
+                          <h4><i className="fa fa-angle-right"></i> รายการอาจารย์</h4>
+                          <hr />
+                          <table className="table table-striped table-advance table-hover">
+                            <thead>
+                                <tr>
+                                  <th> ลำดับ</th>
+                                  <th> ชื่อ</th>
+                                  <th> นามสกุล</th>
+                                  <th> ชื่อผู้ใช้</th>
+                                  <th> สถานะ</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                { this.renderTableTeacher() }
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+      );
+    }
+
+    renderFromSearchHead(){
+      return (
+        <div className="row mt">
+              <div className="col-lg-12">
+                      <div className="content-panel">
+                          <h4><i className="fa fa-angle-right"></i> รายการประธานหลักสูตร</h4>
+                          <hr />
+                          <table className="table table-striped table-advance table-hover">
+                            <thead>
+                                <tr>
+                                  <th> ลำดับ</th>
+                                  <th> ชื่อ</th>
+                                  <th> นามสกุล</th>
+                                  <th> ชื่อผู้ใช้</th>
+                                  <th> สถานะ</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                { this.renderTableHead() }
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+      );
+    }
+
+    renderFromSearchAdmin(){
+      return (
+        <div className="row mt">
+              <div className="col-lg-12">
+                      <div className="content-panel">
+                          <h4><i className="fa fa-angle-right"></i> รายการผู้ดูแลระบบ</h4>
+                          <hr />
+                          <table className="table table-striped table-advance table-hover">
+                            <thead>
+                                <tr>
+                                  <th> ลำดับ</th>
+                                  <th> ชื่อ</th>
+                                  <th> นามสกุล</th>
+                                  <th> ชื่อผู้ใช้</th>
+                                  <th> สถานะ</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                { this.renderTableAdmin() }
                               </tbody>
                           </table>
                       </div>
@@ -221,8 +473,11 @@ class Usermanagement extends Component {
                   </div>
               </div>    
             </div>
-
-            {this.renderFromSearch()}
+         
+            {this.renderFromSearchStudent()}
+            {this.renderFromSearchTeacher()}
+            {this.renderFromSearchHead()}
+            {this.renderFromSearchAdmin()}
 
           </section>
         </section>
