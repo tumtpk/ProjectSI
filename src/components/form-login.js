@@ -61,17 +61,17 @@ class FormLogin extends Component {
 
       return (
         <form className="form-login" onSubmit={this.handleSubmit}>
-		    <h2 className="form-login-heading">sign in now</h2>
+		    <h2 className="form-login-heading"> ลงชื่อเข้าสู่ระบบ </h2>
             <div className="login-wrap">
-                <input type="text" name="username" className="form-control" placeholder="User ID" value={this.state.username} onChange={this.handleChange} autofocus />
+                <input type="text" name="username" className="form-control" placeholder=" อีเมล์ผู้ใช้งาน" value={this.state.username} onChange={this.handleChange} autofocus />
                 <br />
-                <input type="password" name="password" className="form-control" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
+                <input type="password" name="password" className="form-control" placeholder=" รหัสผ่าน" value={this.state.password} onChange={this.handleChange} />
                 <label className="checkbox">
                     <span className="pull-left">
                         { this.state.message }
                     </span>
 		        </label>
-		        <button className="btn btn-theme btn-block" type="submit"><i className="fa fa-lock"></i> SIGN IN</button>
+		        <button className="btn btn-theme btn-block" type="submit"><i className="fa fa-lock"></i> เข้าสู่ระบบ</button>
             </div>
         </form>    
       );

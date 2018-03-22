@@ -5,7 +5,7 @@ class Footer extends Component {
       return (
         <footer className="site-footer">
           <div className="text-center">
-              2014 - Alvarez.is
+              2018 - Tools For Prosonal Process Improvement
               <a href="index.html#" className="go-top">
                   <i className="fa fa-angle-up"></i>
               </a>
