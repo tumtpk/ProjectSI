@@ -23,7 +23,8 @@ const initialState = {
   categoryID: 0,
   circleID: 0,
   checklists: [{value: null}],
-  dataSearch: null
+  dataSearch: null,
+  number: 1
 };
 
 class GoalmanagementOtherUser extends Component { 
@@ -114,9 +115,12 @@ class GoalmanagementOtherUser extends Component {
     };
 
     renderTable(){
+      this.state.number = 0
       return _.map(this.state.dataSearch, data => {
+        this.state.number = this.state.number+1
         return (
           <tr>
+            <td>{ this.state.number}</td>
             <td>{ data.goalName }</td>
             <td>{ data.startDate }</td>
             <td>{ data.endDate }</td>
@@ -200,6 +204,7 @@ class GoalmanagementOtherUser extends Component {
                           <table className="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
+                                  <th> ลำดับ </th>
                                   <th> ชื่อเป้าหมาย</th>
                                   <th> วันเริ่มต้น</th>
                                   <th> วันสิ้นสุด</th>

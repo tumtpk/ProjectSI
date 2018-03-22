@@ -16,7 +16,8 @@ const initialState = {
   evaluationName : null,
   description : null,
   status : 0,
-  dataSearch: null
+  dataSearch: null,
+  number:1
 };
 
 class Evaluationmanagement extends Component { 
@@ -84,9 +85,12 @@ class Evaluationmanagement extends Component {
 
 
     renderTable(){
+      this.state.number = 0
       return _.map(this.state.dataSearch, data => {
+        this.state.number = this.state.number+1
         return (
           <tr>
+            <td>{ this.state.number}</td>
             <td>{ data.evaluationName }</td>
             <td>{ data.status }</td>
             <td>
@@ -127,6 +131,7 @@ class Evaluationmanagement extends Component {
                           <table className="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
+                                  <th> ลำดับ </th>
                                   <th> ชื่อแบบประเมิน</th>
                                   <th></th>
                                 </tr>
