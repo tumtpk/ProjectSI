@@ -113,7 +113,7 @@ class Usermanagement extends Component {
             <td>{ data.firstname }</td>
             <td>{ data.lastname }</td>
             <td>{ data.email }</td>
-            <td>{ data.status }</td>
+            <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
             <td>{ data.userTypeID }</td>
             <td>
               <Link to={ {pathname: `/usermanagement/view`, query: {userID: data.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>

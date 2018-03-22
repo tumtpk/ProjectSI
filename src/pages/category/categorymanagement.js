@@ -85,7 +85,7 @@ class Categorymanagement extends Component {
         return (
           <tr>
             <td>{ data.categoryName }</td>
-            <td>{ data.status }</td>
+            <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
             <td>
               <Link to={ {pathname: `/category/view`, query: {id : data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/category/update`, query: {id : data.id }} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
