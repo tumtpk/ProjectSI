@@ -104,7 +104,7 @@ class CategoryCreate extends Component {
                         
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>
-                            <Link to={ {pathname: `/categorymanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
+                            <Link to={ {pathname: `/categorymanagement`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>
                         </div>
                     </form>
                 </div>

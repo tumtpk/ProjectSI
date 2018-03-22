@@ -93,7 +93,7 @@ class Categorymanagement extends Component {
             <td>
               <Link to={ {pathname: `/category/view`, query: {id : data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/category/update`, query: {id : data.id }} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+data.id}></i></button>
+              <button className="btn btn-danger btn-xs" data-toggle="modal" data-target={"#"+data.id}><i className="fa fa-trash-o " ></i></button>
                                       <div id={data.id} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">
@@ -105,8 +105,8 @@ class Categorymanagement extends Component {
                                           <p>{data.categoryName} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
                                           </div>
                                           <div className="modal-footer">
-                                          <button type="button" className="btn btn-default"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
-                                          <button type="button" className="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                                          <button type="button" className="btn btn-success"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
+                                          <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
                                           </div>
                                           </div>
                                          </div>

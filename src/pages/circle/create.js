@@ -97,7 +97,7 @@ class CircleCreate extends Component {
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">ระยะเวลาที่กำหนด<span className="error-message">*</span></label>
                             <div className="col-sm-3">
-                                <input type="text" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} />
+                                <input type="number" min="1" max="10000" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} />
                                 <span id="circleTime" className="error-message"></span>
                             </div>
                             <label className="col-sm-3 col-sm-3 control-label">วัน</label>
@@ -117,7 +117,7 @@ class CircleCreate extends Component {
                         
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>
-                            <Link to={ {pathname: `/circlemanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
+                            <Link to={ {pathname: `/circlemanagement`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>
                         </div>
                     </form>
                 </div>

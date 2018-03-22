@@ -125,51 +125,9 @@ class GoalmanagementOtherUser extends Component {
             <td>{ data.startDate }</td>
             <td>{ data.endDate }</td>
             <td>
-              <button className="btn btn-warning btn-xs"><i className="fa fa-tasks" data-toggle="modal" data-target={"#"+data.id}></i></button>
-              <div id={data.id} className="modal fade" role="dialog">
-                                        <div className="modal-dialog">
-                                          <div className="modal-content">
-                                          <div className="modal-header">
-                                          <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                          <h4 className="modal-title">ปรับปรุงความคืบหน้ารายการตรวจสอบ</h4>
-                                          </div>
-                                          <div className="modal-body">
-                                          <ProgressBar width="50%" message="50%"/>
-                                       
-	                	                        <div className="panel-heading">
-	                                            <div className="pull-left">
-                                              <h5><i className="fa fa-tasks"></i> รายการตรวจสอบ</h5></div>
-	                 	                      </div>
-				  	                            	<div className="custom-check goleft mt">
-				                                 <table id="todo" className="table table-hover custom-check">
-				                                <tbody>
-				                                <tr>
-				            		                <td>
-				                                    <span className="check"><input type="checkbox" className="checked" /></span> เอกสารผู้ใช้งานระบบ 
-								                      	</td>
-                                        </tr>
-                                        <tr>
-                                        <td>
-				                                    <span className="check"><input type="checkbox" className="checked" /></span> เอกสารระบบ 
-								                      
-                                      	</td>
-				                               </tr>
-				                              </tbody>
-				                              </table>
-
-						                          </div>
-					                     
-                                          </div>
-                                          <div className="modal-footer">
-                                          <button type="button" className="btn btn-default"  data-dismiss="modal" onClick={this.handleDelete()}>ตกลง</button>
-                                          <button type="button" className="btn btn-default" data-dismiss="modal">ยกเลิก</button>
-                                          </div>
-                                          </div>
-                                         </div>
-                                        </div>
               <Link to={ {pathname: `/goal/view`, query: {id: data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/goal/update`, query: {id: data.id}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+data.goalName}></i></button>
+              <button className="btn btn-danger btn-xs" data-toggle="modal" data-target={"#"+data.goalName}><i className="fa fa-trash-o " ></i></button>
                                       <div id={data.goalName} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">
@@ -181,8 +139,8 @@ class GoalmanagementOtherUser extends Component {
                                           <p>{data.goalName}  จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
                                           </div>
                                           <div className="modal-footer">
-                                          <button type="button" className="btn btn-default"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
-                                          <button type="button" className="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                                          <button type="button" className="btn btn-sucess"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
+                                          <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
                                           </div>
                                           </div>
                                          </div>

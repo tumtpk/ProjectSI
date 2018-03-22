@@ -223,8 +223,9 @@ class GoalCreateOtherUser extends Component {
                               </div>
                           </div>
                         <div className="text-right">
-                            <Link to={ {pathname: `/goalmanagementOtherUser`} }><button type="button" className="btn btn-info">กลับ</button></Link>
                             <Link to={ {pathname: `/goal/selectuser`, query: {goalName:this.state.goalName, description:this.state.description, startDate:this.state.startDate, endDate:this.state.endDate, checklists:this.state.checklists, categoryID:this.state.categoryID, circleID:this.state.circleID}} }><button type="submit" className="btn btn-success">ถัดไป</button></Link>
+                            <Link to={ {pathname: `/goalmanagementOtherUser`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>
+                            
                         </div>
                     </form>
                 </div>

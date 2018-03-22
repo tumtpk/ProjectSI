@@ -202,8 +202,8 @@ class GoalCreateOtherUserSelectUser extends Component {
                               
                           </table>
                           <div className="text-right" style={{marginRight: '10px'}}>
-                          <Link to={ {pathname: `/goal/createOtherUser`, query: {goalName:this.state.goalName, description:this.state.description, startDate:this.state.startDate, endDate:this.state.endDate, checklists:this.state.checklists, category:this.state.categoryID, circle:this.state.circleID, userID:this.state.userID}} }><button type="button" className="btn btn-info">กลับ</button></Link>
                           <button type="button" className="btn btn-success" onClick={this.handleSubmit}> บันทึก </button>
+                          <Link to={ {pathname: `/goal/createOtherUser`, query: {goalName:this.state.goalName, description:this.state.description, startDate:this.state.startDate, endDate:this.state.endDate, checklists:this.state.checklists, category:this.state.categoryID, circle:this.state.circleID, userID:this.state.userID}} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>
                           </div>
                       </div>
                   </div>

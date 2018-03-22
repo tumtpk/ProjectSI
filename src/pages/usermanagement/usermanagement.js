@@ -287,7 +287,7 @@ class Usermanagement extends Component {
             <td>
               <Link to={ {pathname: `/usermanagement/view`, query: {userID: adminList.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/usermanagement/update`, query: {userID: adminList.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+adminList.userID}></i></button>
+              <button className="btn btn-danger btn-xs" data-toggle="modal" data-target={"#"+adminList.userID}><i className="fa fa-trash-o " ></i></button>
                                       <div id={adminList.userID} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">
