@@ -21,6 +21,9 @@ class UserUpdate extends Component {
             status: "",
             roleList: [],
             commanderList: [],
+            duplicateMessage1: "",
+            duplicateMessage2: "",
+            duplicate: true,
             redirect: false,
         }
   
@@ -86,12 +89,24 @@ class UserUpdate extends Component {
 
         console.log(this.state);
 
-        CommonApi.instance.post('/user/update', this.state)
+        CommonApi.instance.post('/user/isDuplicatePersonalId' ,this.state)
         .then(response => {
-            if(response.status == 200 && response.data.result){
-                this.setState({redirect: true});
-            }else{
-                this.handleValidate(response.data.message);
+            if(response.status == 200 && response.data.result == false){
+                this.setState({ duplicate: false, duplicateMessage1: "รหัสประจำตัวซ้ำ!", duplicateMessage2: "กรุณากรอกรหัสประจำตัวใหม่อีกครั้ง."});
+            }
+            else{
+                this.setState({ duplicate: true, duplicateMessage: ""});
+                CommonApi.instance.post('/user/update',this.state)
+                        .then(response =>{
+                            if(response.status == 200 && response.data.result){
+                                this.setState({redirect: true});
+                            }
+                            else{
+                                this.handleValidate(response.data.message);
+                            }
+
+                        }
+                    )
             }
         });
       }
@@ -130,6 +145,9 @@ class UserUpdate extends Component {
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
+                     <div className="alert alert-danger alert-dismissable" hidden={this.state.duplicate}>
+						  <strong>{this.state.duplicateMessage1}</strong> {this.state.duplicateMessage2}
+						</div>
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลผู้ใช้งาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
 

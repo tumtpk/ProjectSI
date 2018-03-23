@@ -22,6 +22,9 @@ class UserCreate extends Component {
             roleList: [],
             commanderList: [],
             redirect: false,
+            duplicateMessage1: "",
+            duplicateMessage2: "",
+            duplicate: true
         }
 
         // mixins: [Validation.FieldMixin]
@@ -29,6 +32,7 @@ class UserCreate extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleValidate = this.handleValidate.bind(this);
+
 
       }
       
@@ -61,22 +65,48 @@ class UserCreate extends Component {
       }
 
 
+
     handleSubmit(event) {
         event.preventDefault();
 
         console.log(this.state);
 
-        CommonApi.instance.post('/user/create', this.state)
+        CommonApi.instance.post('/user/isDuplicatePersonalId' ,this.state)
         .then(response => {
-            if(response.status == 200 && response.data.result){
-                this.setState({redirect: true});
-            }else{
-                this.handleValidate(response.data.message);
+            if(response.status == 200 && response.data.result == false){
+                this.setState({ duplicate: false, duplicateMessage1: "รหัสประจำตัวซ้ำ!", duplicateMessage2: "กรุณากรอกรหัสประจำตัวใหม่อีกครั้ง."});
+            }
+            else{
+                this.setState({ duplicate: true, duplicateMessage1: "",duplicateMessage2: ""});
+                CommonApi.instance.post('/user/isDuplicateEmail' ,this.state)
+                .then(response =>{
+                    if (response.status == 200 && response.data.result == true){
+                        CommonApi.instance.post('/user/create',this.state)
+                        .then(response =>{
+                            if(response.status == 200 && response.data.result){
+                                this.setState({redirect: true});
+                            }
+                            else{
+                                this.handleValidate(response.data.message);
+                            }
+
+                        }
+                    )
+
+                    }
+                    else{
+                        this.setState({ duplicate: false, duplicateMessage1: "อีเมล์ซ้ำ!", duplicateMessage2: "กรุณากรอกอีเมล์ใหม่อีกครั้ง."});
+                    }
+                })
+                
             }
         });
       }
 
-      handleValidate(messages){
+
+
+    
+    handleValidate(messages){
         let require = ["firstname","lastname","email","userTypeID"];
         require.forEach(element => {
             document.getElementById(element).innerHTML = null;
@@ -86,6 +116,7 @@ class UserCreate extends Component {
             document.getElementById(element.key).innerHTML = element.message;
         });
     }
+
 
     render() {
 
@@ -109,6 +140,9 @@ class UserCreate extends Component {
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
+                    <div className="alert alert-danger alert-dismissable" hidden={this.state.duplicate}>
+						  <strong>{this.state.duplicateMessage1}</strong> {this.state.duplicateMessage2}
+						</div>
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลผู้ใช้งาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">

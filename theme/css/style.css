@@ -2272,3 +2272,9 @@ label {
 .show {
     display: inherit !important;
 }
+
+.duplicate{
+    background: #ff00009e;
+    padding: 10px;
+    color: white;
+}
