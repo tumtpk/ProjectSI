@@ -12,6 +12,9 @@ class CategoryCreate extends Component {
             categoryName: "",
             status: 1,
             redirect: false,
+            duplicateMessage1: "",
+            duplicateMessage2: "",
+            duplicate: true,
         }
   
   
@@ -50,12 +53,24 @@ class CategoryCreate extends Component {
 
         console.log(this.state);
 
-        CommonApi.instance.post('/category/create', this.state)
+        CommonApi.instance.post('/category/isDuplicateName' ,this.state)
         .then(response => {
-            if(response.status == 200 && response.data.result){
-                this.setState({redirect: true});
-            }else{
-                this.handleValidate(response.data.message);
+            if(response.status == 200 && response.data.result == false){
+                this.setState({ duplicate: false, duplicateMessage1: "ชื่อหมวดหมู่ซ้ำ!", duplicateMessage2: "กรุณากรอกชื่อหมวดหมู่ใหม่อีกครั้ง."});
+            }
+            else{
+                this.setState({ duplicate: true, duplicateMessage1: "",duplicateMessage2: ""});
+                CommonApi.instance.post('/category/create',this.state)
+                        .then(response =>{
+                            if(response.status == 200 && response.data.result){
+                                this.setState({redirect: true});
+                            }
+                            else{
+                                this.handleValidate(response.data.message);
+                            }
+
+                        }
+                    )
             }
         });
       }
@@ -81,6 +96,9 @@ class CategoryCreate extends Component {
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
+                <div className="alert alert-danger alert-dismissable" hidden={this.state.duplicate}>
+						  <strong>{this.state.duplicateMessage1}</strong> {this.state.duplicateMessage2}
+						</div>
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลหมวดหมู่</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
