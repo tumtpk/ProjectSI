@@ -153,7 +153,7 @@ class Circlemanagement extends Component {
                                 <tr>
                                   <th> ลำดับ </th>
                                   <th> ชื่อรอบ</th>
-                                  <th> ระยะเวลา</th>
+                                  <th> ระยะเวลา(วัน)</th>
                                   <th> สถานะ</th>
                                   <th></th>
                                 </tr>
