@@ -70,7 +70,7 @@ class CategoryUpdate extends Component {
 
         console.log(this.state);
 
-        CommonApi.instance.post('/category/isDuplicateName' ,this.state)
+        CommonApi.instance.post('/category/UpdateisDuplicateName' ,this.state)
         .then(response => {
             if(response.status == 200 && response.data.result == false){
                 this.setState({ duplicate: false, duplicateMessage1: "ชื่อหมวดหมู่ซ้ำ!", duplicateMessage2: "กรุณากรอกชื่อหมวดหมู่ใหม่อีกครั้ง."});

@@ -3,6 +3,7 @@ import MainLayout from "../../components/main-layout";
 import CommonApi from "../../api/common-api"
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
+import { isNull } from "util";
 
 class CircleCreate extends Component { 
 
@@ -10,7 +11,7 @@ class CircleCreate extends Component {
         super(props);
         this.state = {
             circleName: "",
-            circleTime: 0,
+            circleTime: null,
             status: 1,
             redirect: false,
             duplicateMessage1: "",
@@ -45,6 +46,7 @@ class CircleCreate extends Component {
             document.getElementById(element).innerHTML = null;
         });
         console.log(messages);
+       
         messages.forEach(element => {
             document.getElementById(element.key).innerHTML = element.message;
         });
@@ -54,8 +56,11 @@ class CircleCreate extends Component {
         event.preventDefault();
 
         console.log(this.state);
-
-        CommonApi.instance.post('/circle/isDuplicateName' ,this.state)
+ 
+        if (this.state.circleTime == null ){
+            this.state.circleTime = 0
+        }
+        CommonApi.instance.post('/circle/CreateisDuplicateName' ,this.state)
         .then(response => {
             if(response.status == 200 && response.data.result == false){
                 this.setState({ duplicate: false, duplicateMessage1: "ชื่อรอบการดำเนินงานซ้ำ!", duplicateMessage2: "กรุณากรอกชื่อรอบการดำเนินงานใหม่อีกครั้ง."});
@@ -68,23 +73,27 @@ class CircleCreate extends Component {
                                 this.setState({redirect: true});
                             }
                             else{
+                                //this.setState({circleTime: null})
                                 this.handleValidate(response.data.message);
-                            }
-
+                                
+                                 }
+                                }
+                                
+                            )
+                        }    this.setState({circleTime: null})   
                         }
-                    )
-            }
-        });
-      }
+                     
+                );
+               
+            }         
       
     render() {
-
+      this.state.circleTime == null;
       const { redirect } = this.state;
 
       if (redirect) {
         return <Redirect to='/circlemanagement'/>;
       }
-
       return (
         <section id="main-content">
           <section className="wrapper">
@@ -115,7 +124,7 @@ class CircleCreate extends Component {
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">ระยะเวลาที่กำหนด<span className="error-message">*</span></label>
                             <div className="col-sm-3">
-                                <input type="number" min="1" max="10000" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} />
+                                <input type="text" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} />
                                 <span id="circleTime" className="error-message"></span>
                             </div>
                             <label className="col-sm-3 col-sm-3 control-label">วัน</label>

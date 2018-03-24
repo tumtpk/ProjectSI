@@ -71,7 +71,7 @@ class UserCreate extends Component {
 
         console.log(this.state);
 
-        CommonApi.instance.post('/user/isDuplicatePersonalId' ,this.state)
+        CommonApi.instance.post('/user/CreateisDuplicatePersonalId' ,this.state)
         .then(response => {
             if(response.status == 200 && response.data.result == false){
                 this.setState({ duplicate: false, duplicateMessage1: "รหัสประจำตัวซ้ำ!", duplicateMessage2: "กรุณากรอกรหัสประจำตัวใหม่อีกครั้ง."});

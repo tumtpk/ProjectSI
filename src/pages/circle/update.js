@@ -10,7 +10,7 @@ class CircleUpdate extends Component {
         super(props);
         this.state = {
             circleName: "",
-            circleTime: 0,
+            circleTime: "",
             status: 1,
             redirect: false,
             duplicateMessage1: "",
@@ -53,6 +53,7 @@ class CircleUpdate extends Component {
           [name]: value
         });
         document.getElementById(name).innerHTML = null;
+
       }
 
       handleValidate(messages){
@@ -73,7 +74,10 @@ class CircleUpdate extends Component {
 
         console.log(this.state);
 
-        CommonApi.instance.post('/circle/isDuplicateName' ,this.state)
+        if (this.state.circleTime == null || this.state.circleTime == "" ){
+            this.state.circleTime = 0
+        }
+        CommonApi.instance.post('/circle/UpdateisDuplicateName' ,this.state)
         .then(response => {
             if(response.status == 200 && response.data.result == false){
                 this.setState({ duplicate: false, duplicateMessage1: "ชื่อรอบการดำเนินงานซ้ำ!", duplicateMessage2: "กรุณากรอกชื่อรอบการดำเนินงานใหม่อีกครั้ง."});
@@ -87,14 +91,16 @@ class CircleUpdate extends Component {
                             }
                             else{
                                 this.handleValidate(response.data.message);
-                            }
-
+                                
+                                 }
+                                }
+                                
+                            )
+                        }  this.setState({circleTime: null})    
                         }
-                    )
-            }
-        });
-      }
-
+                        
+                );
+            } 
     render() {
 
       const { redirect } = this.state;
