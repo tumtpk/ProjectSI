@@ -15,9 +15,6 @@ import ProgressBar from "bootstrap-progress-bar";
 import DateTimeField from "react-bootstrap-datetimepicker";
 
 
-
-
-
 const initialState = {
   id: null,
   goalName: "",
@@ -29,7 +26,10 @@ const initialState = {
   checklists: [{value: null}],
   checklistProgresses: [{value: null}],
   dataSearch: null,
-  number: 1
+  number: 1,
+  circleList: [],
+  categoryList: [],
+  status: "Open"
 };
 
 class Goalmanagement extends Component { 
@@ -52,14 +52,27 @@ class Goalmanagement extends Component {
         CommonApi.instance.post('/goal/search', {
               id: this.state.id,
               goalName: this.state.goalName,
-              startDate: this.state.startDate,
-              endDate: this.state.endDate,
+              categoryID: this.state.categoryID,
+              circleID: this.state.circleID,
               //status: this.state.status
         })
         .then(response => {
             this.setState({dataSearch: response.data});
         });
-        
+
+        CommonApi.instance.post('/circle/search', {
+          status: 1
+        })
+        .then(response => {
+          this.setState({circleList: response.data});
+          
+        });
+        CommonApi.instance.post('/category/search', {
+          status: 1
+        })
+        .then(response => {
+          this.setState({categoryList: response.data});
+        });    
       }
 
       handlechangeProgress = (clpId) => (evt) => {
@@ -122,11 +135,12 @@ class Goalmanagement extends Component {
         this.setState({
           [name]: value
         });
-      }
 
+      }
       handleClear(event){
         document.getElementById("search-goal").reset();
         this.setState(initialState);
+        this.handleSearch();
       }
 
     handleSearch(){
@@ -134,8 +148,8 @@ class Goalmanagement extends Component {
               CommonApi.instance.post('/goal/search', {
                 id: this.state.id,
               goalName: this.state.goalName,
-              startDate: this.state.startDate,
-              endDate: this.state.endDate,
+              categoryID: this.state.categoryID,
+              circleID: this.state.circleID,
               //status: this.state.status
         })
         .then(response => {
@@ -185,11 +199,11 @@ class Goalmanagement extends Component {
           <tr>
             <td>{ this.state.number}</td>
             <td>{ data.goalName }</td>
-            <td>{ data.startDate }</td>
-            <td>{ data.endDate }</td>
+            <td>{ data.categoryName }</td>
+            <td>{ data.circleName}</td>
+            <td><span className="badge bg-success">{this.state.status}</span></td>
             <td>
               <button className="btn btn-warning btn-xs" data-toggle="modal" data-target="#modal" onClick={this.handleProgress(data.id)}><i className="fa fa-tasks" ></i></button>
-              
               <Link to={ {pathname: `/goal/view`, query: {id: data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/goal/update`, query: {id: data.id}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
               <button className="btn btn-danger btn-xs"  data-toggle="modal" data-target={"#"+data.goalName}><i className="fa fa-trash-o "></i></button>
@@ -222,15 +236,16 @@ class Goalmanagement extends Component {
         <div className="row mt">
               <div className="col-lg-12">
                       <div className="content-panel">
-                          <h4><i className="fa fa-angle-right"></i> รายการเป้าหมาย</h4>
+                          <h4><i className="fa fa-angle-right"></i> รายการเป้าหมายของฉัน</h4>
                           <hr />
                           <table className="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
                                   <th> ลำดับ </th>
                                   <th> ชื่อเป้าหมาย</th>
-                                  <th> วันเริ่มต้น</th>
-                                  <th> วันสิ้นสุด</th>
+                                  <th> หมวดหมู่ของเป้าหมาย</th>
+                                  <th> รอบการดำเนินงาน</th>
+                                  <th> สถานะ</th>
                                   <th></th>
                                 </tr>
                               </thead>
@@ -247,6 +262,8 @@ class Goalmanagement extends Component {
     
     render() {
       var DateTimeField = require('react-bootstrap-datetimepicker');
+      let circleList = this.state.circleList;
+      let categoryList = this.state.categoryList;
       return (
         <section id="main-content">
           <section className="wrapper">
@@ -282,36 +299,38 @@ class Goalmanagement extends Component {
                               <div className="col-sm-3">
                                   <input type="text" className="form-control" name="goalName" value={this.state.goalName} onChange={this.handleChange}/>
                               </div>
-                              <label className="col-sm-2 col-sm-2 control-label">สถานะ</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
+                              <label className="col-sm-2 col-sm-2 control-label">หมวดหมู่ของเป้าหมาย</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
                               <div className="btn-group">
-                                <select className="form-control" name="status" value={this.state.username} onChange={this.handleChange}>
-                                    <option value="0">--เลือกสถานะ--</option>
+                                <select className="form-control" name="categoryID" value={this.state.categoryID} onChange={this.handleChange} >
+                                    <option value="0">-- เลือกหมวดหมู่ --</option>
+                                    {categoryList.map((category, index) => (
+                                        <option value={category.id}>{category.categoryName}</option>
+                                    ))}
+                                    </select>
+                                </div>
+                              <br></br><br></br><br></br>
+                              <label className="col-sm-2 col-sm-2 control-label">สถานะของเป้าหมาย</label>
+                              <div className="col-sm-3">
+                              <div className="btn-group">
+                                <select className="form-control" name="status" value={this.state.username} onChange={this.handleChange} disabled>
+                                    <option value="0">-- เลือกสถานะเป้าหมาย --</option>
                                     <option value="1">Open</option>
                                     <option value="2">In Progrees</option>
                                     <option value="3">Achieved</option>
                                 </select>
-                                
+                              </div>
+                              </div>
+                              <label className="col-sm-2 col-sm-2 control-label">รอบการดำเนินงาน</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
+                              <div className="btn-group">
+                                    <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
+                                    <option value="0">-- เลือกรอบการดำเนินงาน --</option>
+                                    {circleList.map((circle, index) => (
+                                        <option value={circle.id}>{circle.circleName}</option>
+                                    ))}
+                                    </select>
                                 </div>
-                              <br></br><br></br><br></br>
-                              <label className="col-sm-2 col-sm-2 control-label">วันเริ่มต้นเป้าหมาย</label> 
-                              <div className="col-sm-3">
-                              <div className='input-group date' id='daterangepicker'>
-
-                             <DateTimeField />
-                            </div>
-                            <span id="startDate" className="error-message"></span>
-                            </div>
-                            <label className="col-sm-2 col-sm-2 control-label">วันสิ้นสุดเป้าหมาย</label>
-                              <div className="col-sm-3">
-                              <div className='input-group date' id='daterangepicker'>
-                                <input type='text' className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} />
-                                <span className="input-group-addon">
-                                <span className="glyphicon glyphicon-calendar"></span>
-                             </span>
-                            </div>
-                            <span id="endDate" className="error-message"></span>
-                            </div>        
-                        </div>  
+                        </div>
+                         
                             <div className="text-center">
                               <button type="submit" className="btn btn-round btn-primary" >ค้นหา</button>
                               <button type="button" className="btn btn-round btn-danger" onClick={this.handleClear}>ยกเลิก</button>

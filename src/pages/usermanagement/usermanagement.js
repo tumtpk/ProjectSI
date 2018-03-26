@@ -276,7 +276,9 @@ class Usermanagement extends Component {
     }
 
     renderTableAdmin(){
+      this.state.number = 0
       return _.map(this.state.adminList, adminList => {
+        this.state.number = this.state.number+1
         return (
           <tr>
             <td>{ this.state.number}</td>
