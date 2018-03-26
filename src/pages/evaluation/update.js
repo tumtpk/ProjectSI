@@ -9,9 +9,14 @@ class EvaluationUpdate extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: null,
             evaluationName: "",
             description: "",
             questions: [{value: null}],
+            redirect: false,
+            duplicateMessage1: "",
+            duplicateMessage2: "",
+            duplicate: true,
             redirect: false,
           
         }
@@ -26,6 +31,7 @@ class EvaluationUpdate extends Component {
 
       componentWillMount() {
        let id = this.props.location.query.id;
+       this.state.id = this.props.location.query.id;
         this.state.evaluationName = this.props.location.query.evaluationName;
         this.state.description = this.props.location.query.description;
         this.setState(this.state);
@@ -123,12 +129,11 @@ class EvaluationUpdate extends Component {
         this.state.questions.map((question, sidx) => {
             document.getElementById('questions['+sidx+']').innerHTML = null;
         });
-        console.log(messages);
         messages.forEach(element => {
             document.getElementById(element.key).innerHTML = element.message;
-            console.log(messages);
+            
         });
-        console.log(messages);
+       console.log(messages)
     }
 
       
@@ -149,10 +154,13 @@ class EvaluationUpdate extends Component {
                     <h3><i className="fa fa-angle-right"></i> แก้ไขแบบประเมิน</h3>
                 </div>
             </div>
-
+ 
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
+                <div className="alert alert-danger alert-dismissable" hidden={this.state.duplicate}>
+						  <strong>{this.state.duplicateMessage1}</strong> {this.state.duplicateMessage2}
+						</div>
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลแบบประเมิน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
