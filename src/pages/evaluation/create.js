@@ -63,7 +63,7 @@ class EvaluationCreate extends Component {
 
         console.log(this.state);
 
-        CommonApi.instance.post('/evaluation/CreateisDuplicateName' ,this.state)
+        CommonApi.instance.post('/evaluation/isDuplicateNameCreate' ,this.state)
         .then(response => {
             if(response.status == 200 && response.data.result == false){
                 this.setState({ duplicate: false, duplicateMessage1: "ชื่อแบบประเมินซ้ำ!", duplicateMessage2: "กรุณากรอกชื่อแบบประเมินใหม่อีกครั้ง."});
