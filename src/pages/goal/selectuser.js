@@ -50,13 +50,7 @@ class GoalCreateOtherUserSelectUser extends Component {
         this.state.endDate = this.props.location.query.endDate;  
         this.state.checklists = this.props.location.query.checklists;
         this.setState(this.state);
-        CommonApi.instance.post('/user/search', {
-               firstname: this.state.firstname,
-               lastname: this.state.lastname,
-               status: this.state.status,
-               email: this.state.email,
-               userTypeID: this.state.userTypeID,
-               userID:this.state.userID
+        CommonApi.instance.get('/user/getuserByCommanderId', {
 
          })
          .then(response => {

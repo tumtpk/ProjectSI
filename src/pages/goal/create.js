@@ -19,6 +19,8 @@ class GoalCreate extends Component {
             checklists: [{value: null}],
             circleList: [],
             categoryList: [],
+            userID:"",
+            redirect: false,
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -90,24 +92,22 @@ class GoalCreate extends Component {
             if(response.status == 200 && response.data.result){
                 this.setState({redirect: true});
             }else{
+                this.handleValidate(response.data.message); 
                 console.log(response.data.message)
-                this.handleValidate(response.data.message);
             }
         });
       }
 
     handleValidate(messages){
         
-        let require = ["goalName","description","categoryID","circleID","startDate"];
+        let require = ["goalName","description","categoryID","circleID"];
         require.forEach(element => {
-           
             document.getElementById(element).innerHTML = null;
         });
         this.state.checklists.map((checklist, sidx) => {
             document.getElementById('checklists['+sidx+']').innerHTML = null;
         });
         messages.forEach(element => {
-            console.log(element);
             document.getElementById(element.key).innerHTML = element.message;
         });
     }
@@ -182,7 +182,7 @@ class GoalCreate extends Component {
                               <label className="col-sm-2 col-sm-2 control-label">หมวดหมู่<span className="error-message">*</span></label>
                               <div className="col-sm-5">
                                 <div className="btn-group">
-                                <select className="form-control" name="categoryID" value={this.state.categoryID} onChange={this.handleChange}>
+                                <select className="form-control" name="categoryID" value={this.state.categoryID} onChange={this.handleChange} >
                         
                                     <option value="0">--เลือกหมวดหมู่--</option>
                                     {categoryList.map((category, index) => (
