@@ -13,7 +13,8 @@ class GoalCreate extends Component {
             goalName: "",
             description: "",
             startDate: "",
-            endDate: "2016-02-10",
+            endDate: "",
+            numberDate:0,
             categoryID: 0,
             circleID: 0,
             checklists: [{value: null}],
@@ -27,6 +28,7 @@ class GoalCreate extends Component {
         this.handleRemoveChecklists = this.handleRemoveChecklists.bind(this);
         this.handleChecklistsValueChange = this.handleChecklistsValueChange.bind(this);
         this.handleValidate = this.handleValidate.bind(this);
+        this.handlerNumberDate = this.handlerNumberDate.bind(this);
       }
 
       componentWillMount() {
@@ -47,6 +49,9 @@ class GoalCreate extends Component {
 
       }
 
+      handlerNumberDate = (value) => (evt) => {
+        this.state.numberDate = value;
+      }
 
       handleChange(event) {
         const target = event.target;
@@ -57,6 +62,15 @@ class GoalCreate extends Component {
           [name]: value
         });
         document.getElementById(name).innerHTML = null;
+
+            event.preventDefault();
+            var myDate = new Date(this.state.startDate); 
+            console.log(this.state.numberDate);
+            console.log(myDate);
+            myDate.setDate(myDate.getDate() + 10 );
+            myDate = myDate.toLocaleDateString("en-TH");
+            this.state.endDate = myDate;
+            console.log(this.state.endDate);
       }
 
       handleAddChecklists = () => {
@@ -201,7 +215,7 @@ class GoalCreate extends Component {
                                     <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
                                     <option value="0">--เลือกรอบการดำเนินงาน--</option>
                                     {circleList.map((circle, index) => (
-                                        <option value={circle.id}>{circle.circleName}</option>
+                                        <option value={circle.id} onChange={this.handlerNumberDate(circle.circleTime)}>{circle.circleName}</option>
                                     ))}
                                     </select>
                                     <span id="circleID" className="error-message"></span>
@@ -225,8 +239,8 @@ class GoalCreate extends Component {
 
                         <div className="form-group">
                               <label className="col-lg-2 col-sm-2 control-label">วันสิ้นสุดเป้าหมาย</label>
-                              <div className="col-sm-5">
-                                  <p className="form-control-static" name="endDate">02/22/2018</p>
+                              <div className="col-sm-5" id="endDate">
+                                  <p className="form-control-static" name="endDate" id="endDate">{this.state.endDate}</p>
                               </div>
                           </div>
                 
