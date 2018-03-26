@@ -49,7 +49,7 @@ class Goalmanagement extends Component {
       }
 
       componentWillMount() {
-        CommonApi.instance.post('/goal/search', {
+        CommonApi.instance.post('/goal/searchbyself', {
 
         })
         .then(response => {
@@ -141,7 +141,7 @@ class Goalmanagement extends Component {
     }
 
     handleSearch(){
-      CommonApi.instance.post('/goal/search', {
+      CommonApi.instance.post('/goal/searchbyself', {
             goalName: this.state.goalName,
             categoryID: this.state.categoryID,
             circleID: this.state.circleID,

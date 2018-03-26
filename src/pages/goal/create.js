@@ -22,6 +22,9 @@ class GoalCreate extends Component {
             categoryList: [],
             userID:"",
             redirect: false,
+            duplicateMessage1: "",
+            duplicateMessage2: "",
+            duplicate: true,
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -101,13 +104,24 @@ class GoalCreate extends Component {
 
         console.log(this.state);
 
-        CommonApi.instance.post('/goal/create', this.state)
+        CommonApi.instance.post('/goal/isDuplicateNameCreate' ,this.state)
         .then(response => {
-            if(response.status == 200 && response.data.result){
-                this.setState({redirect: true});
-            }else{
-                this.handleValidate(response.data.message); 
-                console.log(response.data.message)
+            if(response.status == 200 && response.data.result == false){
+                this.setState({ duplicate: false, duplicateMessage1: "ชื่อเป้าหมายซ้ำ!", duplicateMessage2: "กรุณากรอกชื่อเป้าหมายใหม่อีกครั้ง."});
+            }
+            else{
+                this.setState({ duplicate: true, duplicateMessage1: "",duplicateMessage2: ""});
+                CommonApi.instance.post('/goal/create',this.state)
+                        .then(response =>{
+                            if(response.status == 200 && response.data.result){
+                                this.setState({redirect: true});
+                            }
+                            else{
+                                this.handleValidate(response.data.message);
+                            }
+
+                        }
+                    )
             }
         });
       }
@@ -150,6 +164,9 @@ class GoalCreate extends Component {
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
+                <div className="alert alert-danger alert-dismissable" hidden={this.state.duplicate}>
+						  <strong>{this.state.duplicateMessage1}</strong> {this.state.duplicateMessage2}
+						</div>
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลเป้าหมาย</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">

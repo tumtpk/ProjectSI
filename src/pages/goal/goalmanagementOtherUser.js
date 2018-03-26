@@ -44,12 +44,8 @@ class GoalmanagementOtherUser extends Component {
       }
 
       componentWillMount() {
-        CommonApi.instance.post('/goal/search', {
-                id: this.state.id,
-                goalName: this.state.goalName,
-                categoryID: this.state.categoryID,
-                circleID: this.state.circleID,
-              //status: this.state.status
+        CommonApi.instance.post('/goal/searchbyCommander', {
+
         })
         .then(response => {
             this.setState({dataSearch: response.data});
@@ -100,7 +96,7 @@ class GoalmanagementOtherUser extends Component {
 
     handleSearch(){
         // CommonApi.instance.defaults.headers.common['Authorization'] = 'Bearer tGOL83hqWSlBZAXBxonr3sN_OThf1YGQGMoPLrb1lscOW-LeyC2JImp-Chd_udagbPiosPb-6nzGU_lF1JPr2VXoKn0HTJ4bEvP6-yBkQrkfRGKz62H69QXJKIhJn9x2hGi--etIc9RVO-dTl5wu_w03oovndT8EN2BVm8Mda9p-k03g5EKt4KSw2qcEqnj-JGwSW0_23SK2Yc6fjOhIjMoqyvPMpPtzlBqb_5-LTyKqReshbvVtKPWoXNf2ld71IxYLdkbpwLWX2kd30k7b3FdEM8XgEVBSKri9ert_DgVoEBl6g1PO8PEgIiofwqYw1L8yPDQrjpsz-FoELUdVZl9uMEoSIGA7EibdHX4Ltsqm2cB62C3nM7eUaphtRwH7RZ-QHMwXlEfiAB86BMzo0OxvK7Q4j_5atJOUg_0ZGr0Eb5yU2CHjqEjrh8zztS5W_g9nvR5Ed6HEjp5O-HfwDs3-t730YVhcvCyCoHXnhR4';
-              CommonApi.instance.post('/goal/search', {
+              CommonApi.instance.post('/goal/searchbyCommander', {
                 id: this.state.id,
               goalName: this.state.goalName,
               categoryID: this.state.categoryID,
