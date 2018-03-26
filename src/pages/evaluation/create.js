@@ -12,7 +12,10 @@ class EvaluationCreate extends Component {
             evaluationName: "",
             description: "",
             questions: [{value: null}],
-            choices: [[]]
+            redirect: false,
+            duplicateMessage1: "",
+            duplicateMessage2: "",
+            duplicate: true,
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -20,9 +23,6 @@ class EvaluationCreate extends Component {
         this.handleAddQuestions = this.handleAddQuestions.bind(this);
         this.handleRemoveQuestions = this.handleRemoveQuestions.bind(this);
         this.handleQuestionsValueChange = this.handleQuestionsValueChange.bind(this);
-        this.handleAddChoices = this.handleAddChoices.bind(this);
-        this.handleRemoveChoices = this.handleRemoveChoices.bind(this);
-        this.handleChoicesValueChange = this.handleChoicesValueChange.bind(this);
         this.handleValidate = this.handleValidate.bind(this);
       }
 
@@ -41,7 +41,6 @@ class EvaluationCreate extends Component {
         this.setState({
             questions: this.state.questions.concat([{ value: null }])
         });
-        this.state.choices.push([]);
       }
 
       handleRemoveQuestions = (index) => () => {
@@ -59,46 +58,45 @@ class EvaluationCreate extends Component {
         this.setState({ questions: newQuestion });
       }
 
-      handleAddChoices = (index) => () => {
-        this.state.choices[index].push("");
-        this.setState({
-            choices: this.state.choices
-        });
-      }
-
-      handleRemoveChoices = (index, cindex) => () => {
-        this.state.choices[index].splice(cindex, 1);
-        this.setState({
-            choices: this.state.choices
-        });
-        
-  
-      }
-
-      handleChoicesValueChange = (index) => (evt) => {
-        const newChoice = this.state.choices.map((choice, sidx) => {
-          if (index !== sidx) return choice;
-          return { ...choice, value: evt.target.value };
-        });
-    
-        this.setState({ choices: newChoice });
-      }
-
       handleSubmit(event) {
         event.preventDefault();
 
         console.log(this.state);
 
-        CommonApi.instance.post('/evaluation/create', this.state)
+        CommonApi.instance.post('/evaluation/CreateisDuplicateName' ,this.state)
         .then(response => {
-            if(response.status == 200 && response.data.result){
-                this.setState({redirect: true});
-            }else{
-                console.log(response.data.message)
-                this.handleValidate(response.data.message);
+            if(response.status == 200 && response.data.result == false){
+                this.setState({ duplicate: false, duplicateMessage1: "ชื่อแบบประเมินซ้ำ!", duplicateMessage2: "กรุณากรอกชื่อแบบประเมินใหม่อีกครั้ง."});
+            }
+            else{
+                this.setState({ duplicate: true, duplicateMessage1: "",duplicateMessage2: ""});
+                CommonApi.instance.post('/question/isDuplicateNameCreate' ,this.state)
+                .then(response =>{
+                    if (response.status == 200 && response.data.result == true){
+                        CommonApi.instance.post('/evaluation/create',this.state)
+                        .then(response =>{
+                            if(response.status == 200 && response.data.result){
+                                this.setState({redirect: true});
+                            }
+                            else{
+                                this.handleValidate(response.data.message);
+                                console.log(response.data.message)
+                            }
+
+                        }
+                    )
+
+                    }
+                    else{
+                        this.setState({ duplicate: false, duplicateMessage1: "แบบประเมินนี้มีคำถามซ้ำกัน!", duplicateMessage2: "กรุณากรอกคำถามใหม่อีกครั้ง."});
+                    }
+                })
+                
             }
         });
       }
+
+
 
     handleValidate(messages){
         let require = ["evaluationName","description"];
@@ -108,9 +106,6 @@ class EvaluationCreate extends Component {
         this.state.questions.map((question, sidx) => {
             document.getElementById('questions['+sidx+']').innerHTML = null;
         });
- //       this.state.choices.map((choice, sidx) => {
- //           document.getElementById('choices['+sidx+']').innerHTML = null;
- //       });
         messages.forEach(element => {
             document.getElementById(element.key).innerHTML = element.message;
         });
@@ -138,6 +133,9 @@ class EvaluationCreate extends Component {
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
+                <div className="alert alert-danger alert-dismissable" hidden={this.state.duplicate}>
+						  <strong>{this.state.duplicateMessage1}</strong> {this.state.duplicateMessage2}
+						</div>
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลแบบประเมิน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
@@ -174,29 +172,24 @@ class EvaluationCreate extends Component {
                                     </span>
                                 </div>
                             </div>
-                              <button type="button" className="btn btn-round btn-warning" onClick={this.handleAddChoices(index)}>เพิ่มตัวเลือก</button>
-                            
-                              {this.state.choices[index].map((choice, cIndex) => (
-                                <div className="row">
-                                    <label className="col-sm-3 col-sm-3 control-label"></label>
-                                    <div className="col-sm-5">
-                                        <div className="input-group">
-                                            <input type="text" className="form-control" placeholder={`ตัวเลือกที่ ${cIndex + 1}`}
-                                                    value={choice.value} 
-                                                    onChange={this.handleChoicesValueChange(cIndex)} />
-                                            <span id={'choices['+cIndex+']'} className="error-message"></span>
-                                            <span className="input-group-btn">
-                                                <button className="btn btn-danger" type="button" onClick={this.handleRemoveChoices(index,cIndex)} >ลบ</button>
-                                            </span>
-                                            </div>
-                                    </div>
-                                </div>
-                                ))}
-                            
+                             <br></br>
                             </div>
                         ))}
-
-
+                        <div className="form-group"></div>
+                        <div className="row">
+                            <label className="col-sm-2 col-sm-2 control-label">กำหนดบทบาทผู้ใช้แบบประเมิน</label>
+                            <div className="col-sm-5">
+                                <div className="checkbox">
+                                    <label><input type="checkbox" value="" disabled/> นักศึกษา</label>
+                                </div>
+                                <div className="checkbox">
+                                    <label><input type="checkbox" value="" disabled/> อาจารย์</label>
+                                </div>
+                                <div className="checkbox disabled">
+                                    <label><input type="checkbox" value="" disabled  /> ประธานหลักสูตร</label>
+                                </div>
+                            </div>
+                        </div>
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>
                             <Link to={ {pathname: `/evaluationmanagement`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>

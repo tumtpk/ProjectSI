@@ -33,7 +33,8 @@ class CategoryDetail extends Component {
                 categoryName: responseData.categoryName,
                 status: responseData.status
               }
-            );
+            ); 
+            console.log(this.state);
         });
       }
 
@@ -61,11 +62,10 @@ class CategoryDetail extends Component {
     render() {
 
       const { redirect } = this.state;
-
+      console.log(this.state);
       if (redirect) {
         return <Redirect to='/categorymanagement'/>;
       }
-
       return (
         <section id="main-content">
           <section className="wrapper">

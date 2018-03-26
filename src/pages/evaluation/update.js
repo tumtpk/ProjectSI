@@ -13,6 +13,7 @@ class EvaluationUpdate extends Component {
             description: "",
             questions: [{value: null}],
             redirect: false,
+          
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -24,22 +25,24 @@ class EvaluationUpdate extends Component {
       }
 
       componentWillMount() {
-        let id = this.props.location.query.id;
-        this.setState({id: id});
-        this.apiGetUset(id);
+       let id = this.props.location.query.id;
+        this.state.evaluationName = this.props.location.query.evaluationName;
+        this.state.description = this.props.location.query.description;
+        this.setState(this.state);
+        console.log(this.state)
+        // this.apiGetEset(id);
+        this.apiGetQset(id);  
       }
 
-      apiGetUset(id){
-        CommonApi.instance.get('/evaluation/getevaluation/'+id)
+      apiGetQset(id){
+        CommonApi.instance.get('/question/getquestion/'+id)
         .then(response => {
             let responseData = response.data;
             this.setState(
-              {
-                evaluationName: "",
-                description: "",
-                questions: [{value: null}]
+              {questions: response.data
               }
             );
+            console.log(this.state);
         });
       }
 
@@ -79,15 +82,38 @@ class EvaluationUpdate extends Component {
 
         console.log(this.state);
 
-        CommonApi.instance.post('/evaluation/update', this.state)
+        CommonApi.instance.post('/evaluation/isDuplicateNameUpdate' ,this.state)
         .then(response => {
-            if(response.status == 200 && response.data.result){
-                this.setState({redirect: true});
-            }else{
-                this.handleValidate(response.data.message);
+            if(response.status == 200 && response.data.result == false){
+                this.setState({ duplicate: false, duplicateMessage1: "ชื่อแบบประเมินซ้ำ!", duplicateMessage2: "กรุณากรอกชื่อแบบประเมินใหม่อีกครั้ง."});
+            }
+            else{
+                this.setState({ duplicate: true, duplicateMessage1: "",duplicateMessage2: ""});
+                CommonApi.instance.post('/question/isDuplicateNameCreate' ,this.state)
+                .then(response =>{
+                    if (response.status == 200 && response.data.result == true){
+                        CommonApi.instance.post('/evaluation/update',this.state)
+                        .then(response =>{
+                            if(response.status == 200 && response.data.result){
+                                this.setState({redirect: true});
+                            }
+                            else{
+                                this.handleValidate(response.data.message);
+                            }
+
+                        }
+                    )
+
+                    }
+                    else{
+                        this.setState({ duplicate: false, duplicateMessage1: "แบบประเมินนี้มีคำถามซ้ำกัน!", duplicateMessage2: "กรุณากรอกคำถามใหม่อีกครั้ง."});
+                    }
+                })
+                
             }
         });
       }
+
 
     handleValidate(messages){
         let require = ["evaluationName","description"];
@@ -97,9 +123,12 @@ class EvaluationUpdate extends Component {
         this.state.questions.map((question, sidx) => {
             document.getElementById('questions['+sidx+']').innerHTML = null;
         });
+        console.log(messages);
         messages.forEach(element => {
             document.getElementById(element.key).innerHTML = element.message;
+            console.log(messages);
         });
+        console.log(messages);
     }
 
       
@@ -110,7 +139,7 @@ class EvaluationUpdate extends Component {
       if (redirect) {
         return <Redirect to='/evaluationmanagement'/>;
       }
-
+      let questions = this.state.questions;
       return (
         <section id="main-content">
           <section className="wrapper">
@@ -146,9 +175,11 @@ class EvaluationUpdate extends Component {
                                 <button type="button" className="btn btn-primary" onClick={this.handleAddQuestions}>เพิ่ม</button>
                             </div>
                         </div>
+                  
                         {this.state.questions.map((question, index) => (
                         <div className="row">
                             <label className="col-sm-2 col-sm-2 control-label"></label>
+                             
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <input type="text" className="form-control" placeholder={`คำถามที่ ${index + 1}`}
@@ -162,6 +193,8 @@ class EvaluationUpdate extends Component {
                             </div>
                         </div>
                         ))}
+
+                    
                           
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>

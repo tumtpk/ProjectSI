@@ -17,7 +17,8 @@ const initialState = {
   description : null,
   status : 0,
   dataSearch: null,
-  number:1
+  number:1,
+  userTpyeID: "นักศึกษา, อาจารย์"
 };
 
 class Evaluationmanagement extends Component { 
@@ -92,10 +93,10 @@ class Evaluationmanagement extends Component {
           <tr>
             <td>{ this.state.number}</td>
             <td>{ data.evaluationName }</td>
-            <td>{ data.status }</td>
+            <td>{ this.state.userTpyeID}</td>
             <td>
-              <Link to={ {pathname: `/evaluation/view`, query: {id: data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/evaluation/update`, query: {id: data.id}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
+              <Link to={ {pathname: `/evaluation/view`, query: {id: data.id, evaluationName:data.evaluationName,description:data.description}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/evaluation/update`, query: {id: data.id,evaluationName:data.evaluationName,description:data.description}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
               <button className="btn btn-danger btn-xs" data-toggle="modal" data-target={"#"+data.id}><i className="fa fa-trash-o " ></i></button>
                                       <div id={data.id} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
@@ -133,6 +134,7 @@ class Evaluationmanagement extends Component {
                                 <tr>
                                   <th> ลำดับ </th>
                                   <th> ชื่อแบบประเมิน</th>
+                                  <th> บทบาทผู้ใช้แบบประเมิน</th>
                                   <th></th>
                                 </tr>
                               </thead>
@@ -171,6 +173,15 @@ class Evaluationmanagement extends Component {
                               <label className="col-sm-2 col-sm-2 control-label">ชื่อแบบประเมิน</label>
                               <div className="col-sm-3">
                                   <input type="text" className="form-control" name="evaluationName" value={this.state.evaluationName} onChange={this.handleChange}/>
+                              </div>
+                              <label className="col-sm-2 col-sm-2 control-label">บทบาทผู้ใช้แบบประเมิน</label>
+                              <div className="col-sm-3">
+                              <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange} disabled>
+                                    <option value="0">--เลือกบทบาทผู้ใช้แบบประเมิน--</option>
+                                    <option value="1">นักศึกษา</option>
+                                    <option value="2">อาจารย์</option>
+                                    <option value="3">ประธานหลักสูตร</option>
+                                </select>
                               </div>
                             </div> 
                                           

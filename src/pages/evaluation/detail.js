@@ -11,8 +11,9 @@ class EvaluationDetail extends Component {
         this.state = {
             evaluationName: "",
             description: "",
-            questions: [{value: null}],
-            redirect: false
+            questions: []
+            //questions: [{value: null}],
+            //redirect: false
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -22,21 +23,40 @@ class EvaluationDetail extends Component {
 
       componentWillMount() {
         let id = this.props.location.query.id;
-        this.apiGetUset(id);
+        this.state.evaluationName = this.props.location.query.evaluationName;
+        this.state.description = this.props.location.query.description;
+        this.setState(this.state);
+        console.log(this.state)
+        // this.apiGetEset(id);
+        this.apiGetQset(id);  
+        
       }
 
-      apiGetUset(id){
-        CommonApi.instance.get('/evaluation/getevaluation/'+id)
+      // apiGetEset(id){
+      //   CommonApi.instance.get('/evaluation/getevaluation/'+id)
+      //   .then(response => {
+      //       let responseData = response.data;
+      //       this.setState(
+      //         {
+      //           evaluationName : responseData.evaluationName,
+      //           description: responseData.description,
+      //         }  
+      //       );
+      //       console.log(this.state);
+      //   });
+      // }
+
+      apiGetQset(id){
+        CommonApi.instance.get('/question/getquestion/'+id)
         .then(response => {
             let responseData = response.data;
             this.setState(
-              {
-                evaluationName : responseData.evaluationName,
-                description: responseData.description,
-                question: responseData.question,
-
+              {questions: response.data
               }
+             
             );
+             console.log(this.state.questions)
+            console.log(this.state);
         });
       }
 
@@ -53,22 +73,15 @@ class EvaluationDetail extends Component {
       handleSubmit(event) {
         event.preventDefault();
 
-        CommonApi.instance.post('/evaluation/create', this.state)
-        .then(response => {
-            if(response.status == 200){
-                this.setState({redirect: true});
-            }
-        });
       }
 
     render() {
 
       const { redirect } = this.state;
-
       if (redirect) {
         return <Redirect to='/evaluationmanagement'/>;
       }
-
+      let questions = this.state.questions;
       return (
         <section id="main-content">
           <section className="wrapper">
@@ -78,7 +91,6 @@ class EvaluationDetail extends Component {
                     <h3><i className="fa fa-angle-right"></i> ดูรายละเอียดแบบประเมิน</h3>
                 </div>
             </div>
-
             <div className="row mt">
               <div className="col-lg-12">
                 <div className="form-panel">
@@ -87,7 +99,7 @@ class EvaluationDetail extends Component {
                         <div className="form-group">
                               <label className="col-sm-2 col-sm-2 control-label">ชื่อแบบประเมิน</label>
                               <div className="col-sm-5">
-                                    <input type="text" className="form-control" name="evaluationName" value={this.state.evaluationName} onChange={this.handleChange} disabled/>
+                                    <input type="text" className="form-control" name="evaluationName" value={this.state.evaluationName}  disabled/>
                               </div>
                         </div>
                         <div className="form-group">
@@ -96,23 +108,17 @@ class EvaluationDetail extends Component {
                                 <textarea className="form-control rounded-0" rows="5" name="description" value={this.state.description} onChange={this.handleChange} disabled/>
                             </div>
                         </div>
+
                         <div className="row">
                             <label className="col-sm-2 col-sm-2 control-label">คำถาม</label>
-                        </div>
-                        {this.state.questions.map((question, index) => (
-                        <div className="row">
-                            <label className="col-sm-2 col-sm-2 control-label"></label>
                             <div className="col-sm-5">
-                                <div className="input-group">
-                                    <input type="text" className="form-control" placeholder={`คำถามที่ ${index + 1}` }
-                                            value={question.value} 
-                                            disabled />
-                                </div>
-                            </div>
+                            {this.state.questions.map((question, index) => (
+                                    <input type="text" className="form-control" value={question.value} disabled />
+                            ))} 
+                          </div>
                         </div>
-                        ))}
-                          
                         
+
                         <div className="text-right">
                             <Link to={ {pathname: `/evaluationmanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
                         </div>
