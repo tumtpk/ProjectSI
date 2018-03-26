@@ -156,21 +156,21 @@ class EvaluationUpdate extends Component {
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลแบบประเมิน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">ชื่อแบบประเมิน</label>
+                              <label className="col-sm-2 col-sm-2 control-label">ชื่อแบบประเมิน<span className="error-message">*</span></label>
                               <div className="col-sm-5">
                                     <input type="text" className="form-control" name="evaluationName" value={this.state.evaluationName} onChange={this.handleChange} />
                                     <span id="evaluationName" className="error-message"></span>
                               </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-sm-2 col-sm-2 control-label">คำชี้แจง</label>
+                            <label className="col-sm-2 col-sm-2 control-label">คำชี้แจง<span className="error-message">*</span></label>
                             <div className="col-sm-5">
                                 <textarea className="form-control rounded-0" rows="5" name="description" value={this.state.description} onChange={this.handleChange}/>
                                 <span id="description" className="error-message"></span>
                             </div>
                         </div>
                         <div className="row">
-                            <label className="col-sm-2 col-sm-2 control-label">คำถาม</label>
+                            <label className="col-sm-2 col-sm-2 control-label">คำถาม<span className="error-message">*</span></label>
                             <div className="col-sm-5">
                                 <button type="button" className="btn btn-primary" onClick={this.handleAddQuestions}>เพิ่ม</button>
                             </div>
