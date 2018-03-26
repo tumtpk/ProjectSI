@@ -17,10 +17,10 @@ import DateTimeField from "react-bootstrap-datetimepicker";
 
 const initialState = {
   id: null,
-  goalName: "",
-  description: "",
-  startDate: "",
-  endDate: "",
+  goalName: null,
+  description: null,
+  startDate: null,
+  endDate: null,
   categoryID: 0,
   circleID: 0,
   checklists: [{value: null}],
@@ -50,11 +50,7 @@ class Goalmanagement extends Component {
 
       componentWillMount() {
         CommonApi.instance.post('/goal/search', {
-              id: this.state.id,
-              goalName: this.state.goalName,
-              categoryID: this.state.categoryID,
-              circleID: this.state.circleID,
-              //status: this.state.status
+
         })
         .then(response => {
             this.setState({dataSearch: response.data});
@@ -87,7 +83,7 @@ class Goalmanagement extends Component {
           }
           console.log(checklist);
         });
-      }
+      } 
 
       handleSaveProgress(event) {
         CommonApi.instance.post('/checklistprogress/saveProgress' ,this.state.checklistProgresses)
@@ -119,6 +115,7 @@ class Goalmanagement extends Component {
         this.handleSearch();
         event.preventDefault();
       }
+  
 
       handleDelete = (id) => (evt) => {
         CommonApi.instance.get('/goal/delete/'+id) 
@@ -127,35 +124,46 @@ class Goalmanagement extends Component {
         });
     }
 
-      handleChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        
-        this.setState({
-          [name]: value
-        });
+    handleChange(event) {
+      const target = event.target;
+      const value = target.value;
+      const name = target.name;
+      
+      this.setState({
+        [name]: value
+      });
+    }
 
-      }
-      handleClear(event){
-        document.getElementById("search-goal").reset();
-        this.setState(initialState);
-        this.handleSearch();
-      }
+    handleClear(event){
+      document.getElementById("search-goal").reset();
+      this.setState(initialState);
+      this.handleSearch();
+    }
 
     handleSearch(){
-        // CommonApi.instance.defaults.headers.common['Authorization'] = 'Bearer tGOL83hqWSlBZAXBxonr3sN_OThf1YGQGMoPLrb1lscOW-LeyC2JImp-Chd_udagbPiosPb-6nzGU_lF1JPr2VXoKn0HTJ4bEvP6-yBkQrkfRGKz62H69QXJKIhJn9x2hGi--etIc9RVO-dTl5wu_w03oovndT8EN2BVm8Mda9p-k03g5EKt4KSw2qcEqnj-JGwSW0_23SK2Yc6fjOhIjMoqyvPMpPtzlBqb_5-LTyKqReshbvVtKPWoXNf2ld71IxYLdkbpwLWX2kd30k7b3FdEM8XgEVBSKri9ert_DgVoEBl6g1PO8PEgIiofwqYw1L8yPDQrjpsz-FoELUdVZl9uMEoSIGA7EibdHX4Ltsqm2cB62C3nM7eUaphtRwH7RZ-QHMwXlEfiAB86BMzo0OxvK7Q4j_5atJOUg_0ZGr0Eb5yU2CHjqEjrh8zztS5W_g9nvR5Ed6HEjp5O-HfwDs3-t730YVhcvCyCoHXnhR4';
-              CommonApi.instance.post('/goal/search', {
-                id: this.state.id,
-              goalName: this.state.goalName,
-              categoryID: this.state.categoryID,
-              circleID: this.state.circleID,
-              //status: this.state.status
-        })
+      CommonApi.instance.post('/goal/search', {
+            goalName: this.state.goalName,
+            categoryID: this.state.categoryID,
+            circleID: this.state.circleID,
+
+        }) 
         .then(response => {
             this.setState({dataSearch: response.data});
         });
-    }
+        CommonApi.instance.post('/circle/search', {
+          status: 1
+        })
+        .then(response => {
+          this.setState({circleList: response.data});
+          
+        });
+        CommonApi.instance.post('/category/search', {
+          status: 1
+        })
+        .then(response => {
+          this.setState({categoryList: response.data});
+        });    
+      }
 
     state = {
       isOpen: false
@@ -182,7 +190,7 @@ class Goalmanagement extends Component {
             <td>
               <span class="check">
                 {React.createElement('input',{type: 'checkbox', checked:data.checklistProgress1 === 2 ? true : false})}
-                &nbsp;{data.checklistName}
+                &nbsp;{data.value}
               </span>
             </td>
           </tr>
@@ -204,8 +212,8 @@ class Goalmanagement extends Component {
             <td><span className="badge bg-success">{this.state.status}</span></td>
             <td>
               <button className="btn btn-warning btn-xs" data-toggle="modal" data-target="#modal" onClick={this.handleProgress(data.id)}><i className="fa fa-tasks" ></i></button>
-              <Link to={ {pathname: `/goal/view`, query: {id: data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/goal/update`, query: {id: data.id}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
+              <Link to={ {pathname: `/goal/view`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/goal/update`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
               <button className="btn btn-danger btn-xs"  data-toggle="modal" data-target={"#"+data.goalName}><i className="fa fa-trash-o "></i></button>
                                       <div id={data.goalName} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
@@ -292,7 +300,7 @@ class Goalmanagement extends Component {
             <div className="row">
                 <div className="col-lg-12">
                   <div className="form-panel">           
-                      <form className="form-horizontal style-form" id="search-user" onSubmit={this.handleSubmit}>
+                      <form className="form-horizontal style-form" id="search-goal" onSubmit={this.handleSubmit}>
                           <div className="form-group">
                             <br></br>
                               <label className="col-sm-2 col-sm-2 control-label">ชื่อเป้าหมาย</label>
