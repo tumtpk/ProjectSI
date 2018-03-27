@@ -130,7 +130,7 @@ class CircleUpdate extends Component {
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการปรับปรุงกระบวนการ<span className="error-message">*</span></label>
                             <div className="col-sm-5">
-                                <input type="number" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} />
+                                <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} />
                                 <span id="circleName" className="error-message"></span>
                             </div>
                         </div>
@@ -138,7 +138,7 @@ class CircleUpdate extends Component {
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">ระยะเวลาที่กำหนด<span className="error-message">*</span></label>
                             <div className="col-sm-3">
-                                <input type="text" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} />
+                                <input type="number" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} />
                                 <span id="circleTime" className="error-message"></span>
                             </div>
                             <label className="col-sm-3 col-sm-3 control-label">วัน</label>

@@ -16,13 +16,14 @@ import DateTimeField from "react-bootstrap-datetimepicker";
 
 const initialState = {
   id: null,
-  goalName: "",
-  description: "",
-  startDate: "",
-  endDate: "",
+  goalName: null,
+  description: null,
+  startDate: null,
+  endDate: null,
   categoryID: 0,
   circleID: 0,
   checklists: [{value: null}],
+  checklistProgresses: [{value: null}],
   dataSearch: null,
   number: 1,
   circleList: [],
@@ -92,21 +93,34 @@ class GoalmanagementOtherUser extends Component {
       handleClear(event){
         document.getElementById("search-goal").reset();
         this.setState(initialState);
+        this.handleSearch();
       }
 
     handleSearch(){
         // CommonApi.instance.defaults.headers.common['Authorization'] = 'Bearer tGOL83hqWSlBZAXBxonr3sN_OThf1YGQGMoPLrb1lscOW-LeyC2JImp-Chd_udagbPiosPb-6nzGU_lF1JPr2VXoKn0HTJ4bEvP6-yBkQrkfRGKz62H69QXJKIhJn9x2hGi--etIc9RVO-dTl5wu_w03oovndT8EN2BVm8Mda9p-k03g5EKt4KSw2qcEqnj-JGwSW0_23SK2Yc6fjOhIjMoqyvPMpPtzlBqb_5-LTyKqReshbvVtKPWoXNf2ld71IxYLdkbpwLWX2kd30k7b3FdEM8XgEVBSKri9ert_DgVoEBl6g1PO8PEgIiofwqYw1L8yPDQrjpsz-FoELUdVZl9uMEoSIGA7EibdHX4Ltsqm2cB62C3nM7eUaphtRwH7RZ-QHMwXlEfiAB86BMzo0OxvK7Q4j_5atJOUg_0ZGr0Eb5yU2CHjqEjrh8zztS5W_g9nvR5Ed6HEjp5O-HfwDs3-t730YVhcvCyCoHXnhR4';
               CommonApi.instance.post('/goal/searchbyCommander', {
-                id: this.state.id,
               goalName: this.state.goalName,
               categoryID: this.state.categoryID,
               circleID: this.state.circleID,
               //status: this.state.status
-        })
-        .then(response => {
-            this.setState({dataSearch: response.data});
-        });
-    }
+            }) 
+            .then(response => {
+                this.setState({dataSearch: response.data});
+            });
+            CommonApi.instance.post('/circle/search', {
+              status: 1
+            })
+            .then(response => {
+              this.setState({circleList: response.data});
+              
+            });
+            CommonApi.instance.post('/category/search', {
+              status: 1
+            })
+            .then(response => {
+              this.setState({categoryList: response.data});
+            });    
+          }
 
     state = {
       isOpen: false
@@ -229,7 +243,7 @@ class GoalmanagementOtherUser extends Component {
             <div className="row">
                 <div className="col-lg-12">
                   <div className="form-panel">           
-                      <form className="form-horizontal style-form" id="search-user" onSubmit={this.handleSubmit}>
+                      <form className="form-horizontal style-form" id="search-goal" onSubmit={this.handleSubmit}>
                           <div className="form-group">
                           <br></br>
                               <label className="col-sm-2 col-sm-2 control-label">ชื่อเป้าหมาย</label>
