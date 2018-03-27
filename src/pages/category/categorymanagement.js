@@ -156,7 +156,7 @@ class Categorymanagement extends Component {
           <section className="wrapper">
             <div className="row"> 
                 <div className="col-md-8">
-                    <h3><i className="fa fa-angle-right"></i> การจัดการหมวดหมู่</h3>
+                    <h3><i className="fa fa-angle-right"></i> การจัดการหมวดหมู่ของเป้าหมาย</h3>
                 </div>
                 <div className="col-md-4 text-right" style={{marginTop: '15px'}}>
                   <Link to={ {pathname: `/category/create`} }><button type="button" className="btn btn-primary" >เพิ่มหมวดหมู่</button></Link>

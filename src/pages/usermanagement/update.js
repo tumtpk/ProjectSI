@@ -92,7 +92,7 @@ class UserUpdate extends Component {
         CommonApi.instance.post('/user/UpdateisDuplicatePersonalId' ,this.state)
         .then(response => {
             if(response.status == 200 && response.data.result == false){
-                this.setState({ duplicate: false, duplicateMessage1: "รหัสประจำตัวซ้ำ!", duplicateMessage2: "กรุณากรอกรหัสประจำตัวใหม่อีกครั้ง."});
+                this.setState({ duplicate: false, duplicateMessage1: "รหัสประจำตัวนี้ !", duplicateMessage2: "มีอยู่แล้วในระบบ."});
             }
             else{
                 this.setState({ duplicate: true, duplicateMessage: ""});

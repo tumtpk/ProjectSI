@@ -74,7 +74,7 @@ class UserCreate extends Component {
         CommonApi.instance.post('/user/CreateisDuplicatePersonalId' ,this.state)
         .then(response => {
             if(response.status == 200 && response.data.result == false){
-                this.setState({ duplicate: false, duplicateMessage1: "รหัสประจำตัวซ้ำ!", duplicateMessage2: "กรุณากรอกรหัสประจำตัวใหม่อีกครั้ง."});
+                this.setState({ duplicate: false, duplicateMessage1: "รหัสประจำตัวนี้ !", duplicateMessage2: "มีอยู่แล้วในระบบ."});
             }
             else{
                 this.setState({ duplicate: true, duplicateMessage1: "",duplicateMessage2: ""});
@@ -95,7 +95,7 @@ class UserCreate extends Component {
 
                     }
                     else{
-                        this.setState({ duplicate: false, duplicateMessage1: "อีเมล์ซ้ำ!", duplicateMessage2: "กรุณากรอกอีเมล์ใหม่อีกครั้ง."});
+                        this.setState({ duplicate: false, duplicateMessage1: "อีเมล์นี้ !", duplicateMessage2: "มีอยู่แล้วในระบบ."});
                     }
                 })
                 

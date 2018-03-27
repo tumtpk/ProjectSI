@@ -28,7 +28,7 @@ const initialState = {
   commanderList:[],
 };
 
-class Usermanagement extends Component { 
+class Usermanagement2 extends Component { 
 
     constructor(props) {
         super(props);
@@ -43,21 +43,12 @@ class Usermanagement extends Component {
 
       componentWillMount() {
         CommonApi.instance.post('/user/search', {
-              userTypeID: 1
-
+          userTypeID: 3
         })
         .then(response => {
-            this.setState({studentList: response.data});
-            console.log({studentList: response.data});
+        this.setState({headList: response.data});
         });
 
-
-        CommonApi.instance.get('user/getuserCommander', {
-
-        })
-        .then(response => {
-            this.setState({commanderList: response.data}); 
-        });
       }
 
       handleSubmit(event) {
@@ -90,23 +81,18 @@ class Usermanagement extends Component {
 
     handleSearch(){
         // CommonApi.instance.defaults.headers.common['Authorization'] = 'Bearer tGOL83hqWSlBZAXBxonr3sN_OThf1YGQGMoPLrb1lscOW-LeyC2JImp-Chd_udagbPiosPb-6nzGU_lF1JPr2VXoKn0HTJ4bEvP6-yBkQrkfRGKz62H69QXJKIhJn9x2hGi--etIc9RVO-dTl5wu_w03oovndT8EN2BVm8Mda9p-k03g5EKt4KSw2qcEqnj-JGwSW0_23SK2Yc6fjOhIjMoqyvPMpPtzlBqb_5-LTyKqReshbvVtKPWoXNf2ld71IxYLdkbpwLWX2kd30k7b3FdEM8XgEVBSKri9ert_DgVoEBl6g1PO8PEgIiofwqYw1L8yPDQrjpsz-FoELUdVZl9uMEoSIGA7EibdHX4Ltsqm2cB62C3nM7eUaphtRwH7RZ-QHMwXlEfiAB86BMzo0OxvK7Q4j_5atJOUg_0ZGr0Eb5yU2CHjqEjrh8zztS5W_g9nvR5Ed6HEjp5O-HfwDs3-t730YVhcvCyCoHXnhR4';
-        CommonApi.instance.post('/user/search', {
-              firstname: this.state.firstname,
-              lastname: this.state.lastname,
-              status: this.state.status,
-              userTypeID: 1,
-              commanderID: this.state.commanderID
-        })
-        .then(response => {
-            this.setState({studentList: response.data});
-        });
 
-        CommonApi.instance.get('user/getuserCommander', {
+      CommonApi.instance.post('/user/search', {
+        firstname: this.state.firstname,
+        lastname: this.state.lastname,
+        status: this.state.status,
+        userTypeID: 3,
+        commanderID: this.state.commanderID
+      })
+      .then(response => {
+      this.setState({headList: response.data});
+      }); 
 
-        })
-        .then(response => {
-            this.setState({commanderList: response.data}); 
-        });
       
     }
 
@@ -126,23 +112,23 @@ class Usermanagement extends Component {
       });
     };
 
-    renderTableStudent(){
+
+    renderTableHead(){
       this.state.number = 0
-      return _.map(this.state.studentList, studentList=> {
+      return _.map(this.state.headList, headList => {
         this.state.number = this.state.number+1
         return (
           <tr>
-            <td>{ this.state.number}</td> ))}
-            <td>{ studentList.personalID}</td>
-            <td>{ studentList.firstname }</td>
-            <td>{ studentList.lastname }</td>
-            <td>{ studentList.email }</td>
-            <td>{ (studentList.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
+            <td>{ this.state.number}</td>
+            <td>{ headList.firstname }</td>
+            <td>{ headList.lastname }</td>
+            <td>{ headList.email }</td>
+            <td>{ (headList.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
             <td>
-              <Link to={ {pathname: `/usermanagement/view`, query: {userID: studentList.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/usermanagement/update`, query: {userID: studentList.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+studentList.userID}></i></button>
-                                      <div id={studentList.userID} className="modal fade" role="dialog">
+              <Link to={ {pathname: `/usermanagement/view`, query: {userID: headList.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/usermanagement/update`, query: {userID: headList.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+headList.userID}></i></button>
+                                      <div id={headList.userID} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">
                                           <div className="modal-header">
@@ -150,53 +136,46 @@ class Usermanagement extends Component {
                                           <h4 className="modal-title">ลบผู้ใช้งาน</h4>
                                           </div>
                                           <div className="modal-body">
-                                          <p>{studentList.firstname}  {studentList.lastname} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
+                                          <p>{headList.firstname}  {headList.lastname} จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
                                           </div>
                                           <div className="modal-footer">
-                                          <button type="button" className="btn btn-success"  data-dismiss="modal" onClick={this.handleDelete(studentList.userID)}>ตกลง</button>
+                                          <button type="button" className="btn btn-success"  data-dismiss="modal" onClick={this.handleDelete(headList.userID)}>ตกลง</button>
                                           <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
                                           </div>
                                           </div>
                                          </div>
                                         </div>
-                                      
+                                        
             </td>
-            
           </tr>
-        
         );
       });
+  
     }
 
-
-
-
-
-    renderFromSearchStudent(){
+ 
+    renderFromSearchHead(){
       return (
         <div className="row mt">
               <div className="col-lg-12">
-              <br></br>
-						<div className="btn-group btn-group-justified">
+              <div className="btn-group btn-group-justified">
 						  <div className="btn-group">
-              <Link to={ {pathname: `/usermanagement`} }><button type="button" className="btn btn-warning btn-lg btn-block" > นักศึกษา</button></Link>
+              <Link to={ {pathname: `/usermanagement`} }><button type="button" className="btn btn-default btn-lg btn-block" > นักศึกษา</button></Link>
 						  </div>
 						  <div className="btn-group">
-              <Link to={ {pathname: `/usermanagement1`} }><button type="button" className="btn btn-default btn-lg btn-block"> อาจารย์</button></Link>
+              <Link to={ {pathname: `/usermanagement1`} }><button type="button" className="btn btn-warning btn-lg btn-block"> อาจารย์</button></Link>
 						  </div>
 						  <div className="btn-group">
 						  <Link to={ {pathname: '/usermanagement2'}}><button type="button" className="btn btn-default btn-lg btn-block"> ประธานหลักสูตร</button></Link>
 						  </div>
-						</div>
+						</div> 
                       <div className="content-panel">
-
                           <hr />
                           <table className="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
                                   <th> ลำดับ</th>
-                                  <th> รหัส </th>
-                                  <th> ชื่อ </th>
+                                  <th> ชื่อ</th>
                                   <th> นามสกุล</th>
                                   <th> ชื่อผู้ใช้</th>
                                   <th> สถานะ</th>
@@ -204,7 +183,7 @@ class Usermanagement extends Component {
                                 </tr>
                               </thead>
                               <tbody>
-                                { this.renderTableStudent() }
+                                { this.renderTableHead() }
                               </tbody>
                           </table>
                       </div>
@@ -213,20 +192,20 @@ class Usermanagement extends Component {
       );
     }
 
-
     render() {
-      let commanderList = this.state.commanderList;
       return (
         <section id="main-content">
           <section className="wrapper">
+
             <div className="row"> 
                 <div className="col-md-8">
                     <h3><i className="fa fa-angle-right"></i> การจัดการผู้ใช้งาน</h3>
                 </div>
                 <div className="col-md-4 text-right" style={{marginTop: '15px'}}>
-                  <Link to={ {pathname: `/usermanagement/create`} }><button type="button" className="btn btn-primary" >เพิ่มผู้ใช้งาน</button></Link>
+                <Link to={ {pathname: `/usermanagement/create`} }><button type="button" className="btn btn-primary" >เพิ่มผู้ใช้งาน</button></Link>
                 </div>
             </div>
+
 
             <div className="row">
                 <div className="col-lg-12">
@@ -236,27 +215,15 @@ class Usermanagement extends Component {
                       <form className="form-horizontal style-form" id="search-user" onSubmit={this.handleSubmit}>
                           <div className="form-group">
                             <br></br>
-                              <label className="col-sm-2 col-sm-2 control-label">ชื่อ</label>
+                              <label className="col-sm-1 col-sm-1 control-label">ชื่อ</label>
                               <div className="col-sm-3">
                                   <input type="text" className="form-control" name="firstname" value={this.state.username} onChange={this.handleChange}/>
                               </div>
-                              <label className="col-sm-2 col-sm-2 control-label">นามสกุล</label>
+                              <label className="col-sm-1 col-sm-1 control-label">นามสกุล</label>
                               <div className="col-sm-3">
                                   <input type="text" className="form-control" name="lastname" value={this.state.username} onChange={this.handleChange} /> 
                               </div>
-                              <br></br><br></br><br></br>
-                              <label className="col-sm-2 col-sm-2 control-label">อาจารย์ที่ปรึกษาทางวิชาการ</label>
-                              <div className="col-sm-3">
-                              <div className="btn-group">
-                              <select className="form-control" name="commanderID" value={this.state.commanderID} onChange={this.handleChange}>
-                                    <option value="0">-- เลือกอาจารย์ที่ปรึกษา --</option>
-                                            {commanderList.map((commander, index) => (
-                                        <option value={commander.userID}>{commander.firstname} {commander.lastname}</option>
-                                        ))}
-                                    </select>
-                              </div>
-                              </div>
-                              <label className="col-sm-2 col-sm-2 control-label">สถานะ</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
+                              <label className="col-sm-1 col-sm-1 control-label">สถานะ</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
                               <div className="btn-group">
                                 <select className="form-control" name="status" value={this.state.username} onChange={this.handleChange}>
                                     <option value="0">เลือกสถานะ</option>
@@ -275,8 +242,7 @@ class Usermanagement extends Component {
                   </div>
               </div>    
             </div>
-           
-            {this.renderFromSearchStudent()}
+            {this.renderFromSearchHead()}
 
           </section>
         </section>
@@ -284,4 +250,4 @@ class Usermanagement extends Component {
     }
   }
   
-  export default Usermanagement;
+  export default Usermanagement2;
