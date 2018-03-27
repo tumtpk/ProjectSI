@@ -170,7 +170,7 @@ class GoalCreate extends Component {
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลเป้าหมาย</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">ชื่อแบบเป้าหมาย<span className="error-message">*</span></label>
+                              <label className="col-sm-2 col-sm-2 control-label">ชื่อเป้าหมาย<span className="error-message">*</span></label>
                               <div className="col-sm-5">
                                     <input type="text" className="form-control" name="goalName" value={this.state.goalName} onChange={this.handleChange} />
                                     <span id="goalName" className="error-message"></span>

@@ -14,6 +14,9 @@ import Usermanagement from "./pages/usermanagement/usermanagement";
 import UserCreate from "./pages/usermanagement/create";
 import UserUpdate from "./pages/usermanagement/update";
 import UserDetail from "./pages/usermanagement/detail";
+import Usermanagement1 from "./pages/usermanagement/usermanagement.1";
+import Usermanagement2 from "./pages/usermanagement/usermanagement.2";
+
 
 import Circlemanagement from "./pages/circle/circlemanagement";
 import CircleCreate from "./pages/circle/create";
@@ -65,6 +68,8 @@ ReactDOM.render(
           <AppRoute exact path="/usermanagement/create" layout={MainLayout} component={UserCreate} />
           <AppRoute exact path="/usermanagement/update" layout={MainLayout} component={UserUpdate} />
           <AppRoute exact path="/usermanagement/view" layout={MainLayout} component={UserDetail} />
+          <AppRoute exact path="/usermanagement1" layout={MainLayout} component={Usermanagement1} />
+          <AppRoute exact path="/usermanagement2" layout={MainLayout} component={Usermanagement2} />
 
           <AppRoute exact path="/circlemanagement" layout={MainLayout} component={Circlemanagement} />
           <AppRoute exact path="/circle/create" layout={MainLayout} component={CircleCreate} />
