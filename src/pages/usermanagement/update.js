@@ -217,7 +217,7 @@ class UserUpdate extends Component {
                               <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว</label>
                               <div className="col-sm-6">
                               <div className="btn-group">
-                                    <input type="text" className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} disabled/>
+                                    <input type="text" maxLength={8} className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} disabled/>
                               </div>
                               <label className="error-message">&nbsp;&nbsp; * กรอกรหัสประจำตัวกรณีเป็น<u>นักศึกษา</u> </label>
                             </div>
