@@ -184,6 +184,13 @@ class UserUpdate extends Component {
       if (redirect) {
         return <Redirect to='/usermanagement'/>;
       }
+
+      if (this.state.userTypeID == 2 || this.state.userTypeID == "2" || (this.state.userTypeID == 3) || (this.state.userTypeID == "3") || (this.state.userTypeID == 4) || (this.state.userTypeID == "4"))
+      {
+        this.setState({personalID2: true})
+    
+      }
+
       let roleList = this.state.roleList;
       let commanderList = this.state.commanderList;
       let titleList = this.state.titleList;
