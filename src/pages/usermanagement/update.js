@@ -25,6 +25,10 @@ class UserUpdate extends Component {
             duplicateMessage2: "",
             duplicate: true,
             redirect: false,
+            titleList: [],
+            titleNameID:"",
+            personalID2: false,
+            commanderID2: false,
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -50,6 +54,12 @@ class UserUpdate extends Component {
         .then(response => {
             this.setState({commanderList: response.data}); 
         });
+        CommonApi.instance.post('user/titleName', {
+            status: 1
+        })
+        .then(response => {
+            this.setState({titleList: response.data}); 
+        });
       }
 
       apiGetUset(userID){
@@ -58,6 +68,7 @@ class UserUpdate extends Component {
             let responseData = response.data;
             this.setState(
               {
+                titleNameID: responseData.titleNameID,
                 personalID : responseData.personalID,
                 firstname: responseData.firstname,
                 lastname: responseData.lastname,
@@ -69,9 +80,42 @@ class UserUpdate extends Component {
               }
             );
         });
+        CommonApi.instance.post('user/titleName', {
+            status: 1
+        })
+        .then(response => {
+            this.setState({titleList: response.data}); 
+        });
       }
 
       handleChange(event) {
+        console.log({OnIF: this.state.userTypeID})
+        if (this.state.userTypeID == 0 || this.state.userTypeID == "0" ){
+            this.setState({personalID2: false})
+            this.setState({commanderID2: false})
+        }
+        else{
+            if (this.state.commanderID == 1 || this.state.userTypeID == "1"){
+                this.setState({personalID2: true})
+                this.setState({commanderID2: false})
+            }
+            else{
+                if (this.state.userTypeID == 2 || this.state.userTypeID == "2"){
+                    this.setState({personalID2: true})
+                    this.setState({commanderID2: true})
+                }
+                else{
+                    if (this.state.userTypeID == 3 || this.state.userTypeID == "3"){
+                        this.setState({personalID2: true})
+                        this.setState({commanderID2: true})
+                    }
+                    else{
+                        this.setState({personalID2: false})
+                        this.setState({commanderID2: false})  
+                    }
+                }
+            }
+        }
         const target = event.target;
         const value = target.value;
         const name = target.name;
@@ -89,14 +133,17 @@ class UserUpdate extends Component {
 
         console.log(this.state);
 
-        CommonApi.instance.post('/user/UpdateisDuplicatePersonalId' ,this.state)
+        CommonApi.instance.post('/user/UpadateisDuplicatePersonalId' ,this.state)
         .then(response => {
             if(response.status == 200 && response.data.result == false){
                 this.setState({ duplicate: false, duplicateMessage1: "รหัสประจำตัวนี้ !", duplicateMessage2: "มีอยู่แล้วในระบบ."});
             }
             else{
-                this.setState({ duplicate: true, duplicateMessage: ""});
-                CommonApi.instance.post('/user/update',this.state)
+                this.setState({ duplicate: true, duplicateMessage1: "",duplicateMessage2: ""});
+                CommonApi.instance.post('/user/isDuplicateEmail' ,this.state)
+                .then(response =>{
+                    if (response.status == 200 && response.data.result == true){
+                        CommonApi.instance.post('/user/update',this.state)
                         .then(response =>{
                             if(response.status == 200 && response.data.result){
                                 this.setState({redirect: true});
@@ -107,13 +154,20 @@ class UserUpdate extends Component {
 
                         }
                     )
+
+                    }
+                    else{
+                        this.setState({ duplicate: false, duplicateMessage1: "อีเมล์นี้ !", duplicateMessage2: "มีอยู่แล้วในระบบ."});
+                    }
+                })
+                
             }
         });
       }
 
       
       handleValidate(messages){
-        let require = ["firstname","lastname","userTypeID"];
+        let require = ["firstname","lastname","userTypeID","titleNameID"];
         require.forEach(element => {
             document.getElementById(element).innerHTML = null;
         });
@@ -132,6 +186,7 @@ class UserUpdate extends Component {
       }
       let roleList = this.state.roleList;
       let commanderList = this.state.commanderList;
+      let titleList = this.state.titleList;
       return (
         <section id="main-content">
           <section className="wrapper">
@@ -151,24 +206,35 @@ class UserUpdate extends Component {
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลผู้ใช้งาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
 
-                        <div className="form-group">
+                        <div className="form-group" hidden={this.state.personalID2}>
                               <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว</label>
                               <div className="col-sm-6">
                               <div className="btn-group">
-                                    <input type="text" className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} />
+                                    <input type="text" className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} disabled/>
                               </div>
                               <label className="error-message">&nbsp;&nbsp; * กรอกรหัสประจำตัวกรณีเป็น<u>นักศึกษา</u> </label>
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-sm-2 col-sm-2 control-label">ชื่อ<span className="error-message">*</span></label>
+                        <label className="col-sm-2 col-sm-2 control-label">คำนำหน้าชื่อ <span className="error-message">*</span></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+                        <div className="btn-group">
+                                        <select className="form-control" name="titleNameID" value={this.state.titleNameID} onChange={this.handleChange} >
+                                            <option value="0">-- เลือกคำนำหน้าชื่อ --</option>
+                                            {titleList.map((title, index) => (
+                                        <option value={title.titleNameID}>{title.titleName1}</option>
+                                        ))}
+                                        </select>
+                                        <span id="titleNameID" className="error-message"></span>
+                                    </div>
+                            <div className="form-group"></div>
+                            <label className="col-sm-2 col-sm-2 control-label">ชื่อ <span className="error-message">*</span></label>
                             <div className="col-sm-4">
-                                <input type="text" className="form-control" name="firstname" value={this.state.firstname} onChange={this.handleChange}/>
+                                <input type="text" className="form-control" name="firstname" value={this.state.firstname} onChange={this.handleChange} />
                                 <span id="firstname" className="error-message"></span>
                             </div>
-                            <label className="col-sm-1 col-sm-1 control-label">นามสกุล<span className="error-message">*</span></label>
+                            <label className="col-sm-1 col-sm-1 control-label">นามสกุล <span className="error-message">*</span></label>
                             <div className="col-sm-4">
-                                <input type="text" className="form-control" name="lastname" value={this.state.lastname} onChange={this.handleChange}/>
+                                <input type="text" className="form-control" name="lastname" value={this.state.lastname} onChange={this.handleChange} />
                                 <span id="lastname" className="error-message"></span>
                             </div>
                         </div>
@@ -176,7 +242,7 @@ class UserUpdate extends Component {
                         <div className="form-group">
                             <label className="col-sm-2 col-sm-2 control-label">อีเมล์<span className="error-message">*</span></label>
                             <div className="col-sm-4">
-                                <input type="email" className="form-control" name="email"  value={this.state.email} onChange={this.handleChange} disabled/>
+                                <input type="email" className="form-control" name="email"  value={this.state.email} onChange={this.handleChange} />
                             </div>
                         </div>
 
@@ -195,7 +261,7 @@ class UserUpdate extends Component {
                                 </div>
                             </div>
                         
-                            <div className="form-group">
+                            <div className="form-group" hidden={this.state.commanderID2}>
                               <label className="col-sm-2 col-sm-2 control-label">ผู้บังคับบัญชา /<br></br>อาจารย์ที่ปรึกษาทางวิชาการ</label>
                               <div className="col-sm-5">
                                 <div className="btn-group">

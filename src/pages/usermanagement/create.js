@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 
 class UserCreate extends Component { 
-
+ 
     constructor(props) {
         super(props);
         this.state = {
@@ -15,8 +15,9 @@ class UserCreate extends Component {
             personalID : null,
             firstname: "",
             lastname: "",
-            userTypeID: 1,
+            userTypeID: 0,
             commanderID: 0,
+            titleNameID:0,
             userID: "",
             status: 1,
             roleList: [],
@@ -24,7 +25,10 @@ class UserCreate extends Component {
             redirect: false,
             duplicateMessage1: "",
             duplicateMessage2: "",
-            duplicate: true
+            duplicate: true,
+            personalID2: false,
+            commanderID2: false,
+            titleList: []
         }
 
         // mixins: [Validation.FieldMixin]
@@ -50,9 +54,55 @@ class UserCreate extends Component {
         .then(response => {
             this.setState({commanderList: response.data}); 
         });
+        CommonApi.instance.post('user/titleName', {
+            status: 1
+        })
+        .then(response => {
+            this.setState({titleList: response.data}); 
+        });
     }
 
       handleChange(event) {
+        console.log({OnIF: this.state.userTypeID})
+        if (this.state.userTypeID == 0 || this.state.userTypeID == "0" ){
+            this.setState({personalID2: false})
+            this.setState({commanderID2: false})
+        }
+        else{
+            if (this.state.commanderID == 1 || this.state.userTypeID == "1"){
+                this.setState({personalID2: true})
+                this.setState({commanderID2: false})
+            }
+            else{
+                if (this.state.userTypeID == 2 || this.state.userTypeID == "2"){
+                    this.setState({personalID2: true})
+                    this.setState({commanderID2: true})
+                }
+                else{
+                    if (this.state.userTypeID == 3 || this.state.userTypeID == "3"){
+                        this.setState({personalID2: true})
+                        this.setState({commanderID2: true})
+                    }
+                    else{
+                        this.setState({personalID2: false})
+                        this.setState({commanderID2: false})  
+                    }
+                }
+            }
+        }
+
+
+       
+        //console.log(this.state.personalID2)
+        // if (this.userTypeID = 3){
+        //     this.setState({personalID2: true})
+        //     this.setState({commanderID2: true})
+
+        // }
+        // else{
+        //     this.setState({personalID2: false})
+        //     this.setState({commanderID2: false})
+        // }
         const target = event.target;
         const value = target.value;
         const name = target.name;
@@ -62,14 +112,14 @@ class UserCreate extends Component {
         });
 
         document.getElementById(name).innerHTML = null;
+      
       }
-
 
 
     handleSubmit(event) {
         event.preventDefault();
 
-        console.log(this.state);
+        //console.log(this.state);
 
         CommonApi.instance.post('/user/CreateisDuplicatePersonalId' ,this.state)
         .then(response => {
@@ -107,11 +157,11 @@ class UserCreate extends Component {
 
     
     handleValidate(messages){
-        let require = ["firstname","lastname","email","userTypeID"];
+        let require = ["firstname","lastname","email","userTypeID","titleNameID"];
         require.forEach(element => {
             document.getElementById(element).innerHTML = null;
         });
-        console.log(messages);
+        //console.log(messages);
         messages.forEach(element => {
             document.getElementById(element.key).innerHTML = element.message;
         });
@@ -119,6 +169,9 @@ class UserCreate extends Component {
 
 
     render() {
+        console.log(this.state.userTypeID)
+        console.log({hidenPernalID:this.state.personalID2})
+        console.log({hidenCommander:this.state.commanderID2})
 
       const { redirect } = this.state;
 
@@ -127,6 +180,7 @@ class UserCreate extends Component {
       }
       let roleList = this.state.roleList;
       let commanderList = this.state.commanderList;
+      let titleList = this.state.titleList;
       return (
         <section id="main-content">
           <section className="wrapper">
@@ -145,16 +199,27 @@ class UserCreate extends Component {
 						</div>
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลผู้ใช้งาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
-                        <div className="form-group">
+                        <div className="form-group" hidden={this.state.personalID2} >
                               <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว </label>
                               <div className="col-sm-6">
                                 <div className="btn-group">
-                                    <input type="text" className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} placeholder="60xxxxxx"/>
+                                    <input type="text" maxLength={8} className="form-control" name="personalID" value={this.state.personalID} onChange={this.handleChange} placeholder="60xxxxxx"/>
                                 </div>
                                 <label className="error-message">&nbsp;&nbsp; * กรอกรหัสประจำตัวกรณีเป็น<u>นักศึกษา</u> </label>
                               </div>
                         </div>
                         <div className="form-group">
+                        <label className="col-sm-2 col-sm-2 control-label">คำนำหน้าชื่อ <span className="error-message">*</span></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+                        <div className="btn-group">
+                                        <select className="form-control" name="titleNameID" value={this.state.titleNameID} onChange={this.handleChange}>
+                                            <option value="0">-- เลือกคำนำหน้าชื่อ --</option>
+                                            {titleList.map((title, index) => (
+                                        <option value={title.titleNameID}>{title.titleName1}</option>
+                                        ))}
+                                        </select>
+                                        <span id="titleNameID" className="error-message"></span>
+                                    </div>
+                            <div className="form-group"></div>
                             <label className="col-sm-2 col-sm-2 control-label">ชื่อ <span className="error-message">*</span></label>
                             <div className="col-sm-4">
                                 <input type="text" className="form-control" name="firstname" value={this.state.firstname} onChange={this.handleChange}/>
@@ -189,7 +254,7 @@ class UserCreate extends Component {
                                 </div>
                             </div>
                         
-                            <div className="form-group">
+                            <div className="form-group" hidden={this.state.commanderID2}>
                               <label className="col-sm-2 col-sm-2 control-label">ผู้บังคับบัญชา / <br></br>อาจารย์ที่ปรึกษาทางวิชาการ</label>
                               <div className="col-sm-5">
                                 <div className="btn-group">

@@ -21,6 +21,10 @@ class UserDetail extends Component {
             roleList: [],
             commanderList: [],
             status: "",
+            titleList: [],
+            titleNameID:"",
+            personalID2: false,
+            commanderID2: false,
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -44,6 +48,14 @@ class UserDetail extends Component {
         .then(response => {
             this.setState({commanderList: response.data}); 
         });
+        CommonApi.instance.post('user/titleName', {
+            status: 1
+        })
+        .then(response => {
+            this.setState({titleList: response.data}); 
+        });
+
+
       }
 
       apiGetUset(userID){
@@ -52,6 +64,7 @@ class UserDetail extends Component {
             let responseData = response.data;
             this.setState(
               {
+                titleNameID: responseData.titleNameID,
                 personalID : responseData.personalID,
                 firstname: responseData.firstname,
                 lastname: responseData.lastname,
@@ -59,13 +72,17 @@ class UserDetail extends Component {
                 userTypeID: responseData.userTypeID,
                 commanderID: responseData.commanderID,
                 email: responseData.email,
-                status: responseData.status
+                status: responseData.status,
+
               }
             );
         });
+
+
       }
 
       handleChange(event) {
+
         const target = event.target;
         const value = target.value;
         const name = target.name;
@@ -87,14 +104,23 @@ class UserDetail extends Component {
       }
 
     render() {
-
+      console.log(this.state)
       const { redirect } = this.state;
 
       if (redirect) {
         return <Redirect to='/usermanagement'/>;
       }
+      if (this.state.userTypeID == 2 || this.state.userTypeID == "2" || (this.state.userTypeID == 3) || (this.state.userTypeID == "3"))
+      {
+        this.setState({personalID2: true})
+    
+      }
+
+
+    console.log(this.state.personalID2)
       let roleList = this.state.roleList;
       let commanderList = this.state.commanderList;
+      let titleList = this.state.titleList;
       return (
         <section id="main-content">
           <section className="wrapper">
@@ -110,7 +136,7 @@ class UserDetail extends Component {
                 <div className="form-panel">
                     <h4 className="mb"><i className="fa fa-angle-right"></i> รายละเอียดผู้ใช้งาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
-                        <div className="form-group">
+                        <div className="form-group" hidden={this.state.personalID2}>
                               <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว</label>
                               <div className="col-sm-3">
                               <div className="btn-group">
@@ -119,25 +145,37 @@ class UserDetail extends Component {
                               </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-sm-2 col-sm-2 control-label">ชื่อ</label>
+                        <label className="col-sm-2 col-sm-2 control-label">คำนำหน้าชื่อ <span className="error-message">*</span></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+                        <div className="btn-group">
+                                        <select className="form-control" name="titleNameID" value={this.state.titleNameID} onChange={this.handleChange} disabled>
+                                            <option value="0">-- เลือกคำนำหน้าชื่อ --</option>
+                                            {titleList.map((title, index) => (
+                                        <option value={title.titleNameID}>{title.titleName1}</option>
+                                        ))}
+                                        </select>
+                                        <span id="titleNameID" className="error-message"></span>
+                                    </div>
+                            <div className="form-group"></div>
+                            <label className="col-sm-2 col-sm-2 control-label">ชื่อ <span className="error-message">*</span></label>
                             <div className="col-sm-4">
-                                <input type="text" className="form-control" name="firstname" value={this.state.firstname} onChange={this.handleChange} disabled />
+                                <input type="text" className="form-control" name="firstname" value={this.state.firstname} onChange={this.handleChange} disabled/>
+                                <span id="firstname" className="error-message"></span>
                             </div>
-                            <label className="col-sm-1 col-sm-1 control-label">นามสกุล</label>
+                            <label className="col-sm-1 col-sm-1 control-label">นามสกุล <span className="error-message">*</span></label>
                             <div className="col-sm-4">
-                                <input type="text" className="form-control" name="lastname" value={this.state.lastname} onChange={this.handleChange} disabled />
+                                <input type="text" className="form-control" name="lastname" value={this.state.lastname} onChange={this.handleChange} disabled/>
+                                <span id="lastname" className="error-message"></span>
                             </div>
                         </div>
-
                         <div className="form-group">
-                            <label className="col-sm-2 col-sm-2 control-label">อีเมล์</label>
+                            <label className="col-sm-2 col-sm-2 control-label">อีเมล์<span className="error-message">*</span></label>
                             <div className="col-sm-4">
                                 <input type="email" className="form-control" name="email"  value={this.state.email} onChange={this.handleChange} disabled/>
                             </div>
                         </div>
 
-                            <div className="form-group">
-                                <label className="col-sm-2 col-sm-2 control-label">บทบาท</label>
+                            <div className="form-group" >
+                                <label className="col-sm-2 col-sm-2 control-label">บทบาท <span className="error-message">*</span></label>
                                 <div className="col-sm-5">
                                     <div className="btn-group">
                                         <select className="form-control" name="userTypeID" value={this.state.userTypeID} onChange={this.handleChange} disabled>
@@ -150,7 +188,7 @@ class UserDetail extends Component {
                                 </div>
                             </div>
                         
-                            <div className="form-group">
+                            <div className="form-group" hidden={this.state.commanderID2}>
                               <label className="col-sm-2 col-sm-2 control-label">ผู้บังคับบัญชา / <br></br>อาจารย์ที่ปรึกษาทางวิชาการ</label>
                               <div className="col-sm-5">
                                 <div className="btn-group">
