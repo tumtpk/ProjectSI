@@ -4,6 +4,10 @@ import CommonApi from "../../api/common-api"
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { isNull } from "util";
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+//import 'react-datepicker.css';
+
 
 class CircleCreate extends Component { 
 
@@ -17,6 +21,8 @@ class CircleCreate extends Component {
             duplicateMessage1: "",
             duplicateMessage2: "",
             duplicate: true,
+            startDate: "",
+            endDate:""
         }
 
         // mixins: [Validation.FieldMixin]
@@ -41,7 +47,7 @@ class CircleCreate extends Component {
       }
 
     handleValidate(messages){
-        let require = ["circleName","circleTime"];
+        let require = ["circleName","startDate","endDate"];
         require.forEach(element => {
             document.getElementById(element).innerHTML = null;
         });
@@ -115,19 +121,27 @@ class CircleCreate extends Component {
 
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการดำเนินงาน<span className="error-message">*</span></label>
-                            <div className="col-sm-5">
+                            <div className="col-sm-3">
                                 <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} />
                                 <span id="circleName" className="error-message"></span>
                             </div>
                         </div>
 
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">ระยะเวลาที่กำหนด<span className="error-message">*</span></label>
-                            <div className="col-sm-3">
-                                <input type="number" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} />
-                                <span id="circleTime" className="error-message"></span>
+                            <label className="col-sm-3 col-sm-3 control-label">วันเริ่มต้นของเป้าหมาย<span className="error-message">*</span></label>
+                            <div class='input-group date' id='datetimepicker1'>
+                            <div className="col-sm-2">
+                                <input type="date" className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange}  />
+                               
+                                <span id="startDate" className="error-message"></span>
                             </div>
-                            <label className="col-sm-3 col-sm-3 control-label">วัน</label>
+                            </div>
+                            <br></br><br></br><br></br>
+                            <label className="col-sm-3 col-sm-3 control-label">วันสิ้นสุดของเป้าหมาย<span className="error-message">*</span></label>
+                            <div className="col-sm-2">
+                                <input type="date" className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}  />
+                                <span id="endDate" className="error-message"></span>
+                            </div>
                         </div>
 
                             <div className="form-group">
@@ -141,7 +155,7 @@ class CircleCreate extends Component {
                                     </div>
                                 </div>
                             </div>
-                        
+
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>
                             <Link to={ {pathname: `/circlemanagement`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>

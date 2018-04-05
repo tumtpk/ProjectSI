@@ -16,6 +16,8 @@ class CircleUpdate extends Component {
             duplicateMessage1: "",
             duplicateMessage2: "",
             duplicate: true,
+            startDate: "",
+            endDate:""
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -37,11 +39,13 @@ class CircleUpdate extends Component {
             this.setState(
               {
                 circleName: responseData.circleName,
-                circleTime: responseData.circleTime,
+                startDate: responseData.startDate,
+                endDate: responseData.endDate,
                 status: responseData.status
               }
             );
         });
+  
       }
 
       handleChange(event) {
@@ -57,7 +61,7 @@ class CircleUpdate extends Component {
       }
 
       handleValidate(messages){
-        let require = ["circleName","circleTime"];
+        let require = ["circleName","startDate","endDate"];
         require.forEach(element => {
             document.getElementById(element).innerHTML = null;
         });
@@ -108,6 +112,8 @@ class CircleUpdate extends Component {
       if (redirect) {
         return <Redirect to='/circlemanagement'/>;
       }
+      console.log(this.state)
+
 
       return (
         <section id="main-content">
@@ -136,12 +142,17 @@ class CircleUpdate extends Component {
                         </div>
 
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">ระยะเวลาที่กำหนด<span className="error-message">*</span></label>
-                            <div className="col-sm-3">
-                                <input type="number" className="form-control" name="circleTime" value={this.state.circleTime} onChange={this.handleChange} />
-                                <span id="circleTime" className="error-message"></span>
+                            <label className="col-sm-3 col-sm-3 control-label">วันเริ่มต้นของเป้าหมาย<span className="error-message">*</span></label>
+                            <div className="col-sm-2">
+                                <input type="date" className="form-control" name="startDate" format="dd/MM/yyyy" value={this.state.startDate} onChange={this.handleChange}  />
+                                <span id="startDate" className="error-message"></span>
                             </div>
-                            <label className="col-sm-3 col-sm-3 control-label">วัน</label>
+                            <br></br><br></br><br></br>
+                            <label className="col-sm-3 col-sm-3 control-label">วันสิ้นสุดของเป้าหมาย<span className="error-message">*</span></label>
+                            <div className="col-sm-2">
+                                <input type="date" className="form-control" name="endDate" format="dd/MM/yyyy" value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}  />
+                                <span id="endDate" className="error-message"></span>
+                            </div>
                         </div>
 
                             <div className="form-group">

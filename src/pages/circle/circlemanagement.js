@@ -14,7 +14,8 @@ import {
 const initialState = {
   id: null,
   circleName: null,
-  circleTime: 0,
+  startDate: null,
+  endDate:null,
   status: 0,
   dataSearch: null,
   number:1
@@ -37,7 +38,8 @@ class Circlemanagement extends Component {
         CommonApi.instance.post('/circle/search', {
               id: this.state.id,
               circleName: this.state.circleName,
-              circleTime: this.state.circleTime,
+              startDate: this.state.startDate,
+              endDate: this.state.endDate,
               status: this.state.status
         })
         .then(response => {
@@ -79,7 +81,8 @@ class Circlemanagement extends Component {
         CommonApi.instance.post('/circle/search', {
               id: this.state.id,
               circleName: this.state.circleName,
-              circleTime: this.state.circleTime,
+              startDate: this.state.startDate,
+              endDate: this.state.endDate,
               status: this.state.status
         })
         .then(response => {
@@ -111,7 +114,8 @@ class Circlemanagement extends Component {
           <tr>
             <td>{ this.state.number}</td>
             <td>{ data.circleName }</td>
-            <td>{ data.circleTime }</td>
+            <td>{ data.startDate }</td>
+            <td>{ data.endDate}</td>
             <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
             <td>
               <Link to={ {pathname: `/circle/view`, query: {id : data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
@@ -153,7 +157,8 @@ class Circlemanagement extends Component {
                                 <tr>
                                   <th> ลำดับ </th>
                                   <th> ชื่อรอบ</th>
-                                  <th> ระยะเวลา(วัน)</th>
+                                  <th> วันเริ่มต้น</th>
+                                  <th> วันสิ้นสุด</th>
                                   <th> สถานะ</th>
                                   <th></th>
                                 </tr>
@@ -191,28 +196,53 @@ class Circlemanagement extends Component {
                           <div className="form-group">
                             <br></br>
                               <label className="col-sm-2 col-sm-2 control-label">ชื่อรอบการดำเนินงาน</label>
-                              <div className="col-sm-4">
-                                  <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} /> 
-                              </div>
-                              <label className="col-sm-2 col-sm-2 control-label">ระยะเวลาที่กำหนด</label>        
                               <div className="col-sm-3">
-                                <input type="text" className="form-control" name="circleTime" valua={this.state.circleTime} onChange={this.handleChange} />
-                              </div>
-                              <label className="col-sm-1 col-sm-1 control-label">วัน</label>
-                          <br></br><br></br><br></br>
+                                  <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} /> 
+                              </div> 
+                              <div className="col-sm-1">
+                          </div>
                               <label className="col-sm-2 col-sm-2 control-label">สถานะ</label>
                                <div className="btn-group"  className="col-sm-2"> 
-                                <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange}>
+                                <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange} >
                                     <option value="0">--เลือกสถานะ--</option>
                                     <option value="1">เปิดใช้งาน</option>
                                     <option value="2">ปิดใช้งาน</option>
                                 </select>
-                               </div> 
-                                </div>           
+                               </div>  
+                          <br></br><br></br><br></br>
+                          <label className="col-sm-2 col-sm-2 control-label">วันเริ่มต้นรอบการดำเนินงาน</label> 
+                          <div className="col-sm-3">
+                          <div className='input-group date' id='datetimepicker1'>
+                          <input type='date' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} disabled/>
+                          <span className="input-group-addon">
+                          <span className="glyphicon glyphicon-calendar"></span>
+                          </span>
+                          <span id="startDate" className="error-message"></span>
+                          </div>
+                          </div>
+                          <div className="col-sm-1">
+                          </div>
+                          <label className="col-sm-2 col-sm-2 control-label">วันสิ้นสุดรอบการดำเนินงาน</label>
+                          <div className="col-sm-3">
+                              <div className='input-group date' id='daterangepicker'>
+                                <input type='date' className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} disabled/>
+                                <span className="input-group-addon">
+                                <span className="glyphicon glyphicon-calendar"></span>
+                             </span>
+                            </div>
+                            <span id="endDate" className="error-message"></span>
+                                 
+                        </div>  
+                       
+                        <br></br><br></br><br></br>
+
+  
+                            </div>               
                             <div className="text-center">
                               <button type="submit" className="btn btn-round btn-primary" >ค้นหา</button>
                               <button type="button" className="btn btn-round btn-danger" onClick={this.handleClear}>ยกเลิก</button>
                               </div>                                                                                     
+                     
                       </form>
 
                   </div>
