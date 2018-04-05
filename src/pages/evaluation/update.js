@@ -18,6 +18,7 @@ class EvaluationUpdate extends Component {
             duplicateMessage2: "",
             duplicate: true,
             redirect: false,
+            userTypeInEva: []
           
         }
   
@@ -37,7 +38,32 @@ class EvaluationUpdate extends Component {
         this.setState(this.state);
         console.log(this.state)
         // this.apiGetEset(id);
-        this.apiGetQset(id);  
+        this.apiGetQset(id); 
+        this.apiGetUTEset(id); 
+      }
+
+      setUTE(id){
+        let result = false;
+        this.state.userTypeInEva.forEach(data => {
+          if(data.utEuserTypeid == id){
+            result = true;
+          }
+        });
+        return result;
+      }
+
+      apiGetUTEset(id){
+        CommonApi.instance.get('/evaluation/getusertypeineva/'+id)
+        .then(response => {
+            let responseData = response.data;
+            this.setState(
+              {userTypeInEva: response.data
+              }
+             
+            );
+             console.log(this.state.userTypeInEva)
+            console.log(this.state);
+        });
       }
 
       apiGetQset(id){
@@ -202,7 +228,27 @@ class EvaluationUpdate extends Component {
                         </div>
                         ))}
 
-                    
+                        <div className="form-group"></div>
+                        <div className="row">
+                            <label className="col-sm-2 col-sm-2 control-label">กำหนดบทบาทผู้ใช้แบบประเมิน<span className="error-message">*</span></label>
+                            <div className="col-sm-5">
+                                    <div className="checkbox">
+                                      <label>
+                                        <input type="checkbox" value="" disabled checked={this.setUTE(1)}/> นักเรียน
+                                        </label>
+                                    </div>
+                                    <div className="checkbox">
+                                      <label>
+                                        <input type="checkbox" value="" disabled checked={this.setUTE(2)}/> อาจารย์
+                                        </label>
+                                    </div>
+                                    <div className="checkbox">
+                                      <label>
+                                        <input type="checkbox" value="" disabled checked={this.setUTE(3)}/> ประธานหลักสูตร
+                                        </label>
+                                    </div>
+                            </div>
+                        </div>
                           
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>

@@ -11,11 +11,11 @@ class EvaluationDetail extends Component {
         this.state = {
             evaluationName: "",
             description: "",
-            questions: []
+            questions: [],
+            userTypeInEva: []
             //questions: [{value: null}],
             //redirect: false
         }
-  
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
@@ -29,7 +29,7 @@ class EvaluationDetail extends Component {
         console.log(this.state)
         // this.apiGetEset(id);
         this.apiGetQset(id);  
-        
+        this.apiGetUTEset(id);
       }
 
       // apiGetEset(id){
@@ -45,6 +45,30 @@ class EvaluationDetail extends Component {
       //       console.log(this.state);
       //   });
       // }
+
+      setUTE(id){
+        let result = false;
+        this.state.userTypeInEva.forEach(data => {
+          if(data.utEuserTypeid == id){
+            result = true;
+          }
+        });
+        return result;
+      }
+
+      apiGetUTEset(id){
+        CommonApi.instance.get('/evaluation/getusertypeineva/'+id)
+        .then(response => {
+            let responseData = response.data;
+            this.setState(
+              {userTypeInEva: response.data
+              }
+             
+            );
+             console.log(this.state.userTypeInEva)
+            console.log(this.state);
+        });
+      }
 
       apiGetQset(id){
         CommonApi.instance.get('/question/getquestion/'+id)
@@ -118,6 +142,27 @@ class EvaluationDetail extends Component {
                           </div>
                         </div>
                         
+                        <div className="form-group"></div>
+                        <div className="row">
+                            <label className="col-sm-2 col-sm-2 control-label">กำหนดบทบาทผู้ใช้แบบประเมิน<span className="error-message">*</span></label>
+                            <div className="col-sm-5">
+                                    <div className="checkbox">
+                                      <label>
+                                        <input type="checkbox" value="" disabled checked={this.setUTE(1)}/> นักเรียน
+                                        </label>
+                                    </div>
+                                    <div className="checkbox">
+                                      <label>
+                                        <input type="checkbox" value="" disabled checked={this.setUTE(2)}/> อาจารย์
+                                        </label>
+                                    </div>
+                                    <div className="checkbox">
+                                      <label>
+                                        <input type="checkbox" value="" disabled checked={this.setUTE(3)}/> ประธานหลักสูตร
+                                        </label>
+                                    </div>
+                            </div>
+                        </div>
 
                         <div className="text-right">
                             <Link to={ {pathname: `/evaluationmanagement`} }><button type="button" className="btn btn-info">กลับ</button></Link>
