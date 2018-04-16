@@ -183,6 +183,17 @@ class GoalmanagementOtherUser extends Component {
       return (
         <div className="row mt">
               <div className="col-lg-12">
+						<div className="btn-group btn-group-justified">
+						  <div className="btn-group">
+              <Link to={ {pathname: `/goalmanagement`} }><button type="button" className="btn btn-default btn-lg btn-block" >เป้าหมายของฉัน</button></Link>
+						  </div>
+						  <div className="btn-group">
+              <Link to={ {pathname: `/goalmanagementOtherUser`} }><button type="button" className="btn btn-warning btn-lg btn-block">เป้าหมายผู้ใต้บังคับบัญชา</button></Link>
+						  </div>
+						  <div className="btn-group">
+						  <Link to={ {pathname: '/reportallgoal'}}><button type="button" className="btn btn-default btn-lg btn-block">รายงานความสำเร็จ</button></Link>
+						  </div>
+						</div> 
                       <div className="content-panel">
                           <h4><i className="fa fa-angle-right"></i> รายการเป้าหมายผู้ใต้บังคับบัญชา</h4>
                           <hr />
@@ -215,20 +226,7 @@ class GoalmanagementOtherUser extends Component {
       return (
         <section id="main-content">
           <section className="wrapper">
-          <br></br>
-						<div className="btn-group btn-group-justified">
-						  <div className="btn-group">
-              <Link to={ {pathname: `/goalmanagement`} }><button type="button" className="btn btn-default btn-lg btn-block" >เป้าหมายของฉัน</button></Link>
-						  </div>
-						  <div className="btn-group">
-              <Link to={ {pathname: `/goalmanagementOtherUser`} }><button type="button" className="btn btn-warning btn-lg btn-block">เป้าหมายผู้ใต้บังคับบัญชา</button></Link>
-						  </div>
-						  <div className="btn-group">
-						  <Link to={ {pathname: '/reportallgoal'}}><button type="button" className="btn btn-default btn-lg btn-block">รายงานความสำเร็จ</button></Link>
-						  </div>
-						</div>  
-      				
-      			
+    			
             <div className="row"> 
                 <div className="col-md-8">
                     <h3><i className="fa fa-angle-right"></i> การจัดการเป้าหมายผู้ใต้บังคับบัญชา</h3>
