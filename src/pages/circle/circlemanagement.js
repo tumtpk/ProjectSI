@@ -45,6 +45,7 @@ class Circlemanagement extends Component {
         .then(response => {
             this.setState({dataSearch: response.data});
         });
+        console.log(this.state);
       }
 
       handleSubmit(event) {
@@ -213,7 +214,7 @@ class Circlemanagement extends Component {
                           <label className="col-sm-2 col-sm-2 control-label">วันเริ่มต้นรอบการดำเนินงาน</label> 
                           <div className="col-sm-3">
                           <div className='input-group date' id='datetimepicker1'>
-                          <input type='date' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} disabled/>
+                          <input type='date' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} />
                           <span className="input-group-addon">
                           <span className="glyphicon glyphicon-calendar"></span>
                           </span>
@@ -225,7 +226,7 @@ class Circlemanagement extends Component {
                           <label className="col-sm-2 col-sm-2 control-label">วันสิ้นสุดรอบการดำเนินงาน</label>
                           <div className="col-sm-3">
                               <div className='input-group date' id='daterangepicker'>
-                                <input type='date' className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} disabled/>
+                                <input type='date' className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} />
                                 <span className="input-group-addon">
                                 <span className="glyphicon glyphicon-calendar"></span>
                              </span>
