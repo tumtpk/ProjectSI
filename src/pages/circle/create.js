@@ -88,7 +88,7 @@ class CircleCreate extends Component {
                             )
                         }    this.setState({circleTime: null})   
                         }
-                     
+                       
                 );
                
             }         
@@ -129,19 +129,26 @@ class CircleCreate extends Component {
 
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">วันเริ่มต้นของเป้าหมาย<span className="error-message">*</span></label>
-                            <div class='input-group date' id='datetimepicker1'>
                             <div className="col-sm-2">
-                                <input type="date" className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange}  />
-                               
-                                <span id="startDate" className="error-message"></span>
-                            </div>
-                            </div>
+                          <div className='input-group date' id='datetimepicker1'>
+                          <input type='date' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} />
+                          <span className="input-group-addon">
+                          <span className="glyphicon glyphicon-calendar"></span>
+                          </span>
+                          <span id="startDate" className="error-message"></span>
+                          </div>
+                          </div>
                             <br></br><br></br><br></br>
                             <label className="col-sm-3 col-sm-3 control-label">วันสิ้นสุดของเป้าหมาย<span className="error-message">*</span></label>
                             <div className="col-sm-2">
-                                <input type="date" className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}  />
-                                <span id="endDate" className="error-message"></span>
-                            </div>
+                          <div className='input-group date' id='datetimepicker1'>
+                          <input type='date' className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}/>
+                          <span className="input-group-addon">
+                          <span className="glyphicon glyphicon-calendar"></span>
+                          </span>
+                          <span id="endDate" className="error-message"></span>
+                          </div>
+                          </div>
                         </div>
 
                             <div className="form-group">

@@ -144,13 +144,13 @@ class CircleUpdate extends Component {
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">วันเริ่มต้นของเป้าหมาย<span className="error-message">*</span></label>
                             <div className="col-sm-2">
-                                <input type="date" className="form-control" name="startDate" format="dd/MM/yyyy" value={this.state.startDate} onChange={this.handleChange}  />
+                                <input type="date" className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange}  />
                                 <span id="startDate" className="error-message"></span>
                             </div>
                             <br></br><br></br><br></br>
                             <label className="col-sm-3 col-sm-3 control-label">วันสิ้นสุดของเป้าหมาย<span className="error-message">*</span></label>
                             <div className="col-sm-2">
-                                <input type="date" className="form-control" name="endDate" format="dd/MM/yyyy" value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}  />
+                                <input type="date" className="form-control" name="endDate"  value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}  />
                                 <span id="endDate" className="error-message"></span>
                             </div>
                         </div>
