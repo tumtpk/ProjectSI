@@ -129,9 +129,9 @@ class Usermanagement2 extends Component {
             <td>{ headList.email }</td>
             <td>{ (headList.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
             <td>
-              <Link to={ {pathname: `/usermanagement/view`, query: {userID: headList.userID}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/usermanagement/update`, query: {userID: headList.userID}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs" ><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+headList.userID}></i></button>
+              <Link to={ {pathname: `/usermanagement/view`, query: {userID: headList.userID}} }><button className="btn btn-success btn-xs" data-toggle="ดูรายละเอียด" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/usermanagement/update`, query: {userID: headList.userID}} }><button className="btn btn-primary btn-xs" data-toggle="แก้ไข" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs" data-toggle="ลบ" data-placement="bottom" title="ลบ"><i className="fa fa-trash-o " data-toggle="modal" data-target={"#"+headList.userID}></i></button>
                                       <div id={headList.userID} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">

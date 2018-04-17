@@ -119,9 +119,9 @@ class Circlemanagement extends Component {
             <td>{ data.endDate}</td>
             <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
             <td>
-              <Link to={ {pathname: `/circle/view`, query: {id : data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/circle/update`, query: {id : data.id }} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs" data-toggle="modal" data-target={"#"+data.id}><i className="fa fa-trash-o " ></i></button>
+              <Link to={ {pathname: `/circle/view`, query: {id : data.id}} }><button className="btn btn-success btn-xs" data-toggle="ดูรายละเอียด" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/circle/update`, query: {id : data.id }} }><button className="btn btn-primary btn-xs" data-toggle="แก้ไข" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs" data-toggle="ลบ" data-placement="bottom" title="ลบ" data-toggle="modal" data-target={"#"+data.id}><i className="fa fa-trash-o " ></i></button>
                                       <div id={data.id} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">

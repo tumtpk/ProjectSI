@@ -95,9 +95,9 @@ class Evaluationmanagement extends Component {
             <td>{ data.evaluationName }</td>
             <td>{ this.state.userTpyeID}</td>
             <td>
-              <Link to={ {pathname: `/evaluation/view`, query: {id: data.id, evaluationName:data.evaluationName,description:data.description}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/evaluation/update`, query: {id: data.id,evaluationName:data.evaluationName,description:data.description}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs" data-toggle="modal" data-target={"#"+data.id}><i className="fa fa-trash-o " ></i></button>
+              <Link to={ {pathname: `/evaluation/view`, query: {id: data.id, evaluationName:data.evaluationName,description:data.description}} }><button className="btn btn-success btn-xs" data-toggle="ดูรายละเอียด" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/evaluation/update`, query: {id: data.id,evaluationName:data.evaluationName,description:data.description}} }><button className="btn btn-primary btn-xs" data-toggle="แก้ไข" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs" data-toggle="ลบ" data-placement="bottom" title="ลบ" data-toggle="modal" data-target={"#"+data.id}><i className="fa fa-trash-o " ></i></button>
                                       <div id={data.id} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">
