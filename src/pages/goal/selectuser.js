@@ -26,6 +26,8 @@ class GoalCreateOtherUserSelectUser extends Component {
         users: [],
         userID: null,
         redirect: false,
+        hiddenAll: true,
+        personalID: ""
        }
     
   
@@ -81,14 +83,21 @@ class GoalCreateOtherUserSelectUser extends Component {
       }
 
       handleAddAll = () => (evt) => {
+        
         for (let index = 0; index < this.state.dataSearch.length; index++) {
+          if (this.state.dataSearch[index].isShow == true){
             this.state.dataSearch[index].isShow = false;
-            this.state.users.push(this.state.dataSearch[index].users);
+            this.state.users.push(this.state.dataSearch[index].userID);
+          }
+          else{
+            this.state.dataSearch[index].isShow = false;
+          }
         }
 
         this.setState({ 
           users: this.state.users, 
-          dataSearch: this.state.dataSearch
+          dataSearch: this.state.dataSearch,
+          hiddenAll: false
         });
 
         console.log(this.state.users);
@@ -110,12 +119,18 @@ class GoalCreateOtherUserSelectUser extends Component {
 
       handledelAll = () => (evt) => {
         for (let index = 0; index < this.state.dataSearch.length; index++) {
+          if (this.state.dataSearch[index.isShow == false]){
             this.state.dataSearch[index].isShow = true;
+          }
+          else{
+            this.state.dataSearch[index].isShow = true;
+          }
         }
         this.state.users = [];
         this.setState({ 
           users: this.state.users, 
-          dataSearch: this.state.dataSearch
+          dataSearch: this.state.dataSearch,
+          hiddenAll: true
         });
 
         console.log(this.state.users);
@@ -170,26 +185,29 @@ class GoalCreateOtherUserSelectUser extends Component {
                           <table className="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
+                                <th><button type="button" className={ this.state.hiddenAll == true ? "btn btn-theme03 btn-xs show":"btn btn-theme04 btn-xs hidden" } onClick={this.handleAddAll()} > เลือกทั้งหมด</button>
+                                    <button type="button" className={ this.state.hiddenAll == true ? "btn btn-theme03 btn-xs hidden": "btn btn-theme04 btn-xs show" } onClick={this.handledelAll()} > เอาออกทั้งหมด</button>
+                                </th>
+                                  <th> รหัสนักศึกษา </th>
                                   <th> ชื่อ</th>
                                   <th> นามสกุล</th>
                                   <th> บทบาท </th>
                                   <th> สถานะ</th>
-                                  <th><button type="button" className="btn btn-theme03" onClick={this.handleAddAll()} > เลือกทั้งหมด</button>
-                                      <button type="button" className="btn btn-theme04" onClick={this.handledelAll()} > เอาออกทั้งหมด</button></th>
                                 </tr>
                               </thead>
                               
                               <tbody>
                               { this.state.dataSearch.map((data,index) => (
                                 <tr>
+                                  <td>
+                                    <button type="button" className={ data.isShow == undefined || data.isShow == true  ? "btn btn-theme03 btn-xs show ":"btn btn-theme03 btn-xs hidden" } onClick={this.handleAddTodoItem(data.userID, index)}><i className="fa fa-square-o"  > </i> </button>
+                                    <button type="button" className={ data.isShow == undefined || data.isShow == true  ? "btn btn-theme03 btn-xs hidden ":"btn btn-theme03 btn-xs show" } onClick={this.handledelTodoItem(data.userID, index)}><i className="fa fa-check-square-o"></i> </button>
+                                  </td>
+                                  <td>{ data.personalID}</td>
                                   <td>{ data.firstname }</td>
                                   <td>{ data.lastname }</td>
                                   <td>{ data.userTypeID}</td>
-                                  <td>{ data.status }</td>
-                                  <td>
-                                    <button type="button" className={ data.isShow == undefined || data.isShow == true  ? "btn btn-theme03 show ":"btn btn-theme04 hidden" } onClick={this.handleAddTodoItem(data.userID, index)}><i className="fa fa-check"> </i> เลือก</button>
-                                    <button type="button" className={ data.isShow == undefined || data.isShow == true  ? "btn btn-theme04 hidden ":"btn btn-theme04 show" } onClick={this.handledelTodoItem(data.userID, index)}><i className="glyphicon glyphicon-remove"></i> เอาออก</button>
-                                  </td>
+                                  <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
                                 </tr>
                               ))}
                               </tbody>
