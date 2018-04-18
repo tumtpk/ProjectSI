@@ -17,7 +17,7 @@ class GoalCreate extends Component {
             numberDate:0,
             categoryID: 0,
             circleID: 0,
-            checklists: [{value: null}],
+            checklists: [{value: null},{value: null},{value: null}],
             circleList: [],
             categoryList: [],
             userID:"",
@@ -81,8 +81,10 @@ class GoalCreate extends Component {
       handleAddChecklists = () => {
         this.setState({
             checklists: this.state.checklists.concat([{ value: null }])
+
         });
       }
+
 
       handleRemoveChecklists = (index) => () => {
         this.setState({
@@ -194,16 +196,16 @@ class GoalCreate extends Component {
                         {this.state.checklists.map((checklist, index) => (
                         <div className="row">
                             <label className="col-sm-2 col-sm-2 control-label"></label>
-                            <div className="col-sm-5">
-                                <div className="input-group">
+                            <div className="col-sm-4">
+                                <div className='input-group date' id='datetimepicker2'>
                                     <input type="text" className="form-control" placeholder={`รายการตรวจสอบที่ ${index + 1}`}
                                             value={checklist.value} 
                                             onChange={this.handleChecklistsValueChange(index)} />
-                                    <span id={'checklists['+index+']'} className="error-message"></span>
-                                    <span className="input-group-btn">
-                                        <button className="btn btn-danger" type="button" onClick={this.handleRemoveChecklists(index)} disabled={index==0 ? 'disabled' : ''}>ลบ</button>
+                                    <span className="input-group-addon btn btn-theme04 btn-xs" onClick={this.handleRemoveChecklists(index)}>
+                                            <span className="fa fa-times" ></span>
                                     </span>
                                 </div>
+                                <span id={'checklists['+index+']'} className="error-message"></span>
                             </div>
                         </div>
                         ))}
@@ -221,6 +223,20 @@ class GoalCreate extends Component {
                                     ))}
                                     </select>
                                     <span id="categoryID" className="error-message"></span>
+                                </div>
+                              </div>
+                            </div>
+
+                             <div className="form-group">
+                              <label className="col-sm-2 col-sm-2 control-label">รูปแบบรอบการดำเนินงาน<span className="error-message">*</span></label>
+                              <div className="col-sm-5">
+                                <div className="btn-group">
+                                    <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
+                                    <option value="0">--เลือกรูปแบบรอบการดำเนินงาน--</option>
+                                    <option value="1"> รอบการดำเนินงานตามกำหนด</option>
+                                    <option value="2"> รอบการดำเนินงานกำหนดเอง</option>
+                                    </select>
+                                    <span id="circleID" className="error-message"></span>
                                 </div>
                               </div>
                             </div>
@@ -256,9 +272,16 @@ class GoalCreate extends Component {
 
                         <div className="form-group">
                               <label className="col-lg-2 col-sm-2 control-label">วันสิ้นสุดเป้าหมาย</label>
-                              <div className="col-sm-5" id="endDate">
-                                  <p className="form-control-static" name="endDate" id="endDate">{this.state.endDate}</p>
-                              </div>
+                              <div className="col-sm-3">
+                            <div className='input-group date' id='datetimepicker1'>
+                                <input type='date' className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}/>
+                            <span className="input-group-addon">
+                                <span className="glyphicon glyphicon-calendar"></span>
+                             </span>
+
+                            </div>
+                            <span id="endDate" className="error-message"></span>
+                        </div>
                           </div>
                 
                         <div className="text-right">
