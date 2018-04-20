@@ -136,7 +136,7 @@ class Usermanagement extends Component {
         this.state.number = this.state.number+1
         return (
           <tr>
-            <td>{ this.state.number}</td> ))}
+            <td>{ this.state.number}</td> 
             <td>{ studentList.personalID}</td>
             <td>{ studentList.titleName}{ studentList.firstname }</td>
             <td>{ studentList.lastname }</td>
@@ -177,6 +177,8 @@ class Usermanagement extends Component {
 
 
     renderFromSearchStudent(){
+      console.log(this.state.studentList)
+      if (this.state.studentList.length > 0 ){
       return (
         <div className="row mt">
               <div className="col-lg-12">
@@ -195,7 +197,7 @@ class Usermanagement extends Component {
                       <div className="content-panel">
 
                           <hr />
-                          <table className="table table-striped table-advance table-hover">
+                          <table className="table table-striped table-advance table-hover" >
                             <thead>
                                 <tr>
                                   <th> ลำดับ</th>
@@ -216,6 +218,36 @@ class Usermanagement extends Component {
               </div>
       );
     }
+    else{
+      return (
+        <div className="row mt">
+              <div className="col-lg-12">
+              <br></br>
+						<div className="btn-group btn-group-justified">
+						  <div className="btn-group">
+              <Link to={ {pathname: `/usermanagement`} }><button type="button" className="btn btn-warning btn-lg btn-block" > นักศึกษา</button></Link>
+						  </div>
+						  <div className="btn-group">
+              <Link to={ {pathname: `/usermanagement1`} }><button type="button" className="btn btn-default btn-lg btn-block"> อาจารย์</button></Link>
+						  </div>
+						  <div className="btn-group">
+						  <Link to={ {pathname: '/usermanagement2'}}><button type="button" className="btn btn-default btn-lg btn-block"> ประธานหลักสูตร</button></Link>
+						  </div>
+						</div>
+                      <div className="content-panel">
+                          <table className="table table-striped table-advance table-hover" >
+                            <thead>
+                                <tr>
+                                  <th className="text-center"> ---- ไม่พบข้อมูล ----</th>
+                                </tr>
+                              </thead>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+      );
+    }
+  }
 
 
     render() {

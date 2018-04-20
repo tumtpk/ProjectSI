@@ -14,7 +14,7 @@ import {
 const initialState = {
   categoryName: null,
   status: 0,
-  dataSearch: null,
+  dataSearch: [],
   number:1
 };
 
@@ -83,7 +83,6 @@ class Categorymanagement extends Component {
 
     renderTable(){
       this.state.number = 0
-      if(this.state.dataSearch != null){
         return _.map(this.state.dataSearch, data => {
           this.state.number = this.state.number+1
             return (
@@ -116,15 +115,12 @@ class Categorymanagement extends Component {
               </tr>
             );
         });
-      }
-      else{
-        <tr>
-          <td>{this.state.number}</td>
-        </tr>
-      }
+      
     }
 
     renderFromSearch(){
+      console.log(this.state.dataSearch)
+      if (this.state.dataSearch.length > 0){
       return (
         <div className="row mt">
               <div className="col-lg-12">
@@ -149,6 +145,25 @@ class Categorymanagement extends Component {
               </div>
       );
     }
+    else{
+      return (
+        <div className="row mt">
+              <div className="col-lg-12">
+              <div className="content-panel">
+              <hr/>
+                          <table className="table table-striped table-advance table-hover" >
+                            <thead>
+                                <tr>
+                                  <th className="text-center"> ---- ไม่พบข้อมูล ----</th>
+                                </tr>
+                              </thead>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+      );
+    }
+  }
 
     render() {
       return (

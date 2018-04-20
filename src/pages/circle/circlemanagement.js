@@ -17,7 +17,7 @@ const initialState = {
   startDate: null,
   endDate:null,
   status: 0,
-  dataSearch: null,
+  dataSearch: [],
   number:1
 };
 
@@ -147,6 +147,8 @@ class Circlemanagement extends Component {
     }
 
     renderFromSearch(){
+      console.log(this.state.dataSearch)
+      if (this.state.dataSearch.length > 0){
       return (
         <div className="row mt">
               <div className="col-lg-12">
@@ -173,6 +175,25 @@ class Circlemanagement extends Component {
               </div>
       );
     }
+    else{
+      return (
+        <div className="row mt">
+              <div className="col-lg-12">
+              <div className="content-panel">
+              <hr/>
+                          <table className="table table-striped table-advance table-hover" >
+                            <thead>
+                                <tr>
+                                  <th className="text-center"> ---- ไม่พบข้อมูล ----</th>
+                                </tr>
+                              </thead>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+      );
+    }
+  }
 
     render() {
       return (
