@@ -3,6 +3,13 @@ import MainLayout from "../../components/main-layout";
 import CommonApi from "../../api/common-api"
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
+import Checkbox from '../../Checkbox';
+
+const items = [
+    'นักศึกษา',
+    'อาจารย์',
+    'ประธานหลักสูตร',
+  ];
 
 class EvaluationUpdate extends Component { 
 
@@ -19,7 +26,6 @@ class EvaluationUpdate extends Component {
             duplicate: true,
             redirect: false,
             userTypeInEva: []
-          
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -28,6 +34,7 @@ class EvaluationUpdate extends Component {
         this.handleRemoveQuestions = this.handleRemoveQuestions.bind(this);
         this.handleQuestionsValueChange = this.handleQuestionsValueChange.bind(this);
         this.handleValidate = this.handleValidate.bind(this);
+        this.selectedCheckboxes = new Set();
       }
 
       componentWillMount() {
@@ -36,20 +43,41 @@ class EvaluationUpdate extends Component {
         this.state.evaluationName = this.props.location.query.evaluationName;
         this.state.description = this.props.location.query.description;
         this.setState(this.state);
-        console.log(this.state)
         // this.apiGetEset(id);
-        this.apiGetQset(id); 
-        this.apiGetUTEset(id); 
+        this.apiGetQset(id);
+        this.apiGetUTEset(id);
       }
 
-      setUTE(id){
-        let result = false;
-        this.state.userTypeInEva.forEach(data => {
-          if(data.utEuserTypeid == id){
-            result = true;
-          }
+      setUTE = label => {
+        let check = false;
+        this.state.userTypeInEva.map(item => {
+            console.log(this.state.userTypeInEva);
+            if (label == item.utEuserTypeName) {
+                check = true;
+            }
         });
-        return result;
+        return check;
+      }
+      
+      createCheckbox = label => (
+        <Checkbox
+                label={label}
+                handleCheckboxChange={this.toggleCheckbox}
+                key={label}
+                isChecked={this.setUTE(label)}
+            />
+      )
+    
+      createCheckboxes = () => (
+        items.map(this.createCheckbox)
+      )
+
+      toggleCheckbox = label => {
+        if (this.selectedCheckboxes.has(label)) {
+          this.selectedCheckboxes.delete(label);
+        } else {
+          this.selectedCheckboxes.add(label);
+        }
       }
 
       apiGetUTEset(id){
@@ -57,12 +85,8 @@ class EvaluationUpdate extends Component {
         .then(response => {
             let responseData = response.data;
             this.setState(
-              {userTypeInEva: response.data
-              }
-             
+              {userTypeInEva: response.data}
             );
-             console.log(this.state.userTypeInEva)
-            console.log(this.state);
         });
       }
 
@@ -74,7 +98,7 @@ class EvaluationUpdate extends Component {
               {questions: response.data
               }
             );
-            console.log(this.state);
+            //console.log(this.state);
         });
       }
 
@@ -162,7 +186,6 @@ class EvaluationUpdate extends Component {
        console.log(messages)
     }
 
-      
     render() {
 
       const { redirect } = this.state;
@@ -232,21 +255,7 @@ class EvaluationUpdate extends Component {
                         <div className="row">
                             <label className="col-sm-2 col-sm-2 control-label">กำหนดบทบาทผู้ใช้แบบประเมิน<span className="error-message">*</span></label>
                             <div className="col-sm-5">
-                                    <div className="checkbox">
-                                      <label>
-                                        <input type="checkbox" value="" disabled checked={this.setUTE(1)}/> นักเรียน
-                                        </label>
-                                    </div>
-                                    <div className="checkbox">
-                                      <label>
-                                        <input type="checkbox" value="" disabled checked={this.setUTE(2)}/> อาจารย์
-                                        </label>
-                                    </div>
-                                    <div className="checkbox">
-                                      <label>
-                                        <input type="checkbox" value="" disabled checked={this.setUTE(3)}/> ประธานหลักสูตร
-                                        </label>
-                                    </div>
+                                {this.createCheckboxes()}
                             </div>
                         </div>
                           

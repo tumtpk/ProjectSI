@@ -16,7 +16,6 @@ class LeftMenu extends Component {
         CommonApi.instance.get('/user/getusersession')
             .then(response => {
                 this.setState({dataSession: response.data});
-                cookies.save('role', response.data[0].UserTypeId);console.log(response.data[0].UserTypeId);
             }
         );
     }
@@ -25,7 +24,7 @@ class LeftMenu extends Component {
         CommonApi.instance.get('/user/getusersession')
             .then(response => {
                 this.setState({dataSession: response.data});
-                cookies.save('role', response.data[0].UserTypeId);console.log(response.data[0].UserTypeId);
+                cookies.save('role', response.data[0].UserTypeId);
             }
         );
     }

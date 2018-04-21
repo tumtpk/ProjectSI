@@ -3,7 +3,14 @@ import MainLayout from "../../components/main-layout";
 import CommonApi from "../../api/common-api"
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
+import Checkbox from '../../Checkbox';
 
+const items = [
+    'นักศึกษา',
+    'อาจารย์',
+    'ประธานหลักสูตร',
+  ];
+  
 class EvaluationCreate extends Component { 
 
     constructor(props) {
@@ -16,14 +23,36 @@ class EvaluationCreate extends Component {
             duplicateMessage1: "",
             duplicateMessage2: "",
             duplicate: true,
+            userTypes: [],
         }
-  
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleAddQuestions = this.handleAddQuestions.bind(this);
         this.handleRemoveQuestions = this.handleRemoveQuestions.bind(this);
         this.handleQuestionsValueChange = this.handleQuestionsValueChange.bind(this);
         this.handleValidate = this.handleValidate.bind(this);
+        this.selectedCheckboxes = new Set();
+      }
+
+      createCheckbox = label => (
+        <Checkbox
+                label={label}
+                handleCheckboxChange={this.toggleCheckbox}
+                key={label}
+            />
+      )
+    
+      createCheckboxes = () => (
+        items.map(this.createCheckbox)
+      )
+
+      toggleCheckbox = label => {
+        if (this.selectedCheckboxes.has(label)) {
+          this.selectedCheckboxes.delete(label);
+        } else {
+          this.selectedCheckboxes.add(label);
+        }
       }
 
       handleChange(event) {
@@ -61,6 +90,13 @@ class EvaluationCreate extends Component {
       handleSubmit(event) {
         event.preventDefault();
 
+        //this.state.UserTypes = this.selectedCheckboxes;
+        this.state.userTypes = Array.from(this.selectedCheckboxes);
+        const newUsertypes = this.state.userTypes.map((usertype, sidx) => {
+            return { ...usertype, userTypeName: usertype };
+        });
+        this.setState({ userTypes: newUsertypes });
+
         console.log(this.state);
 
         CommonApi.instance.post('/evaluation/isDuplicateNameCreate' ,this.state)
@@ -96,8 +132,6 @@ class EvaluationCreate extends Component {
         });
       }
 
-
-
     handleValidate(messages){
         let require = ["evaluationName","description"];
         require.forEach(element => {
@@ -111,11 +145,10 @@ class EvaluationCreate extends Component {
         });
     }
 
-      
     render() {
 
       const { redirect } = this.state;
-
+      
       if (redirect) {
         return <Redirect to='/evaluationmanagement'/>;
       }
@@ -179,15 +212,16 @@ class EvaluationCreate extends Component {
                         <div className="row">
                             <label className="col-sm-2 col-sm-2 control-label">กำหนดบทบาทผู้ใช้แบบประเมิน<span className="error-message">*</span></label>
                             <div className="col-sm-5">
-                                <div className="checkbox">
-                                    <label><input type="checkbox" value="" disabled/> นักศึกษา</label>
+                                {this.createCheckboxes()}
+                                {/* <div className="checkbox">
+                                    <label><input type="checkbox" value="1" onChange={this.handleClickUserType(1)}/> นักศึกษา</label>
                                 </div>
                                 <div className="checkbox">
-                                    <label><input type="checkbox" value="" disabled/> อาจารย์</label>
+                                    <label><input type="checkbox" value="2" onChange={this.handleClickUserType(2)}/> อาจารย์</label>
                                 </div>
-                                <div className="checkbox disabled">
-                                    <label><input type="checkbox" value="" disabled  /> ประธานหลักสูตร</label>
-                                </div>
+                                <div className="checkbox">
+                                    <label><input type="checkbox" value="3" onChange={this.handleClickUserType(3)}/> ประธานหลักสูตร</label>
+                                </div> */}
                             </div>
                         </div>
                         <div className="text-right">
@@ -205,4 +239,4 @@ class EvaluationCreate extends Component {
     }
   }
   
-  export default EvaluationCreate;
+  export default EvaluationCreate; 
