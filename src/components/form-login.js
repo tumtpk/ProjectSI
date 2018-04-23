@@ -11,7 +11,8 @@ class FormLogin extends Component {
         username: '',
         password: '',
         redirect: false,
-        message: ''
+        message: '',
+        span: true
       };
 
       this.handleChange = this.handleChange.bind(this);
@@ -37,14 +38,29 @@ class FormLogin extends Component {
     handleAuth(event){
       
       var xhttp = new XMLHttpRequest();
+      // xhttp.onreadystatechange = () => {
+      //   if (xhttp.readyState == 4 && xhttp.status == 200) {
+      //     let responses = JSON.parse(xhttp.response);
+      //     cookies.save('token', responses.access_token);
+      //     //this.setState({redirect: true});
+      //     window.location = "/dashboard";
+      //   }
+      //   else
+      //   {
+      //     this.setState({span: false,message: 'username or password invalid!'});
+      //   }
+      // };
       xhttp.onreadystatechange = () => {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
+        if ( xhttp.status == 400 ) {
+
+          this.setState({span: false,message: 'อีเมล์ผู้ใช้งาน หรือ รหัสผ่าน ไม่ถูกต้อง!'});
+        }
+        else
+        {
           let responses = JSON.parse(xhttp.response);
           cookies.save('token', responses.access_token);
-          // this.setState({redirect: true});
-          window.location = "/dashboard";
-        }else{
-          this.setState({message: 'username or password invalid!'});
+          //this.setState({redirect: true});
+          window.location = "/dashboard";;
         }
       };
       xhttp.open("POST", "http://localhost:52522/token", true);
@@ -58,7 +74,7 @@ class FormLogin extends Component {
       if (redirect) {
         return <Redirect to='/dashboard'/>;
       }
-
+      console.log(this.state.span)
       return (
         <form className="form-login" onSubmit={this.handleSubmit}>
 		    <h2 className="form-login-heading"> ลงชื่อเข้าสู่ระบบ </h2>
@@ -67,8 +83,8 @@ class FormLogin extends Component {
                 <br />
                 <input type="password" name="password" className="form-control" placeholder=" รหัสผ่าน" value={this.state.password} onChange={this.handleChange} />
                 <label className="checkbox">
-                    <span className="pull-left">
-                        { this.state.message }
+                    <span className={ this.state.span == true ? "pull-left hidden":"pull-left show" }>
+                     {this.state.message}
                     </span>
 		        </label>
 		        <button className="btn btn-theme btn-block" type="submit"><i className="fa fa-lock"></i> เข้าสู่ระบบ</button>
