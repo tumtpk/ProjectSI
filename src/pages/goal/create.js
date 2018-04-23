@@ -12,11 +12,11 @@ class GoalCreate extends Component {
         this.state = {
             goalName: "",
             description: "",
-            startDate: "",
-            endDate: "",
+            startDate: "01/01/0001",
+            endDate: "01/01/0001",
             numberDate:0,
             categoryID: 0,
-            circleID: 0,
+            circleID: 17,
             checklists: [{value: null},{value: null},{value: null}],
             circleList: [],
             categoryList: [],
@@ -25,6 +25,7 @@ class GoalCreate extends Component {
             duplicateMessage1: "",
             duplicateMessage2: "",
             duplicate: true,
+            circleType:0
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -33,7 +34,7 @@ class GoalCreate extends Component {
         this.handleRemoveChecklists = this.handleRemoveChecklists.bind(this);
         this.handleChecklistsValueChange = this.handleChecklistsValueChange.bind(this);
         this.handleValidate = this.handleValidate.bind(this);
-        this.handlerNumberDate = this.handlerNumberDate.bind(this);
+        // this.handlerNumberDate = this.handlerNumberDate.bind(this);
       }
 
       componentWillMount() {
@@ -54,9 +55,9 @@ class GoalCreate extends Component {
 
       }
 
-      handlerNumberDate = (value) => (evt) => {
-        this.state.numberDate = value;
-      }
+    //   handlerNumberDate = (value) => (evt) => {
+    //     this.state.numberDate = value;
+    //   }
 
       handleChange(event) {
         const target = event.target;
@@ -68,14 +69,14 @@ class GoalCreate extends Component {
         });
         document.getElementById(name).innerHTML = null;
 
-            event.preventDefault();
-            var myDate = new Date(this.state.startDate); 
-            console.log(this.state.numberDate);
-            console.log(myDate);
-            myDate.setDate(myDate.getDate() + 10 );
-            myDate = myDate.toLocaleDateString("en-TH");
-            this.state.endDate = myDate;
-            console.log(this.state.endDate);
+            // event.preventDefault();
+            // var myDate = new Date(this.state.startDate); 
+            // console.log(this.state.numberDate);
+            // console.log(myDate);
+            // myDate.setDate(myDate.getDate() + 10 );
+            // myDate = myDate.toLocaleDateString("en-TH");
+            // this.state.endDate = myDate;
+            // console.log(this.state.endDate);
       }
 
       handleAddChecklists = () => {
@@ -87,9 +88,14 @@ class GoalCreate extends Component {
 
 
       handleRemoveChecklists = (index) => () => {
+      if (index != 0){
         this.setState({
             checklists: this.state.checklists.filter((s, sidx) => index !== sidx)
         });
+        }
+      else{
+        { this.renderPopup() }
+      }
       }
 
       handleChecklistsValueChange = (index) => (evt) => {
@@ -113,6 +119,7 @@ class GoalCreate extends Component {
             }
             else{
                 this.setState({ duplicate: true, duplicateMessage1: "",duplicateMessage2: ""});
+
                 CommonApi.instance.post('/goal/create',this.state)
                         .then(response =>{
                             if(response.status == 200 && response.data.result){
@@ -130,7 +137,7 @@ class GoalCreate extends Component {
 
     handleValidate(messages){
         
-        let require = ["goalName","description","categoryID","circleID"];
+        let require = ["goalName","description","categoryID","circleID","circleType"];
         require.forEach(element => {
             document.getElementById(element).innerHTML = null;
         });
@@ -152,7 +159,7 @@ class GoalCreate extends Component {
 
       let circleList = this.state.circleList;
       let categoryList = this.state.categoryList;
-
+      console.log(this.state.circleID)
       return (
         <section id="main-content">
           <section className="wrapper">
@@ -186,6 +193,21 @@ class GoalCreate extends Component {
                             </div>
                         </div>
 
+                        <div className="form-group">
+                              <label className="col-sm-2 col-sm-2 control-label">หมวดหมู่<span className="error-message">*</span></label>
+                              <div className="col-sm-10">
+                                <div className="btn-group">
+                                <select className="form-control" name="categoryID" value={this.state.categoryID} onChange={this.handleChange} >
+                        
+                                    <option value="0">--เลือกหมวดหมู่--</option>
+                                    {categoryList.map((category, index) => (
+                                        <option value={category.id}>{category.categoryName}</option>
+                                    ))}
+                                    </select>
+                                    <span id="categoryID" className="error-message"></span>
+                                </div>
+                              </div>
+                            </div>
                       
                         <div className="row">
                             <label className="col-sm-2 col-sm-2 control-label">รายการตรวจสอบ<span className="error-message">*</span></label>
@@ -211,56 +233,43 @@ class GoalCreate extends Component {
                         ))}
                           <div className="form-group">
                         </div>
-                        <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">หมวดหมู่<span className="error-message">*</span></label>
-                              <div className="col-sm-5">
-                                <div className="btn-group">
-                                <select className="form-control" name="categoryID" value={this.state.categoryID} onChange={this.handleChange} >
-                        
-                                    <option value="0">--เลือกหมวดหมู่--</option>
-                                    {categoryList.map((category, index) => (
-                                        <option value={category.id}>{category.categoryName}</option>
-                                    ))}
-                                    </select>
-                                    <span id="categoryID" className="error-message"></span>
-                                </div>
-                              </div>
-                            </div>
+
 
                              <div className="form-group">
                               <label className="col-sm-2 col-sm-2 control-label">รูปแบบรอบการดำเนินงาน<span className="error-message">*</span></label>
                               <div className="col-sm-5">
                                 <div className="btn-group">
-                                    <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
+                                    <select className="form-control" name="circleType" value={this.state.circleType} onChange={this.handleChange}>
                                     <option value="0">--เลือกรูปแบบรอบการดำเนินงาน--</option>
                                     <option value="1"> รอบการดำเนินงานตามกำหนด</option>
                                     <option value="2"> รอบการดำเนินงานกำหนดเอง</option>
                                     </select>
-                                    <span id="circleID" className="error-message"></span>
+                                    <span id="circleType" className="error-message"></span>
                                 </div>
                               </div>
                             </div>
 
-                            <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">รอบการดำเนินงาน<span className="error-message">*</span></label>
+                            <div  className={  this.state.circleType == 1 ? "form-group show":"form-group  hidden" }>
+                              <label className="col-sm-2 col-sm-2 control-label">รอบการดำเนินงานตามกำหนด<span className="error-message">*</span></label>
                               <div className="col-sm-5">
                                 <div className="btn-group">
                                     <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
                                     <option value="0">--เลือกรอบการดำเนินงาน--</option>
                                     {circleList.map((circle, index) => (
-                                        <option value={circle.id} onChange={this.handlerNumberDate(circle.circleTime)}>{circle.circleName}</option>
+                                        <option value={circle.id} >{circle.circleName}</option>     
                                     ))}
+
                                     </select>
                                     <span id="circleID" className="error-message"></span>
                                 </div>
                               </div>
                             </div>
 
-                        <div className="form-group">
+                        <div className={  this.state.circleType == 2 ? "form-group show":"form-group  hidden" }>
                             <label className="col-sm-2 col-sm-2 control-label">วันเริ่มต้นเป้าหมาย</label>
                             <div className="col-sm-3">
                             <div className='input-group date' id='datetimepicker1'>
-                                <input type='date' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} />
+                                <input type='date' className="form-control" name="startDate" value={this.state.circleList.startDate} onChange={this.handleChange} />
                             <span className="input-group-addon">
                                 <span className="glyphicon glyphicon-calendar"></span>
                              </span>
@@ -268,9 +277,9 @@ class GoalCreate extends Component {
                             </div>
                             <span id="startDate" className="error-message"></span>
                         </div>
-                        </div>
+                        
 
-                        <div className="form-group">
+                        <div className={  this.state.circleType == 2 ? "form-group2 show":"form-group2  hidden" }>
                               <label className="col-lg-2 col-sm-2 control-label">วันสิ้นสุดเป้าหมาย</label>
                               <div className="col-sm-3">
                             <div className='input-group date' id='datetimepicker1'>
@@ -283,7 +292,7 @@ class GoalCreate extends Component {
                             <span id="endDate" className="error-message"></span>
                         </div>
                           </div>
-                
+                    </div>
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>
                             <Link to={ {pathname: `/goalmanagement`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>
@@ -299,5 +308,6 @@ class GoalCreate extends Component {
       );
     }
   }
+
   
   export default GoalCreate;
