@@ -27,7 +27,7 @@ class GoalCreateOtherUserSelectUser extends Component {
         userID: null,
         redirect: false,
         hiddenAll: true,
-        personalID: ""
+        personalID: "",
        }
     
   
@@ -51,7 +51,9 @@ class GoalCreateOtherUserSelectUser extends Component {
         this.state.startDate = this.props.location.query.startDate;
         this.state.endDate = this.props.location.query.endDate;  
         this.state.checklists = this.props.location.query.checklists;
+        this.state.circleType = this.props.location.query.circleType;
         this.setState(this.state);
+        console.log(this.state)
         CommonApi.instance.get('/user/getuserByCommanderId', {
 
          })

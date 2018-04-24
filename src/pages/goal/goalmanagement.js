@@ -29,7 +29,7 @@ const initialState = {
   number: 1,
   circleList: [],
   categoryList: [],
-  status: "Open"
+  circleType: null
 };
 
 class Goalmanagement extends Component { 
@@ -200,6 +200,7 @@ class Goalmanagement extends Component {
     }
 
     renderTable(){
+      console.log(this.state.dataSearch)
       this.state.number = 0
       return _.map(this.state.dataSearch, data => {
         this.state.number = this.state.number+1
@@ -212,8 +213,8 @@ class Goalmanagement extends Component {
             <td><span className="badge bg-success">{this.state.status}</span></td>
             <td>
               <button className="btn btn-warning btn-xs" data-toggle="modal" data-target="#modal" onClick={this.handleProgress(data.id)}><i className="fa fa-tasks" ></i></button>
-              <Link to={ {pathname: `/goal/view`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/goal/update`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
+              <Link to={ {pathname: `/goal/view`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate,circleType:data.circleType}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/goal/update`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate,circleType:data.circleType}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
               <button className="btn btn-danger btn-xs"  data-toggle="modal" data-target={"#"+data.goalName}><i className="fa fa-trash-o "></i></button>
                                       <div id={data.goalName} className="modal fade" role="dialog">
                                         <div className="modal-dialog">

@@ -10,16 +10,22 @@ class GoalCreateOtherUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userID:[],
             goalName: "",
             description: "",
-            startDate: "",
-            endDate: "2016-02-10",
+            startDate: "01/01/0001",
+            endDate: "01/01/0001",
+            numberDate:0,
             categoryID: 0,
-            circleID: 0,
-            checklists: [{value: null}],
+            circleID: 17,
+            checklists: [{value: null},{value: null},{value: null}],
             circleList: [],
             categoryList: [],
-            userID:[],
+            redirect: false,
+            duplicateMessage1: "",
+            duplicateMessage2: "",
+            duplicate: true,
+            circleType:0
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -88,7 +94,7 @@ class GoalCreateOtherUser extends Component {
 
     handleValidate(messages){
         
-        let require = ["goalName","description","categoryID","circleID","startDate"];
+        let require = ["goalName","description","categoryID","circleID","circleType"];
         require.forEach(element => {
            
             document.getElementById(element).innerHTML = null;
@@ -129,7 +135,7 @@ class GoalCreateOtherUser extends Component {
                 <div className="text-center">
                 <img src="/theme/img/pagenation1.jpg"  width="150" height="70" />
             </div>
-                    <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลเป้าหมาย</h4>
+            <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลเป้าหมาย</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
                               <label className="col-sm-2 col-sm-2 control-label">ชื่อเป้าหมาย<span className="error-message">*</span></label>
@@ -146,36 +152,11 @@ class GoalCreateOtherUser extends Component {
                             </div>
                         </div>
 
-                      
-                        <div className="row">
-                            <label className="col-sm-2 col-sm-2 control-label">รายการตรวจสอบ<span className="error-message">*</span></label>
-                            <div className="col-sm-5">
-                                <button type="button" className="btn btn-primary" onClick={this.handleAddChecklists}>เพิ่ม</button>
-                            </div>
-                        </div>
-                        {this.state.checklists.map((checklist, index) => (
-                        <div className="row">
-                            <label className="col-sm-2 col-sm-2 control-label"></label>
-                            <div className="col-sm-5">
-                                <div className="input-group">
-                                    <input type="text" className="form-control" placeholder={`รายการตรวจสอบที่ ${index + 1}`}
-                                            value={checklist.value} 
-                                            onChange={this.handleChecklistsValueChange(index)} />
-                                    <span id={'checklists['+index+']'} className="error-message"></span>
-                                    <span className="input-group-btn">
-                                        <button className="btn btn-danger" type="button" onClick={this.handleRemoveChecklists(index)} disabled={index==0 ? 'disabled' : ''}>ลบ</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        ))}
-                          <div className="form-group">
-                        </div>
                         <div className="form-group">
                               <label className="col-sm-2 col-sm-2 control-label">หมวดหมู่<span className="error-message">*</span></label>
-                              <div className="col-sm-5">
+                              <div className="col-sm-10">
                                 <div className="btn-group">
-                                <select className="form-control" name="categoryID" value={this.state.categoryID} onChange={this.handleChange}>
+                                <select className="form-control" name="categoryID" value={this.state.categoryID} onChange={this.handleChange} >
                         
                                     <option value="0">--เลือกหมวดหมู่--</option>
                                     {categoryList.map((category, index) => (
@@ -186,27 +167,68 @@ class GoalCreateOtherUser extends Component {
                                 </div>
                               </div>
                             </div>
+                      
+                        <div className="row">
+                            <label className="col-sm-2 col-sm-2 control-label">รายการตรวจสอบ<span className="error-message">*</span></label>
+                            <div className="col-sm-5">
+                                <button type="button" className="btn btn-primary" onClick={this.handleAddChecklists}>เพิ่ม</button>
+                            </div>
+                        </div>
+                        {this.state.checklists.map((checklist, index) => (
+                        <div className="row">
+                            <label className="col-sm-2 col-sm-2 control-label"></label>
+                            <div className="col-sm-4">
+                                <div className='input-group date' id='datetimepicker2'>
+                                    <input type="text" className="form-control" placeholder={`รายการตรวจสอบที่ ${index + 1}`}
+                                            value={checklist.value} 
+                                            onChange={this.handleChecklistsValueChange(index)} />
+                                    <span className="input-group-addon btn btn-theme04 btn-xs" onClick={this.handleRemoveChecklists(index)}>
+                                            <span className="fa fa-times" ></span>
+                                    </span>
+                                </div>
+                                <span id={'checklists['+index+']'} className="error-message"></span>
+                            </div>
+                        </div>
+                        ))}
+                          <div className="form-group">
+                        </div>
 
-                            <div className="form-group">
-                              <label className="col-sm-2 col-sm-2 control-label">รอบการดำเนินงาน<span className="error-message">*</span></label>
+
+                             <div className="form-group">
+                              <label className="col-sm-2 col-sm-2 control-label">รูปแบบรอบการดำเนินงาน<span className="error-message">*</span></label>
+                              <div className="col-sm-5">
+                                <div className="btn-group">
+                                    <select className="form-control" name="circleType" value={this.state.circleType} onChange={this.handleChange}>
+                                    <option value="0">--เลือกรูปแบบรอบการดำเนินงาน--</option>
+                                    <option value="1"> รอบการดำเนินงานตามกำหนด</option>
+                                    <option value="2"> รอบการดำเนินงานกำหนดเอง</option>
+                                    </select>
+                                    <span id="circleType" className="error-message"></span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div  className={  this.state.circleType == 1 ? "form-group show":"form-group  hidden" }>
+                              <label className="col-sm-2 col-sm-2 control-label">รอบการดำเนินงานตามกำหนด<span className="error-message">*</span></label>
                               <div className="col-sm-5">
                                 <div className="btn-group">
                                     <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
                                     <option value="0">--เลือกรอบการดำเนินงาน--</option>
                                     {circleList.map((circle, index) => (
-                                        <option value={circle.id}>{circle.circleName}</option>
+                                        <option value={circle.id} >{circle.circleName}</option>     
                                     ))}
+
                                     </select>
                                     <span id="circleID" className="error-message"></span>
                                 </div>
                               </div>
                             </div>
 
-                        <div className="form-group">
+                        <div className={  this.state.circleType == 2 ? "form-group show":"form-group  hidden" }>
                             <label className="col-sm-2 col-sm-2 control-label">วันเริ่มต้นเป้าหมาย</label>
                             <div className="col-sm-3">
                             <div className='input-group date' id='datetimepicker1'>
-                                <input type='date' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} />
+                                <input type='date' className="form-control" name="startDate" value={this.state.circleList.startDate} onChange={this.handleChange} />
                             <span className="input-group-addon">
                                 <span className="glyphicon glyphicon-calendar"></span>
                              </span>
@@ -214,16 +236,24 @@ class GoalCreateOtherUser extends Component {
                             </div>
                             <span id="startDate" className="error-message"></span>
                         </div>
-                        </div>
+                        
 
-                        <div className="form-group">
+                        <div className={  this.state.circleType == 2 ? "form-group2 show":"form-group2  hidden" }>
                               <label className="col-lg-2 col-sm-2 control-label">วันสิ้นสุดเป้าหมาย</label>
-                              <div className="col-sm-5">
-                                  <p className="form-control-static" name="endDate">02/22/2018</p>
-                              </div>
+                              <div className="col-sm-3">
+                            <div className='input-group date' id='datetimepicker1'>
+                                <input type='date' className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}/>
+                            <span className="input-group-addon">
+                                <span className="glyphicon glyphicon-calendar"></span>
+                             </span>
+
+                            </div>
+                            <span id="endDate" className="error-message"></span>
+                        </div>
                           </div>
+                    </div>
                         <div className="text-right">
-                            <Link to={ {pathname: `/goal/selectuser`, query: {goalName:this.state.goalName, description:this.state.description, startDate:this.state.startDate, endDate:this.state.endDate, checklists:this.state.checklists, categoryID:this.state.categoryID, circleID:this.state.circleID}} }><button type="submit" className="btn btn-success">ถัดไป</button></Link>
+                            <Link to={ {pathname: `/goal/selectuser`, query: {goalName:this.state.goalName, description:this.state.description, startDate:this.state.startDate, endDate:this.state.endDate, checklists:this.state.checklists, categoryID:this.state.categoryID, circleID:this.state.circleID,circleType:this.state.circleType}} }><button type="submit" className="btn btn-success">ถัดไป</button></Link>
                             <Link to={ {pathname: `/goalmanagementOtherUser`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>
                             
                         </div>
