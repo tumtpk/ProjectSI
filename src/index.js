@@ -16,6 +16,7 @@ import UserUpdate from "./pages/usermanagement/update";
 import UserDetail from "./pages/usermanagement/detail";
 import Usermanagement1 from "./pages/usermanagement/usermanagement.1";
 import Usermanagement2 from "./pages/usermanagement/usermanagement.2";
+import importUser from "./pages/usermanagement/importUser"
 
 
 import Circlemanagement from "./pages/circle/circlemanagement";
@@ -41,6 +42,8 @@ import GoalCreateOtherUser from "./pages/goal/createOtherUser";
 import GoalCreateOtherUserSelectUser from "./pages/goal/selectuser";
 import GoalmanagementOtherUser from "./pages/goal/goalmanagementOtherUser"
 import ReportAllGoal from "./pages/goal/reportallgoal";
+import ReportAllGoal2 from "./pages/goal/reportallgoal.1";
+import ReportAllGoal3 from "./pages/goal/reportallgoal.2";
 
 import MainLayout from "./components/main-layout";
 import Empty from "./components/layout/empty";
@@ -70,6 +73,7 @@ ReactDOM.render(
           <AppRoute exact path="/usermanagement/view" layout={MainLayout} component={UserDetail} />
           <AppRoute exact path="/usermanagement1" layout={MainLayout} component={Usermanagement1} />
           <AppRoute exact path="/usermanagement2" layout={MainLayout} component={Usermanagement2} />
+          <AppRoute exact path="/importUser" layout={MainLayout} component={importUser} />
 
           <AppRoute exact path="/circlemanagement" layout={MainLayout} component={Circlemanagement} />
           <AppRoute exact path="/circle/create" layout={MainLayout} component={CircleCreate} />
@@ -94,6 +98,8 @@ ReactDOM.render(
           <AppRoute exact path="/goal/selectuser" layout={MainLayout} component={GoalCreateOtherUserSelectUser} />
           <AppRoute exact path="/goalmanagementOtherUser" layout={MainLayout} component={GoalmanagementOtherUser} />
           <AppRoute exact path="/reportallgoal" layout={MainLayout} component={ReportAllGoal} />
+          <AppRoute exact path="/reportallgoal2" layout={MainLayout} component={ReportAllGoal2} />
+          <AppRoute exact path="/reportallgoal3" layout={MainLayout} component={ReportAllGoal3} />
 
           <Route exact path="*" component={NotFound} status={404} />
         </Switch>
