@@ -108,6 +108,7 @@ class Circlemanagement extends Component {
     };
 
     renderTable(){
+      console.log(this.state.dataSearch)
       this.state.number = 0
       return _.map(this.state.dataSearch, data => {
         this.state.number = this.state.number+1
@@ -119,8 +120,8 @@ class Circlemanagement extends Component {
             <td>{ data.endDate}</td>
             <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
             <td>
-              <Link to={ {pathname: `/circle/view`, query: {id : data.id}} }><button className="btn btn-success btn-xs" data-toggle="ดูรายละเอียด" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/circle/update`, query: {id : data.id }} }><button className="btn btn-primary btn-xs" data-toggle="แก้ไข" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
+              <Link to={ {pathname: `/circle/view`, query: {id : data.id,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate,status:data.status}} }><button className="btn btn-success btn-xs" data-toggle="ดูรายละเอียด" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/circle/update`, query: {id : data.id,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate,status:data.status }} }><button className="btn btn-primary btn-xs" data-toggle="แก้ไข" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
               <button className="btn btn-danger btn-xs" data-toggle="ลบ" data-placement="bottom" title="ลบ" data-toggle="modal" data-target={"#"+data.id}><i className="fa fa-trash-o " ></i></button>
                                       <div id={data.id} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
@@ -196,6 +197,7 @@ class Circlemanagement extends Component {
   }
 
     render() {
+
       return (
         <section id="main-content">
           <section className="wrapper">
@@ -247,7 +249,7 @@ class Circlemanagement extends Component {
                           <label className="col-sm-2 col-sm-2 control-label">วันสิ้นสุดรอบการดำเนินงาน</label>
                           <div className="col-sm-3">
                               <div className='input-group date' id='daterangepicker'>
-                                <input type='date' className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} />
+                                <input type='date' className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}/>
                                 <span className="input-group-addon">
                                 <span className="glyphicon glyphicon-calendar"></span>
                              </span>
