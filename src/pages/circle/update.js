@@ -10,7 +10,6 @@ class CircleUpdate extends Component {
         super(props);
         this.state = {
             circleName: "",
-            circleTime: "",
             status: 1,
             redirect: false,
             duplicateMessage1: "",
@@ -114,8 +113,8 @@ class CircleUpdate extends Component {
       }
       console.log(this.state)
 
-
       return (
+          
         <section id="main-content">
           <section className="wrapper">
 
@@ -133,9 +132,10 @@ class CircleUpdate extends Component {
 						</div>
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลรอบการดำเนินงาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
+
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการปรับปรุงกระบวนการ<span className="error-message">*</span></label>
-                            <div className="col-sm-5">
+                            <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการดำเนินงาน<span className="error-message">*</span></label>
+                            <div className="col-sm-3">
                                 <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} />
                                 <span id="circleName" className="error-message"></span>
                             </div>
@@ -144,15 +144,25 @@ class CircleUpdate extends Component {
                         <div className="form-group">
                             <label className="col-sm-3 col-sm-3 control-label">วันเริ่มต้นของเป้าหมาย<span className="error-message">*</span></label>
                             <div className="col-sm-2">
-                                <input type="date" className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange}  />
-                                <span id="startDate" className="error-message"></span>
-                            </div>
+                          <div className='input-group date' id='datetimepicker1'>
+                          <input type='date' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} />
+                          <span className="input-group-addon">
+                          <span className="glyphicon glyphicon-calendar"></span>
+                          </span>
+                          <span id="startDate" className="error-message"></span>
+                          </div>
+                          </div>
                             <br></br><br></br><br></br>
                             <label className="col-sm-3 col-sm-3 control-label">วันสิ้นสุดของเป้าหมาย<span className="error-message">*</span></label>
                             <div className="col-sm-2">
-                                <input type="date" className="form-control" name="endDate"  value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}  />
-                                <span id="endDate" className="error-message"></span>
-                            </div>
+                          <div className='input-group date' id='datetimepicker1'>
+                          <input type='date' className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}/>
+                          <span className="input-group-addon">
+                          <span className="glyphicon glyphicon-calendar"></span>
+                          </span>
+                          <span id="endDate" className="error-message"></span>
+                          </div>
+                          </div>
                         </div>
 
                             <div className="form-group">
@@ -166,6 +176,7 @@ class CircleUpdate extends Component {
                                     </div>
                                 </div>
                             </div>
+
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>
                             <Link to={ {pathname: `/circlemanagement`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>
