@@ -73,10 +73,15 @@ class GoalCreateOtherUser extends Component {
       }
 
       handleRemoveChecklists = (index) => () => {
-        this.setState({
-            checklists: this.state.checklists.filter((s, sidx) => index !== sidx)
-        });
-      }
+        if (index != 0){
+          this.setState({
+              checklists: this.state.checklists.filter((s, sidx) => index !== sidx)
+          });
+          }
+        else{
+          alert("เป้าหมาย ต้องประกอบด้วยอย่างน้อย 1 รายการตรวจสอบ")
+        }
+        }
 
       handleChecklistsValueChange = (index) => (evt) => {
         const newChecklist = this.state.checklists.map((checklist, sidx) => {

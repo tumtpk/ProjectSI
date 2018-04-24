@@ -94,7 +94,7 @@ class GoalCreate extends Component {
         });
         }
       else{
-        { this.renderPopup() }
+        alert("เป้าหมาย ต้องประกอบด้วยอย่างน้อย 1 รายการตรวจสอบ")
       }
       }
 
@@ -148,7 +148,6 @@ class GoalCreate extends Component {
             document.getElementById(element.key).innerHTML = element.message;
         });
     }
-
 
     render() {
       const { redirect } = this.state;
