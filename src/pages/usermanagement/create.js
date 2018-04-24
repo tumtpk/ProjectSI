@@ -64,32 +64,32 @@ class UserCreate extends Component {
 
       handleChange(event) {
         console.log({OnIF: this.state.userTypeID})
-        if (this.state.userTypeID == 0 || this.state.userTypeID == "0" ){
-            this.setState({personalID2: false})
-            this.setState({commanderID2: false})
-        }
-        else{
-            if (this.state.commanderID == 1 || this.state.userTypeID == "1"){
-                this.setState({personalID2: true})
-                this.setState({commanderID2: false})
-            }
-            else{
-                if (this.state.userTypeID == 2 || this.state.userTypeID == "2"){
-                    this.setState({personalID2: true})
-                    this.setState({commanderID2: true})
-                }
-                else{
-                    if (this.state.userTypeID == 3 || this.state.userTypeID == "3"){
-                        this.setState({personalID2: true})
-                        this.setState({commanderID2: true})
-                    }
-                    else{
-                        this.setState({personalID2: false})
-                        this.setState({commanderID2: false})  
-                    }
-                }
-            }
-        }
+        // if (this.state.userTypeID == 1 || this.state.userTypeID == "1" ){
+        //     this.setState({personalID2: false})
+        //     this.setState({commanderID2: false})
+        // }
+        // else{
+        //     if (this.state.commanderID == 2 || this.state.userTypeID == "2"){
+        //         this.setState({personalID2: true})
+        //         this.setState({commanderID2: false})
+        //     }
+        //     else{
+        //         if (this.state.userTypeID == 3 || this.state.userTypeID == "3"){
+        //             this.setState({personalID2: true})
+        //             this.setState({commanderID2: true})
+        //         }
+        //         else{
+        //             if (this.state.userTypeID == 4 || this.state.userTypeID == "4"){
+        //                 this.setState({personalID2: true})
+        //                 this.setState({commanderID2: true})
+        //             }
+        //             else{
+        //                 this.setState({personalID2: false})
+        //                 this.setState({commanderID2: false})  
+        //             }
+        //         }
+        //     }
+        // }
 
 
        
@@ -199,7 +199,7 @@ class UserCreate extends Component {
 						</div>
                     <h4 className="mb"><i className="fa fa-angle-right"></i> กรอกข้อมูลผู้ใช้งาน</h4>
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
-                        <div className="form-group" hidden={this.state.personalID2} >
+                        <div className={ this.state.userTypeID == 2 || this.state.userTypeID == 3 || this.state.userTypeID == 4 ? "form-group hidden":"form-group show" } >
                               <label className="col-sm-2 col-sm-2 control-label">รหัสประจำตัว </label>
                               <div className="col-sm-6">
                                 <div className="btn-group">
@@ -254,7 +254,7 @@ class UserCreate extends Component {
                                 </div>
                             </div>
                         
-                            <div className="form-group" hidden={this.state.commanderID2}>
+                            <div className={ this.state.userTypeID == 3 || this.state.userTypeID == 4 ? "form-group hidden":"form-group show" }>
                               <label className="col-sm-2 col-sm-2 control-label">ผู้บังคับบัญชา / <br></br>อาจารย์ที่ปรึกษาทางวิชาการ</label>
                               <div className="col-sm-5">
                                 <div className="btn-group">
