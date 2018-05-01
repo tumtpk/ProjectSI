@@ -8,7 +8,8 @@ class LeftMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSession: null
+            dataSession: null,
+            role: null
         }
     }
 
@@ -16,21 +17,15 @@ class LeftMenu extends Component {
         CommonApi.instance.get('/user/getusersession')
             .then(response => {
                 this.setState({dataSession: response.data});
-            }
-        );
-    }
-
-    componentDidMount() {
-        CommonApi.instance.get('/user/getusersession')
-            .then(response => {
-                this.setState({dataSession: response.data});
                 cookies.save('role', response.data[0].UserTypeId);
+                
+                this.setState({role: cookies.load('role')});
+                console.log(this.state);
             }
         );
     }
-    render() {
 
-        let role = cookies.load('role');
+    render() {
         
                 return (
                     <aside>
@@ -50,7 +45,7 @@ class LeftMenu extends Component {
                                   </a>
                               </li>
             
-                             <li className="sub-menu" style={role != 4 ? {} : { display: 'none' }}>
+                             <li className="sub-menu" style={this.state.role != 4 ? {} : { display: 'none' }}>
                                   <a href="javascript:;" >
                                       <i className="fa fa-tasks"></i>
                                       <span>เป้าหมายของฉัน</span>
@@ -60,13 +55,13 @@ class LeftMenu extends Component {
                                   </ul>
                               </li>
             
-                              <li className="sub-menu" style={role != 4 ? {} : { display: 'none' }}>
+                              <li className="sub-menu" style={this.state.role != 4 ? {} : { display: 'none' }}>
                                 <a href="javascript:;">
                                     <i className="fa fa-book"></i>
                                     <span>ทบทวนประสิทธิภาพการทำงาน</span>
                                 </a>
                             </li>
-                            <li className="sub-menu" style={role != 4 ? {} : { display: 'none' }}>
+                            <li className="sub-menu" style={this.state.role != 4 ? {} : { display: 'none' }}>
                                 <a href="javascript:;">
                                     <i className="fa fa-refresh"></i>
                                     <span>ข้อเสนอแนะ 360 องศาของฉัน</span>
@@ -74,7 +69,7 @@ class LeftMenu extends Component {
                             </li>
                             <br></br>
                             
-                                <li className="sub-menu" style={role == 4 ? {} : { display: 'none' }}>
+                                <li className="sub-menu" style={this.state.role == 4 ? {} : { display: 'none' }}>
                                     <a href="javascript:;"  >
                                         <i className="fa fa-cogs"></i>
                                         <span>Administration</span>
