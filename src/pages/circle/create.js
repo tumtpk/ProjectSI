@@ -59,10 +59,23 @@ class CircleCreate extends Component {
       handleSValueChange = (index) => (evt) => {
         const newValua = this.state.circles.map((circle, sidx) => {
           if (index !== sidx) return circle;
-          return { ...circle, startDate: evt.target.startDate };
+          console.log(evt.target.value," ",index);
+          return { ...circle, startDate: evt.target.value };
         });
     
         this.setState({ circles: newValua });
+        console.log(this.state.circles);
+      }
+
+      handleSValueChange2 = (index) => (evt) => {
+        const newValua = this.state.circles.map((circle, sidx) => {
+          if (index !== sidx) return circle;
+          console.log(evt.target.value," ",index);
+          return { ...circle, endDate: evt.target.value };
+        });
+    
+        this.setState({ circles: newValua });
+        console.log(this.state.circles);
       }
 
     // handleValidate(messages){
@@ -175,7 +188,7 @@ class CircleCreate extends Component {
                             <div className="col-sm-3">
                             <label>วันสิ้นสุดของภาคการศึกษาที่ {index+1}</label>
                           <div className='input-group date' id='datetimepicker1'>
-                          <input type='date' className="form-control" name="endDate" value={circle.endDate} onChange={this.handleSValueChange(index)} />
+                          <input type='date' className="form-control" name="endDate" value={circle.endDate} onChange={this.handleSValueChange2(index)} />
                           <span className="input-group-addon">
                           <span className="glyphicon glyphicon-calendar"></span>
                           </span>
