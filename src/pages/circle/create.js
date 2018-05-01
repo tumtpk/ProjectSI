@@ -22,14 +22,24 @@ class CircleCreate extends Component {
             duplicateMessage2: "",
             duplicate: true,
             startDate: "",
-            endDate:""
+            endDate:"",
+            circles: [
+                      {circleName: "ภาคการศึกษาที่ 1",status:1,startDate:"2018-02-24",endDate:"2018-02-25",year: 2561,semester:1},
+                      {circleName: "ภาคการศึกษาที่ 2",status:1,startDate:"2018-02-26",endDate:"2018-02-27",year: 2561,semester:2},
+                      {circleName: "ภาคการศึกษาที่ 3",status:1,startDate:"2018-02-28",endDate:"2018-02-29",year: 2561,semester:3}     
+                    ]
+
+                      
+
+                      
         }
 
         // mixins: [Validation.FieldMixin]
   
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleValidate = this.handleValidate.bind(this);
+        this.handleSValueChange = this.handleSValueChange.bind(this);
+        // this.handleValidate = this.handleValidate.bind(this);
 
       }
       
@@ -46,17 +56,26 @@ class CircleCreate extends Component {
         document.getElementById(name).innerHTML = null;
       }
 
-    handleValidate(messages){
-        let require = ["circleName","startDate","endDate"];
-        require.forEach(element => {
-            document.getElementById(element).innerHTML = null;
+      handleSValueChange = (index) => (evt) => {
+        const newValua = this.state.circles.map((circle, sidx) => {
+          if (index !== sidx) return circle;
+          return { ...circle, startDate: evt.target.startDate };
         });
-        console.log(messages);
+    
+        this.setState({ circles: newValua });
+      }
+
+    // handleValidate(messages){
+    //     let require = ["circleName","startDate","endDate"];
+    //     require.forEach(element => {
+    //         document.getElementById(element).innerHTML = null;
+    //     });
+    //     console.log(messages);
        
-        messages.forEach(element => {
-            document.getElementById(element.key).innerHTML = element.message;
-        });
-    }
+    //     messages.forEach(element => {
+    //         document.getElementById(element.key).innerHTML = element.message;
+    //     });
+    // }
 
     handleSubmit(event) {
         event.preventDefault();
@@ -80,7 +99,7 @@ class CircleCreate extends Component {
                             }
                             else{
                                 //this.setState({circleTime: null})
-                                this.handleValidate(response.data.message);
+                                // this.handleValidate(response.data.message);
                                 
                                  }
                                 }
@@ -120,29 +139,43 @@ class CircleCreate extends Component {
                     <form className="form-horizontal style-form" onSubmit={this.handleSubmit}>
 
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">ชื่อรอบการดำเนินงาน<span className="error-message">*</span></label>
+                            <label className="col-sm-3 col-sm-3 control-label" value={this.state.circleName}>ปีการศึกษา<span className="error-message">*</span></label>
                             <div className="col-sm-3">
-                                <input type="text" className="form-control" name="circleName" value={this.state.circleName} onChange={this.handleChange} />
-                                <span id="circleName" className="error-message"></span>
+                            <div className="btn-group">
+                                        <select className="form-control" name="year" value={this.state.year} onChange={this.handleChange}>
+                                            <option value="2560">2560</option>
+                                            <option value="2561">2561</option>
+                                            <option value="2562">2562</option>
+                                            <option value="2563">2563</option>
+                                            <option value="2564">2564</option>
+                                            <option value="2565">2565</option>
+                                            <option value="2566">2566</option>
+                                            <option value="2567">2567</option>
+                                            <option value="2568">2568</option>
+                                            <option value="2569">2569</option>
+                                            <option value="2570">2570</option>
+                                        </select>
+                                        <span id="year" className="error-message"></span>
+                                    </div>
                             </div>
                         </div>
-
+                        {this.state.circles.map((circle, index) => (
                         <div className="form-group">
-                            <label className="col-sm-3 col-sm-3 control-label">วันเริ่มต้นของเป้าหมาย<span className="error-message">*</span></label>
-                            <div className="col-sm-2">
+                            <label className="col-sm-3 col-sm-3 control-label">ภาคการศึกษาที่ {index+1}<span className="error-message">*</span></label>
+                            <div className="col-sm-3">
+                            <label>วันเริ่มต้นของภาคการศึกษาที่ {index+1}</label>
                           <div className='input-group date' id='datetimepicker1'>
-                          <input type='date' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} />
+                          <input type='date' className="form-control" name="startDate" value={circle.startDate} onChange={this.handleSValueChange(index)} />
                           <span className="input-group-addon">
                           <span className="glyphicon glyphicon-calendar"></span>
                           </span>
                           <span id="startDate" className="error-message"></span>
                           </div>
                           </div>
-                            <br></br><br></br><br></br>
-                            <label className="col-sm-3 col-sm-3 control-label">วันสิ้นสุดของเป้าหมาย<span className="error-message">*</span></label>
-                            <div className="col-sm-2">
+                            <div className="col-sm-3">
+                            <label>วันสิ้นสุดของภาคการศึกษาที่ {index+1}</label>
                           <div className='input-group date' id='datetimepicker1'>
-                          <input type='date' className="form-control" name="endDate" value={this.state.endDate} onChange={this.handleChange} min={this.state.startDate}/>
+                          <input type='date' className="form-control" name="endDate" value={circle.endDate} onChange={this.handleSValueChange(index)} />
                           <span className="input-group-addon">
                           <span className="glyphicon glyphicon-calendar"></span>
                           </span>
@@ -150,7 +183,7 @@ class CircleCreate extends Component {
                           </div>
                           </div>
                         </div>
-
+                    ))}
                             <div className="form-group">
                                 <label className="col-sm-3 col-sm-3 control-label">สถานะ</label>
                                 <div className="col-sm-5">
@@ -162,7 +195,7 @@ class CircleCreate extends Component {
                                     </div>
                                 </div>
                             </div>
-
+                       
                         <div className="text-right">
                             <button type="submit" className="btn btn-success">บันทึก</button>
                             <Link to={ {pathname: `/circlemanagement`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>
