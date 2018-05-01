@@ -43,7 +43,7 @@ class GoalAchievementGraph extends Component {
                 <div className="content-panel">
 						<h4><i className="fa fa-angle-right"></i> ฝึกเขียน C#</h4>
                         <div className="panel-body text-center">
-                            <LineChart data={{"2017-05-13": 2, "2017-05-14": 5,"2017-05-15": 3, "2017-05-16": 6,"2017-05-16": 20 }} />
+                            <LineChart data={{"2018-05-01": 10, "2018-05-02": 20,"2018-05-03": 30, "2018-05-04": 40,"2018-05-05": 50 }} />
                         </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@ class GoalAchievementGraph extends Component {
                 <div className="content-panel">
 						<h4><i className="fa fa-angle-right"></i> ฝึกเขียน Api</h4>
                         <div className="panel-body text-center">
-                            <LineChart data={{"2017-05-13": 20, "2017-05-14": 22,"2017-05-15": 10 }} />
+                            <LineChart data={{"2018-05-13": 20, "2018-05-14": 40,"2018-05-15": 50 }} />
                         </div>
                 </div>
             </div>
@@ -61,7 +61,7 @@ class GoalAchievementGraph extends Component {
                 <div className="content-panel">
 						<h4><i className="fa fa-angle-right"></i> พัฒนาเว็บ App</h4>
                         <div className="panel-body text-center">
-                            <LineChart data={{"2017-05-13": 2, "2017-05-14": 5,"2017-05-15": 3, "2017-05-16": 6,"2017-05-16": 20 }} />
+                            <LineChart data={{"2017-05-13": 25, "2017-05-14": 50,"2017-05-15": 75 }} />
                         </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@ class GoalAchievementGraph extends Component {
                 <div className="content-panel">
 						<h4><i className="fa fa-angle-right"></i> ความสำเร็จโดยภาพรวมเป้าหมายของฉัน</h4>
                         <div className="panel-body text-center">
-                        <PieChart data={[["ฝึกเขียน C#", 100], ["ฝึกเขียน C#", 23],["พัฒนาเว็บ App", 3] ]} />
+                        <PieChart data={[["ฝึกเขียน C#", 50], ["ฝึกเขียน Api", 50],["พัฒนาเว็บ App", 75] ]} />
                         </div>
                 </div>
             </div>
