@@ -30,11 +30,11 @@ const initialState = {
   circleList: [],
   categoryList: [],
   circleType: null,
-  status: "รอดำเนินการ",
-  userID: null
+  status: "รอดำเนินการ"
+
 };
 
-class Goalmanagement extends Component { 
+class Reviewmanagement extends Component { 
 
     constructor(props) {
         super(props);
@@ -203,7 +203,6 @@ class Goalmanagement extends Component {
 
     renderTable(){
       console.log(this.state.dataSearch)
-
       this.state.number = 0
       return _.map(this.state.dataSearch, data => {
         this.state.number = this.state.number+1
@@ -213,11 +212,12 @@ class Goalmanagement extends Component {
             <td>{ data.goalName }</td>
             <td>{ data.categoryName }</td>
             <td>{ data.circleName}</td>
-            <td><span className="badge bg-success" data-placement="bottom" title={"วันเริ่มต้น: "+data.startDate}>{this.state.status}</span></td>
+            <td><span className="badge bg-success">{this.state.status}</span></td>
             <td>
-              <Link to={ {pathname: `/goal/view`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate,circleType:data.circleType}} }><button className="btn btn-success btn-xs" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/goal/update`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate,circleType:data.circleType}} }><button className="btn btn-primary btn-xs" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs"  data-toggle="modal" data-target={"#"+data.goalName}><i className="fa fa-trash-o " data-placement="bottom" title="ลบ"></i></button>
+              <button className="btn btn-warning btn-xs" data-toggle="modal" data-target="#modal" onClick={this.handleProgress(data.id)}><i className="fa fa-tasks" ></i></button>
+              <Link to={ {pathname: `/goal/view`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate,circleType:data.circleType}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/goal/update`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate,circleType:data.circleType}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs"  data-toggle="modal" data-target={"#"+data.goalName}><i className="fa fa-trash-o "></i></button>
                                       <div id={data.goalName} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">
@@ -243,9 +243,22 @@ class Goalmanagement extends Component {
     }
 
     renderFromSearch(){
+
       return (
         <div className="row mt">
               <div className="col-lg-12">
+						<div className="btn-group btn-group-justified">
+						  <div className="btn-group">
+              <Link to={ {pathname: `/goalmanagement`} }><button type="button" className="btn btn-warning btn-lg btn-block" >เป้าหมายของฉัน</button></Link>
+						  </div>
+						  <div className="btn-group">
+              <Link to={ {pathname: `/goalmanagementOtherUser`} }><button type="button" className="btn btn-default btn-lg btn-block">เป้าหมายผู้ใต้บังคับบัญชา</button></Link>
+						  </div>
+						  <div className="btn-group">
+						  <Link to={ {pathname: '/reportallgoal'}}><button type="button" className="btn btn-default btn-lg btn-block">รายงานความสำเร็จ</button></Link>
+						  </div>
+						</div> 
+
                       <div className="content-panel">
                           <h4><i className="fa fa-angle-right"></i> รายการเป้าหมายของฉัน</h4>
                           <hr />
@@ -272,6 +285,11 @@ class Goalmanagement extends Component {
 
     
     render() {
+      let style = {
+        width: "400px",
+       height: "300px;"
+      }
+      
       var DateTimeField = require('react-bootstrap-datetimepicker');
       let circleList = this.state.circleList;
       let categoryList = this.state.categoryList;
@@ -287,110 +305,21 @@ class Goalmanagement extends Component {
                   <Link to={ {pathname: `/goal/create`} }><button type="button" className="btn btn-primary" >เพิ่มเป้าหมาย</button></Link>
                 </div>        
             </div>
-
-            <div className="row">
-                <div className="col-lg-12">
-                  <div className="form-panel">           
-                      <form className="form-horizontal style-form" id="search-goal" onSubmit={this.handleSubmit}>
-                          <div className="form-group">
-                            <br></br>
-                              <label className="col-sm-2 col-sm-2 control-label">ชื่อเป้าหมาย</label>
-                              <div className="col-sm-3">
-                                  <input type="text" className="form-control" name="goalName" value={this.state.goalName} onChange={this.handleChange}/>
-                              </div>
-                              <label className="col-sm-2 col-sm-2 control-label">หมวดหมู่ของเป้าหมาย</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
-                              <div className="btn-group">
-                                <select className="form-control" name="categoryID" value={this.state.categoryID} onChange={this.handleChange} >
-                                    <option value="0">-- เลือกหมวดหมู่ --</option>
-                                    {categoryList.map((category, index) => (
-                                        <option value={category.id}>{category.categoryName}</option>
-                                    ))}
-                                    </select>
-                                </div>
-                              <br></br><br></br><br></br>
-                              <label className="col-sm-2 col-sm-2 control-label">สถานะของเป้าหมาย</label>
-                              <div className="col-sm-3">
-                              <div className="btn-group">
-                                <select className="form-control" name="status" value={this.state.username} onChange={this.handleChange} >
-                                    <option value="0">-- เลือกสถานะเป้าหมาย --</option>
-                                    <option value="1">Open</option>
-                                    <option value="2">In Progrees</option>
-                                    <option value="3">Achieved</option>
-                                </select>
-                              </div>
-                              </div>
-                              <label className="col-sm-2 col-sm-2 control-label">รอบการดำเนินงาน</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
-                              <div className="btn-group">
-                                    <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
-                                    <option value="0">-- เลือกรอบการดำเนินงาน --</option>
-                                    {circleList.map((circle, index) => (
-                                        <option value={circle.id}>{circle.circleName}</option>
-                                    ))}
-                                    </select>
-                                </div>
-                        </div>
-                         
-                            <div className="text-center">
-                              <button type="submit" className="btn btn-round btn-primary" >ค้นหา</button>
-                              <button type="button" className="btn btn-round btn-danger" onClick={this.handleClear}>ยกเลิก</button>
-                            </div>  
-                                                                                                             
-                      </form>
-
-                  </div>
-              </div>    
-            </div>
-
-            {this.renderFromSearch()}
-
-          </section>
-          
-          <div id="modal" className="modal fade" role="dialog" >
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <button type="button" className="close" data-dismiss="modal">&times;</button>
-                  <h4 className="modal-title">ปรับปรุงความคืบหน้ารายการตรวจสอบ</h4>
-                </div>
-                <div className="modal-body">
-                <ProgressBar width="50%" message="50%"/>
-              
-                  <div className="panel-heading">
-                    <div className="pull-left">
-                    <h5><i className="fa fa-tasks"></i> รายการตรวจสอบ</h5></div>
-                  </div>
-                  <div className="custom-check goleft mt">
-                    <table className="table table-hover custom-check" id="tableModal">
-                      <tbody>
-                        { this.renderTableChecklist() }
-                      </tbody>
-                    </table>
-                    <div className="form-group">
-                      <label >แนบไฟล์</label>
-                      <input type="file" className="form-control-file" id="attachFile" aria-describedby="fileHelp" name="attachFile"/>
-                    </div>
-                    <div className="widget-area no-padding blank">
-                      <div className="status-upload">
-                      <form>
-                        <textarea className="form-control rounded-0" rows="5" name="comment" placeholder="แสดงความคิดเห็นของคุณ"/>
-                      </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="modal-footer">
-                <button type="submit" className="btn btn-success"  data-dismiss="modal" onClick={this.handleSaveProgress}>ตกลง</button>
-                <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
-                </div>
-              </div>
+         
+            <div className="row mt">
+              <div className="col-lg-12">
+                <div className="col-sm-4">.col-sm-4</div>
+                <div className="col-sm-4">.col-sm-4</div>
+                <div className="col-sm-4">.col-sm-4</div>
             </div>
           </div>
 
+          </section>
+          
         </section>
 
       );
     }
   }
   
-  export default Goalmanagement;
+  export default Reviewmanagement;

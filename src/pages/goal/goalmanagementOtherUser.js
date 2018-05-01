@@ -150,9 +150,9 @@ class GoalmanagementOtherUser extends Component {
             <td>{ data.circleName}</td>
             <td><span className="badge bg-success">{this.state.status}</span></td>
             <td>
-              <Link to={ {pathname: `/goal/view`, query: {id: data.id}} }><button className="btn btn-success btn-xs"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/goal/update`, query: {id: data.id}} }><button className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs" data-toggle="modal" data-target={"#"+data.goalName}><i className="fa fa-trash-o " ></i></button>
+              <Link to={ {pathname: `/goal/view`, query: {id: data.id}} }><button className="btn btn-success btn-xs" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/goal/update`, query: {id: data.id}} }><button className="btn btn-primary btn-xs" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs" data-toggle="modal" data-target={"#"+data.goalName} data-placement="bottom" title="ลบ"><i className="fa fa-trash-o " ></i></button>
                                       <div id={data.goalName} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">
@@ -183,17 +183,7 @@ class GoalmanagementOtherUser extends Component {
       return (
         <div className="row mt">
               <div className="col-lg-12">
-						<div className="btn-group btn-group-justified">
-						  <div className="btn-group">
-              <Link to={ {pathname: `/goalmanagement`} }><button type="button" className="btn btn-default btn-lg btn-block" >เป้าหมายของฉัน</button></Link>
-						  </div>
-						  <div className="btn-group">
-              <Link to={ {pathname: `/goalmanagementOtherUser`} }><button type="button" className="btn btn-warning btn-lg btn-block">เป้าหมายผู้ใต้บังคับบัญชา</button></Link>
-						  </div>
-						  <div className="btn-group">
-						  <Link to={ {pathname: '/reportallgoal'}}><button type="button" className="btn btn-default btn-lg btn-block">รายงานความสำเร็จ</button></Link>
-						  </div>
-						</div> 
+
                       <div className="content-panel">
                           <h4><i className="fa fa-angle-right"></i> รายการเป้าหมายผู้ใต้บังคับบัญชา</h4>
                           <hr />

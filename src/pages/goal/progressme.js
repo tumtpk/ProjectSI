@@ -30,11 +30,10 @@ const initialState = {
   circleList: [],
   categoryList: [],
   circleType: null,
-  status: "รอดำเนินการ",
-  userID: null
+  status: "รอดำเนินการ"
 };
 
-class Goalmanagement extends Component { 
+class ProgressMe extends Component { 
 
     constructor(props) {
         super(props);
@@ -203,7 +202,6 @@ class Goalmanagement extends Component {
 
     renderTable(){
       console.log(this.state.dataSearch)
-
       this.state.number = 0
       return _.map(this.state.dataSearch, data => {
         this.state.number = this.state.number+1
@@ -215,26 +213,7 @@ class Goalmanagement extends Component {
             <td>{ data.circleName}</td>
             <td><span className="badge bg-success" data-placement="bottom" title={"วันเริ่มต้น: "+data.startDate}>{this.state.status}</span></td>
             <td>
-              <Link to={ {pathname: `/goal/view`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate,circleType:data.circleType}} }><button className="btn btn-success btn-xs" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/goal/update`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate,circleType:data.circleType}} }><button className="btn btn-primary btn-xs" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs"  data-toggle="modal" data-target={"#"+data.goalName}><i className="fa fa-trash-o " data-placement="bottom" title="ลบ"></i></button>
-                                      <div id={data.goalName} className="modal fade" role="dialog">
-                                        <div className="modal-dialog">
-                                          <div className="modal-content">
-                                          <div className="modal-header">
-                                          <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                          <h4 className="modal-title">ลบเป้าหมาย</h4>
-                                          </div>
-                                          <div className="modal-body">
-                                          <p>{data.goalName}  จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
-                                          </div>
-                                          <div className="modal-footer">
-                                          <button type="button" className="btn btn-success"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
-                                          <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
-                                          </div>
-                                          </div>
-                                         </div>
-                                        </div>
+              <button className="btn btn-warning btn-xs" data-toggle="modal" data-target="#modal"  data-placement="bottom" title="รายงานความคืบหน้ารายการตรวจสอบ" onClick={this.handleProgress(data.id)}><i className="fa fa-tasks" ></i></button> 
           </td>
           </tr>
         );
@@ -257,7 +236,7 @@ class Goalmanagement extends Component {
                                   <th> หมวดหมู่ของเป้าหมาย</th>
                                   <th> รอบการดำเนินงาน</th>
                                   <th> สถานะ</th>
-                                  <th></th>
+                                  <th> รายงานความคืบหน้า</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -350,7 +329,7 @@ class Goalmanagement extends Component {
               <div className="modal-content">
                 <div className="modal-header">
                   <button type="button" className="close" data-dismiss="modal">&times;</button>
-                  <h4 className="modal-title">ปรับปรุงความคืบหน้ารายการตรวจสอบ</h4>
+                  <h4 className="modal-title">รายงานความคืบหน้ารายการตรวจสอบ</h4>
                 </div>
                 <div className="modal-body">
                 <ProgressBar width="50%" message="50%"/>
@@ -393,4 +372,4 @@ class Goalmanagement extends Component {
     }
   }
   
-  export default Goalmanagement;
+  export default ProgressMe;

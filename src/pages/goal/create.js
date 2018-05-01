@@ -144,6 +144,7 @@ class GoalCreate extends Component {
         this.state.checklists.map((checklist, sidx) => {
             document.getElementById('checklists['+sidx+']').innerHTML = null;
         });
+        console.log(messages)
         messages.forEach(element => {
             document.getElementById(element.key).innerHTML = element.message;
         });

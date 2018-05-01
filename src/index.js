@@ -42,12 +42,21 @@ import GoalCreateOtherUser from "./pages/goal/createOtherUser";
 import GoalCreateOtherUserSelectUser from "./pages/goal/selectuser";
 import GoalmanagementOtherUser from "./pages/goal/goalmanagementOtherUser"
 import ReportAllGoal from "./pages/goal/reportallgoal";
-import ReportAllGoal2 from "./pages/goal/reportallgoal.1";
-import ReportAllGoal3 from "./pages/goal/reportallgoal.2";
+import ReportAllGoal2 from "./pages/goal/reportallgoal2";
+import ReportAllGoal3 from "./pages/goal/reportallgoal3";
+import Chart  from "./pages/goal/chart";
+import chart from "./pages/goal/chart";
+import GoalAchievementGraph from "./pages/goal/goalachievementgraph";
+import GoalStudentsAdvisoryGraph from "./pages/goal/goalstudentsadvisorygraph";
+import ProgressMe from "./pages/goal/progressme";
+
+import reviewmanageent from "./pages/review/reviewmanagement";
 
 import MainLayout from "./components/main-layout";
 import Empty from "./components/layout/empty";
 import NotFound from "./components/notfound";
+import Reviewmanagement from "./pages/review/reviewmanagement";
+
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -100,6 +109,12 @@ ReactDOM.render(
           <AppRoute exact path="/reportallgoal" layout={MainLayout} component={ReportAllGoal} />
           <AppRoute exact path="/reportallgoal2" layout={MainLayout} component={ReportAllGoal2} />
           <AppRoute exact path="/reportallgoal3" layout={MainLayout} component={ReportAllGoal3} />
+          <AppRoute exact path="/chart" layout={MainLayout} component={chart} />
+          <AppRoute exact path="/goal/goalchartme" layout={MainLayout} component={GoalAchievementGraph} />
+          <AppRoute exact path="/goalstudentsadvisorychart" layout={MainLayout} component={GoalStudentsAdvisoryGraph} />
+          <AppRoute exact path="/goal/progressme" layout={MainLayout} component={ProgressMe} />
+
+          <AppRoute exact path="/reviewmanagement" layout={MainLayout} component={Reviewmanagement} />
 
           <Route exact path="*" component={NotFound} status={404} />
         </Switch>
