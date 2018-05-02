@@ -10,12 +10,22 @@ import reducers from "./reducers";
 import Login from "./pages/login";
 import Content from "./pages/content";
 
-import Usermanagement from "./pages/usermanagement/usermanagement";
-import UserCreate from "./pages/usermanagement/create";
-import UserUpdate from "./pages/usermanagement/update";
-import UserDetail from "./pages/usermanagement/detail";
-import Usermanagement1 from "./pages/usermanagement/usermanagement.1";
-import Usermanagement2 from "./pages/usermanagement/usermanagement.2";
+import Usermanagement from "./pages/usermanagement/usermanagementstudent";
+import UserCreateStudent from "./pages/usermanagement/createstudent";
+import UserCreateTeacher from "./pages/usermanagement/createteacher";
+import UserCreateAdmin from "./pages/usermanagement/createadmin";
+import UserCreateHead from "./pages/usermanagement/createhead"
+import UserUpdateStudent from "./pages/usermanagement/updatestudent";
+import UserUpdateTeacher from "./pages/usermanagement/updateteacher";
+import UserUpdateHead from "./pages/usermanagement/updatehead";
+import UserUpdateAdmin from "./pages/usermanagement/updateadmin";
+import UserDetailStudent from "./pages/usermanagement/detailstudent";
+import UserDetailTeacher from "./pages/usermanagement/detailteacher";
+import UserDetailHead from "./pages/usermanagement/detailhead";
+import UserDetailAdmin from "./pages/usermanagement/detailadmin";
+import Usermanagement1 from "./pages/usermanagement/usermanagementteacher";
+import Usermanagement2 from "./pages/usermanagement/usermanagementhead";
+import Usermanagement3 from "./pages/usermanagement/usermanagementadmin";
 import importUser from "./pages/usermanagement/importUser"
 
 
@@ -76,12 +86,22 @@ ReactDOM.render(
           <AppRoute exact path="/" layout={Empty} component={Login} />
           <AppRoute exact path="/dashboard" layout={MainLayout} component={Content} />
 
-          <AppRoute exact path="/usermanagement" layout={MainLayout} component={Usermanagement} />
-          <AppRoute exact path="/usermanagement/create" layout={MainLayout} component={UserCreate} />
-          <AppRoute exact path="/usermanagement/update" layout={MainLayout} component={UserUpdate} />
-          <AppRoute exact path="/usermanagement/view" layout={MainLayout} component={UserDetail} />
-          <AppRoute exact path="/usermanagement1" layout={MainLayout} component={Usermanagement1} />
-          <AppRoute exact path="/usermanagement2" layout={MainLayout} component={Usermanagement2} />
+          <AppRoute exact path="/usermanagementstudent" layout={MainLayout} component={Usermanagement} />
+          <AppRoute exact path="/usermanagement/createstudent" layout={MainLayout} component={UserCreateStudent} />
+          <AppRoute exact path="/usermanagement/createteacher" layout={MainLayout} component={UserCreateTeacher} />
+          <AppRoute exact path="/usermanagement/createhead" layout={MainLayout} component={UserCreateHead} />
+          <AppRoute exact path="/usermanagement/createadmin" layout={MainLayout} component={UserCreateAdmin} />
+          <AppRoute exact path="/usermanagement/updatestudent" layout={MainLayout} component={UserUpdateStudent} />
+          <AppRoute exact path="/usermanagement/updateteacher" layout={MainLayout} component={UserUpdateTeacher} />
+          <AppRoute exact path="/usermanagement/updatehead" layout={MainLayout} component={UserUpdateHead} />
+          <AppRoute exact path="/usermanagement/updateadmin" layout={MainLayout} component={UserUpdateAdmin} />
+          <AppRoute exact path="/usermanagement/viewstudent" layout={MainLayout} component={UserDetailStudent} />
+          <AppRoute exact path="/usermanagement/viewteacher" layout={MainLayout} component={UserDetailTeacher} />
+          <AppRoute exact path="/usermanagement/viewhead" layout={MainLayout} component={UserDetailHead} />
+          <AppRoute exact path="/usermanagement/viewadmin" layout={MainLayout} component={UserDetailAdmin} />
+          <AppRoute exact path="/usermanagementteacher" layout={MainLayout} component={Usermanagement1} />
+          <AppRoute exact path="/usermanagementhead" layout={MainLayout} component={Usermanagement2} />
+          <AppRoute exact path="/usermanagementadmin" layout={MainLayout} component={Usermanagement3} />
           <AppRoute exact path="/importUser" layout={MainLayout} component={importUser} />
 
           <AppRoute exact path="/circlemanagement" layout={MainLayout} component={Circlemanagement} />

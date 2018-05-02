@@ -91,19 +91,6 @@ class LeftMenu extends Component {
                                   </ul>
                               </li>
 
-            
-                              <li className="sub-menu" style={this.state.role != 4 ? {} : { display: 'none' }}>
-                                <a href="javascript:;">
-                                    <i className="fa fa-book"></i>
-                                    <span>ทบทวนประสิทธิภาพการทำงาน</span>
-                                </a>
-                                <ul className="sub">
-                                      <li><Link to={ {pathname: `/reviewmanagement`} } activeClassName="active">การจัดการทบทวนประสิทธิภาพ</Link></li>
-                                      <li><Link to={ {pathname: `/reviewmanagement`} } activeClassName="active">ตอบแบบประเมิน</Link></li>
-                                      <li><Link to={ {pathname: `/reviewmanagement`} } activeClassName="active">ผลการประเมิน</Link></li>
-                                  </ul>
-                            </li>
-
                             <br></br>
                             
                                 <li className="sub-menu" style={this.state.role == 4 ? {} : { display: 'none' }}>
@@ -112,10 +99,9 @@ class LeftMenu extends Component {
                                         <span>Administration</span>
                                     </a>
                                     <ul className="sub">
-                                        <li><Link to={ {pathname: `/usermanagement`} } activeClassName="active">การจัดการผู้ใช้งาน</Link></li>
+                                        <li><Link to={ {pathname: `/usermanagementstudent`} } activeClassName="active">การจัดการผู้ใช้งาน</Link></li>
                                         <li><Link to={ {pathname: `/circlemanagement`} } activeClassName="active">การจัดการรอบดำเนินงาน</Link></li>
                                         <li><Link to={ {pathname: `/categorymanagement`} } activeClassName="active">การจัดการหมวดหมู่</Link></li>
-                                        <li><Link to={ {pathname: `/evaluationmanagement`} } activeClassName="active">การจัดการแบบประเมิน</Link></li>
                                     </ul>
                                 </li>
                       
