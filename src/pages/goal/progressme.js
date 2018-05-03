@@ -37,6 +37,8 @@ class ProgressMe extends Component {
           status: "รอดำเนินการ",
           select: [],
           goalHandlerId:null,
+          startDate2: null,
+          status2:null
         };
   
         this.handleChange = this.handleChange.bind(this);
@@ -242,13 +244,23 @@ class ProgressMe extends Component {
         else{
           status = "อยู่ระหว่างการดำเนินการ"
         }
+        let status2 = ""
+        let startDate2 = new Date(data.startDate2)
+        if (startDate2 > today){
+          status2 = "รอดำเนินการ"
+        }
+        else{
+          status2 = "อยู่ระหว่างการดำเนินการ"
+        }
+        console.log(data.startDate)
+        console.log(status)
         return (
           <tr>
             <td>{ this.state.number}</td>
             <td>{ data.goalName }</td>
             <td>{ data.categoryName }</td>
             <td>{ (data.circleType == 1) ? "รอบการดำเนินการตามปฎิทินการศึกษา" : "รอบการดำเนินงานกำหนดเอง" }</td>
-            <td><span className="badge bg-success" data-placement="bottom" title={"วันเริ่มต้น: "+ moment(new Date(data.startDate)).format('DD/MM/YYYY')}>{status}</span></td>
+            <td>{ (data.circleType == 1) ? <span className="badge bg-success" data-placement="bottom" title={data.circleName +" "+"วันเริ่มต้น: "+ moment(new Date(data.startDate2)).format('DD/MM/YYYY') }>{status2}</span> : <span className="badge bg-success" data-placement="bottom" title={"วันเริ่มต้น: "+ moment(new Date(data.startDate)).format('DD/MM/YYYY')}>{status}</span>}</td>
             <td>
               <button className="btn btn-warning btn-xs" data-toggle="modal" data-target="#modal"  data-placement="bottom" title="รายงานความคืบหน้ารายการตรวจสอบ" onClick={this.handleProgress(data.id)}><i className="fa fa-tasks" ></i></button> 
           </td>

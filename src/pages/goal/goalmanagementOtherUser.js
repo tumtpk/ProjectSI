@@ -31,7 +31,9 @@ const initialState = {
   categoryList: [],
   circleType: null,
   status: "รอดำเนินการ",
-  userID: null
+  userID: null,
+  startDate2: null,
+  status2:null
 };
 
 class GoalmanagementOtherUser extends Component { 
@@ -153,13 +155,23 @@ class GoalmanagementOtherUser extends Component {
         else{
           status = "อยู่ระหว่างการดำเนินการ"
         }
+        let status2 = ""
+        let startDate2 = new Date(data.startDate2)
+        if (startDate2 > today){
+          status2 = "รอดำเนินการ"
+        }
+        else{
+          status2 = "อยู่ระหว่างการดำเนินการ"
+        }
+        console.log(data.startDate)
+        console.log(status)
         return (
           <tr>
             <td>{ this.state.number}</td>
             <td>{ data.goalName }</td>
             <td>{ data.categoryName }</td>
             <td>{ (data.circleType == 1) ? "รอบการดำเนินการตามปฎิทินการศึกษา" : "รอบการดำเนินงานกำหนดเอง" }</td>
-            <td><span className="badge bg-success" data-placement="bottom" title={"วันเริ่มต้น: "+ moment(new Date(data.startDate)).format('DD/MM/YYYY')}>{status}</span></td>
+            <td>{ (data.circleType == 1) ? <span className="badge bg-success" data-placement="bottom" title={data.circleName +" "+"วันเริ่มต้น: "+ moment(new Date(data.startDate2)).format('DD/MM/YYYY') }>{status2}</span> : <span className="badge bg-success" data-placement="bottom" title={"วันเริ่มต้น: "+ moment(new Date(data.startDate)).format('DD/MM/YYYY')}>{status}</span>}</td>
             <td> 
               <Link to={ {pathname: `/goal/view`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate: moment(new Date(data.startDate)).format('DD/MM/YYYY'),endDate: moment(new Date(data.endDate)).format('DD/MM/YYYY'),circleType:data.circleType}} }><button className="btn btn-success btn-xs" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
               <Link to={ {pathname: `/goal/update`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate: moment(new Date(data.startDate)).format('YYYY-MM-DD'),endDate: moment(new Date(data.endDate)).format('YYYY-MM-DD'),circleType:data.circleType}} }><button className="btn btn-primary btn-xs" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
