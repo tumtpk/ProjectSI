@@ -29,6 +29,7 @@ class GoalCreateOtherUserSelectUserTeacher extends Component {
         hiddenAll: true,
         personalID: "",
         titlename:"",
+        false:3
        }
     
   
@@ -53,9 +54,11 @@ class GoalCreateOtherUserSelectUserTeacher extends Component {
         this.state.endDate = this.props.location.query.endDate;  
         this.state.checklists = this.props.location.query.checklists;
         this.state.circleType = this.props.location.query.circleType;
+        this.titlename = this.props.location.query.titlename;
+
         this.setState(this.state);
         console.log(this.state)
-        CommonApi.instance.get('/user/getuserByCommanderId', {
+        CommonApi.instance.get('/user/getuserByCommanderIdTeacher', {
 
          })
          .then(response => {
