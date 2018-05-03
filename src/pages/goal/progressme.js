@@ -14,39 +14,39 @@ import {
 import ProgressBar from "bootstrap-progress-bar";
 import DateTimeField from "react-bootstrap-datetimepicker";
 
-
-const initialState = {
-  id: null,
-  goalName: null,
-  description: null,
-  startDate: null,
-  endDate: null,
-  categoryID: 0,
-  circleID: 0,
-  checklists: [{value: null}],
-  checklistProgresses: [{value: null}],
-  dataSearch: null,
-  number: 1,
-  circleList: [],
-  categoryList: [],
-  circleType: null,
-  status: "รอดำเนินการ"
-};
-
 class ProgressMe extends Component { 
 
     constructor(props) {
         super(props);
-        this.state = initialState;
+        this.state = {
+          id: null,
+          goalName: null,
+          description: null,
+          startDate: null,
+          endDate: null,
+          categoryID: 0,
+          circleID: 0,
+          checklists: [{value: null}],
+          checklistProgresses: [{value: null}],
+          dataSearch: null,
+          number: 1,
+          circleList: [],
+          categoryList: [],
+          circleType: null,
+          status: "รอดำเนินการ",
+          select: [],
+          goalHandlerId:null,
+        };
   
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.handleProgress = this.handleProgress.bind(this);
+        //this.handleProgress = this.handleProgress.bind(this);
         this.handleSaveProgress = this.handleSaveProgress.bind(this);
-        this.handlechangeProgress = this.handlechangeProgress.bind(this);
+        //this.handlechangeProgress = this.handlechangeProgress.bind(this);
+        this.selectedChecklists = new Set(); 
       }
 
       componentWillMount() {
@@ -72,22 +72,39 @@ class ProgressMe extends Component {
         });    
       }
 
-      handlechangeProgress = (clpId) => (evt) => {
-        this.state.checklistProgresses.forEach( (checklistP,index) => {
-          if(checklistP.clpId == clpId){
-            if(checklist.checklistProgress1 == 1){
-              checklist.checklistProgress1 = 2;
-            }
-            else{
-              checklist.checklistProgress1 = 1;
-            }
-          }
-          console.log(checklist);
-        });
-      } 
+      toggleCheckbox = (id,index)  => () => {
+        if (this.selectedChecklists.has(id)) {
+          this.selectedChecklists.delete(id);
+          this.state.select[index] = false;
+        } else {
+          this.selectedChecklists.add(id);
+          this.state.select[index] = true;
+        }
+        this.setState({select: this.state.select});
+      }
+
+      // handlechangeProgress = (clpId) => (evt) => {
+      //   this.state.checklistProgresses.forEach( (checklistP,index) => {
+      //     if(checklistP.clpId == clpId){
+      //       if(checklist.checklistProgress1 == 1){
+      //         checklist.checklistProgress1 = 2;
+      //       }
+      //       else{
+      //         checklist.checklistProgress1 = 1;
+      //       }
+      //     }
+      //     console.log(checklist);
+      //   });
+      // } 
 
       handleSaveProgress(event) {
-        CommonApi.instance.post('/checklistprogress/saveProgress' ,this.state.checklistProgresses)
+        this.state.checklistProgresses = Array.from(this.selectedChecklists);
+        console.log(this.state.checklistProgresses);
+        const newChecklistProgresses = this.state.checklistProgresses.map((checklistProgress, sidx) => {
+          return { ...checklistProgress, id: checklistProgress };
+        });
+        this.state.checklistProgresses = newChecklistProgresses;
+        CommonApi.instance.post('/checklistprogress/saveProgress' ,this.state)
         .then(response => {
           if(response.status == 200 && response.data.result){
               this.setState({redirect: true});
@@ -100,15 +117,25 @@ class ProgressMe extends Component {
       handleProgress = (id) => (evt) => {
         CommonApi.instance.get('/checklist/getchecklists/'+id)
         .then(response => {
+          let responseData = response.data;
+          this.state.checklists = responseData;
+          this.state.checklists.forEach((data,index) => {
+            if(this.state.goalHandlerId == null){
+              this.state.goalHandlerID = data.goalHandlerID;
+            }
+            if(this.state.id == null){
+              this.state.id = data.goalID;
+            }
+            if(data.checklistProgress1 == 2){
+              this.state.select[index] = true;
+              this.selectedChecklists.add(data.clpId);
+            }
+            else{
+              this.state.select[index] = false;
+            }
+          });
+
           this.setState({checklists: response.data});
-          // let ischecked = '';
-          // let clTable = '';
-          // if(checklists.checklistProgress1 == 2){
-          //   ischecked = "checked";
-          // }
-          // clTable += '<input type="checkbox" class="checked" value='+checklists.clpId+' '
-          // + ischecked + '/>' + checklists.checklistName;
-          // document.getElementById("checkPid").innerHTML = clTable;
         });
       }
 
@@ -184,15 +211,15 @@ class ProgressMe extends Component {
 
     renderTableChecklist(){
 
-      return _.map(this.state.checklists, data => {
-        console.log(data);
+      return _.map(this.state.checklists,(data, index)  => {
         return (
           <tr>
             <td>
-              <span class="check">
-                {React.createElement('input',{type: 'checkbox', checked:data.checklistProgress1 === 2 ? true : false})}
-                &nbsp;{data.value}
-              </span>
+            <div className="checkbox">
+                <label>
+                    <input type="checkbox" checked={this.state.select[index]} onChange={this.toggleCheckbox(data.clpId,index)}/> {data.value}
+                </label>
+            </div>
             </td>
           </tr>
         );
@@ -201,7 +228,6 @@ class ProgressMe extends Component {
     }
 
     renderTable(){
-      console.log(this.state.dataSearch)
       this.state.number = 0
       return _.map(this.state.dataSearch, data => {
         this.state.number = this.state.number+1
