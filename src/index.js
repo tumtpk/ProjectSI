@@ -45,19 +45,22 @@ import EvaluationUpdate from "./pages/evaluation/update";
 import EvaluationDetail from "./pages/evaluation/detail";
 
 import Goalmanagement from "./pages/goal/goalmanagement";
+import GoalmanagementOtherUser from "./pages/goal/goalmanagementOtherUser";
+import GoalmanagementOtherUserTeacher from "./pages/goal/goalmanagementgoalCourse"
 import GoalCreate from "./pages/goal/create";
 import GoalUpdate from "./pages/goal/update";
 import GoalDetail from "./pages/goal/detail";
 import GoalCreateOtherUser from "./pages/goal/createOtherUser";
+import GoalCreateOtherUserTeacher from "./pages/goal/createGoalGoalCourse";
+import GoalCreateOtherUserSelectUserTeacher from "./pages/goal/selectuserteacher";
 import GoalCreateOtherUserSelectUser from "./pages/goal/selectuser";
-import GoalmanagementOtherUser from "./pages/goal/goalmanagementOtherUser"
-import ReportAllGoal from "./pages/goal/reportallgoal";
-import ReportAllGoal2 from "./pages/goal/reportallgoal2";
-import ReportAllGoal3 from "./pages/goal/reportallgoal3";
+
+
 import Chart  from "./pages/goal/chart";
 import chart from "./pages/goal/chart";
 import GoalAchievementGraph from "./pages/goal/goalachievementgraph";
 import GoalStudentsAdvisoryGraph from "./pages/goal/goalstudentsadvisorygraph";
+import GoalSuccessOfTheCourse from "./pages/goal/goalsuccessofthecourse";
 import ProgressMe from "./pages/goal/progressme";
 
 import reviewmanageent from "./pages/review/reviewmanagement";
@@ -120,18 +123,20 @@ ReactDOM.render(
           <AppRoute exact path="/evaluation/view" layout={MainLayout} component={EvaluationDetail} />
           
           <AppRoute exact path="/goalmanagement" layout={MainLayout} component={Goalmanagement} />
+          <AppRoute exact path="/goalmanagementOtherUser" layout={MainLayout} component={GoalmanagementOtherUser} />
+          <AppRoute exact path="/goalmanagementgoalCourse" layout={MainLayout} component={GoalmanagementOtherUserTeacher} />
           <AppRoute exact path="/goal/create" layout={MainLayout} component={GoalCreate} />
           <AppRoute exact path="/goal/update" layout={MainLayout} component={GoalUpdate} />
           <AppRoute exact path="/goal/view" layout={MainLayout} component={GoalDetail} />
           <AppRoute exact path="/goal/createotheruser" layout={MainLayout} component={GoalCreateOtherUser} />
+          <AppRoute exact path="/goal/creategoalcourse" layout={MainLayout} component={GoalCreateOtherUserTeacher} />
           <AppRoute exact path="/goal/selectuser" layout={MainLayout} component={GoalCreateOtherUserSelectUser} />
-          <AppRoute exact path="/goalmanagementOtherUser" layout={MainLayout} component={GoalmanagementOtherUser} />
-          <AppRoute exact path="/reportallgoal" layout={MainLayout} component={ReportAllGoal} />
-          <AppRoute exact path="/reportallgoal2" layout={MainLayout} component={ReportAllGoal2} />
-          <AppRoute exact path="/reportallgoal3" layout={MainLayout} component={ReportAllGoal3} />
+          <AppRoute exact path="/goal/selectuserteacher" layout={MainLayout} component={GoalCreateOtherUserSelectUserTeacher} />
+
           <AppRoute exact path="/chart" layout={MainLayout} component={chart} />
           <AppRoute exact path="/goal/goalchartme" layout={MainLayout} component={GoalAchievementGraph} />
           <AppRoute exact path="/goalstudentsadvisorychart" layout={MainLayout} component={GoalStudentsAdvisoryGraph} />
+          <AppRoute exact path="/goalsuccessofthecourse" layout={MainLayout} component={GoalSuccessOfTheCourse} />
           <AppRoute exact path="/goal/progressme" layout={MainLayout} component={ProgressMe} />
 
           <AppRoute exact path="/reviewmanagement" layout={MainLayout} component={Reviewmanagement} />

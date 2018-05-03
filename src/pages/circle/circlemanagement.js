@@ -10,6 +10,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'react-modal-bootstrap';
+import moment from 'moment';
 
 const initialState = {
   id: null,
@@ -116,8 +117,8 @@ class Circlemanagement extends Component {
           <tr>
             <td>{ this.state.number}</td>
             <td>{ data.circleName }</td>
-            <td>{ data.startDate }</td>
-            <td>{ data.endDate}</td>
+            <td>{ moment(new Date(data.startDate)).format('DD/MM/YYYY') }</td>
+            <td>{ moment(new Date(data.endDate)).format('DD/MM/YYYY')}</td>
             <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
             <td>
               <Link to={ {pathname: `/circle/view`, query: {id : data.id,circleName:data.circleName,startDate:data.startDate,endDate:data.endDate,status:data.status}} }><button className="btn btn-success btn-xs" data-toggle="ดูรายละเอียด" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>

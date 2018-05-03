@@ -86,8 +86,10 @@ class LeftMenu extends Component {
                                       <span>มอบหมายให้ผู้ใต้บังคับบัญชา</span>
                                   </a>
                                   <ul className="sub">
-                                      <li><Link to={ {pathname: `/goalmanagementOtherUser`} } activeClassName="active">จัดการเป้าหมายผู้ใต้บังคับบัญชา</Link></li>
-                                      <li><Link to={ {pathname: '/goalstudentsadvisorychart'}} activeClassName="active">ความสำเร็จของเป้าหมาย</Link></li>
+                                      <li><Link to={ {pathname: `/goalmanagementOtherUser`} } activeClassName="active">จัดการเป้าหมายนักศึกษา</Link></li>
+                                      <li style={this.state.role != 2 ? {} : { display: 'none' }}><Link to={ {pathname: `/goalmanagementgoalCourse`} } activeClassName="active">จัดการเป้าหมายหลักสูตร</Link></li>
+                                      <li><Link to={ {pathname: '/goalstudentsadvisorychart'}} activeClassName="active">ความสำเร็จของเป้าหมายนักศึกษา</Link></li>
+                                      <li style={this.state.role != 2 ? {} : { display: 'none' }}><Link to={ {pathname: `/goalsuccessofthecourse`} } activeClassName="active">ความสำเร็จของงานหลักสูตร</Link></li>
                                   </ul>
                               </li>
 

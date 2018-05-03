@@ -261,10 +261,7 @@ class ProgressMe extends Component {
             <div className="row"> 
                 <div className="col-md-8">
                     <h3><i className="fa fa-angle-right"></i> การจัดการเป้าหมาย</h3>
-                </div>
-                <div className="col-md-4 text-right" style={{marginTop: '15px'}}>
-                  <Link to={ {pathname: `/goal/create`} }><button type="button" className="btn btn-primary" >เพิ่มเป้าหมาย</button></Link>
-                </div>        
+                </div>      
             </div>
 
             <div className="row">
