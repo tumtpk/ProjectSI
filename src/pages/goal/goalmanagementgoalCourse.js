@@ -13,8 +13,6 @@ import {
 
 import ProgressBar from "bootstrap-progress-bar";
 import DateTimeField from "react-bootstrap-datetimepicker";
-import moment from "moment";
-
 
 const initialState = {
   id: null,
@@ -30,12 +28,10 @@ const initialState = {
   number: 1,
   circleList: [],
   categoryList: [],
-  circleType: null,
-  status: "รอดำเนินการ",
-  userID: null
+  status: "Open"
 };
 
-class Goalmanagement extends Component { 
+class GoalmanagementGoalCourse extends Component { 
 
     constructor(props) {
         super(props);
@@ -46,79 +42,35 @@ class Goalmanagement extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.handleProgress = this.handleProgress.bind(this);
-        this.handleSaveProgress = this.handleSaveProgress.bind(this);
-        this.handlechangeProgress = this.handlechangeProgress.bind(this);
       }
 
       componentWillMount() {
-        CommonApi.instance.post('/goal/searchbyself', {
+        CommonApi.instance.post('/goal/searchbyCommander', {
 
         })
         .then(response => {
             this.setState({dataSearch: response.data});
         });
-
         CommonApi.instance.post('/circle/search', {
           status: 1
-        })
-        .then(response => {
+      })
+      .then(response => {
           this.setState({circleList: response.data});
           
-        });
-        CommonApi.instance.post('/category/search', {
+      });
+      CommonApi.instance.post('/category/search', {
           status: 1
-        })
-        .then(response => {
+      })
+      .then(response => {
           this.setState({categoryList: response.data});
-        });    
-      }
-
-      handlechangeProgress = (clpId) => (evt) => {
-        this.state.checklistProgresses.forEach( (checklistP,index) => {
-          if(checklistP.clpId == clpId){
-            if(checklist.checklistProgress1 == 1){
-              checklist.checklistProgress1 = 2;
-            }
-            else{
-              checklist.checklistProgress1 = 1;
-            }
-          }
-          console.log(checklist);
-        });
-      } 
-
-      handleSaveProgress(event) {
-        CommonApi.instance.post('/checklistprogress/saveProgress' ,this.state.checklistProgresses)
-        .then(response => {
-          if(response.status == 200 && response.data.result){
-              this.setState({redirect: true});
-          }else{
-              console.log(response.data.message)
-          }
-        });
-      }
-      
-      handleProgress = (id) => (evt) => {
-        CommonApi.instance.get('/checklist/getchecklists/'+id)
-        .then(response => {
-          this.setState({checklists: response.data});
-          // let ischecked = '';
-          // let clTable = '';
-          // if(checklists.checklistProgress1 == 2){
-          //   ischecked = "checked";
-          // }
-          // clTable += '<input type="checkbox" class="checked" value='+checklists.clpId+' '
-          // + ischecked + '/>' + checklists.checklistName;
-          // document.getElementById("checkPid").innerHTML = clTable;
-        });
+      });
+        
       }
 
       handleSubmit(event) {
         this.handleSearch();
         event.preventDefault();
       }
-  
 
       handleDelete = (id) => (evt) => {
         CommonApi.instance.get('/goal/delete/'+id) 
@@ -127,46 +79,48 @@ class Goalmanagement extends Component {
         });
     }
 
-    handleChange(event) {
-      const target = event.target;
-      const value = target.value;
-      const name = target.name;
-      
-      this.setState({
-        [name]: value
-      });
-    }
+  
+      handleChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        
+        this.setState({
+          [name]: value
+        });
+      }
 
-    handleClear(event){
-      document.getElementById("search-goal").reset();
-      this.setState(initialState);
-      this.handleSearch();
-    }
+      handleClear(event){
+        document.getElementById("search-goal").reset();
+        this.setState(initialState);
+        this.handleSearch();
+      }
 
     handleSearch(){
-      CommonApi.instance.post('/goal/searchbyself', {
-            goalName: this.state.goalName,
-            categoryID: this.state.categoryID,
-            circleID: this.state.circleID,
-
-        }) 
-        .then(response => {
-            this.setState({dataSearch: response.data});
-        });
-        CommonApi.instance.post('/circle/search', {
-          status: 1
-        })
-        .then(response => {
-          this.setState({circleList: response.data});
-          
-        });
-        CommonApi.instance.post('/category/search', {
-          status: 1
-        })
-        .then(response => {
-          this.setState({categoryList: response.data});
-        });    
-      }
+        // CommonApi.instance.defaults.headers.common['Authorization'] = 'Bearer tGOL83hqWSlBZAXBxonr3sN_OThf1YGQGMoPLrb1lscOW-LeyC2JImp-Chd_udagbPiosPb-6nzGU_lF1JPr2VXoKn0HTJ4bEvP6-yBkQrkfRGKz62H69QXJKIhJn9x2hGi--etIc9RVO-dTl5wu_w03oovndT8EN2BVm8Mda9p-k03g5EKt4KSw2qcEqnj-JGwSW0_23SK2Yc6fjOhIjMoqyvPMpPtzlBqb_5-LTyKqReshbvVtKPWoXNf2ld71IxYLdkbpwLWX2kd30k7b3FdEM8XgEVBSKri9ert_DgVoEBl6g1PO8PEgIiofwqYw1L8yPDQrjpsz-FoELUdVZl9uMEoSIGA7EibdHX4Ltsqm2cB62C3nM7eUaphtRwH7RZ-QHMwXlEfiAB86BMzo0OxvK7Q4j_5atJOUg_0ZGr0Eb5yU2CHjqEjrh8zztS5W_g9nvR5Ed6HEjp5O-HfwDs3-t730YVhcvCyCoHXnhR4';
+              CommonApi.instance.post('/goal/searchbyCommander', {
+              goalName: this.state.goalName,
+              categoryID: this.state.categoryID,
+              circleID: this.state.circleID,
+              //status: this.state.status
+            }) 
+            .then(response => {
+                this.setState({dataSearch: response.data});
+            });
+            CommonApi.instance.post('/circle/search', {
+              status: 1
+            })
+            .then(response => {
+              this.setState({circleList: response.data});
+              
+            });
+            CommonApi.instance.post('/category/search', {
+              status: 1
+            })
+            .then(response => {
+              this.setState({categoryList: response.data});
+            });    
+          }
 
     state = {
       isOpen: false
@@ -184,52 +138,21 @@ class Goalmanagement extends Component {
       });
     };
 
-    renderTableChecklist(){
-
-      return _.map(this.state.checklists, data => {
-        console.log(data);
-        return (
-          <tr>
-            <td>
-              <span class="check">
-                {React.createElement('input',{type: 'checkbox', checked:data.checklistProgress1 === 2 ? true : false})}
-                &nbsp;{data.value}
-              </span>
-            </td>
-          </tr>
-        );
-      });
-  
-    }
-
     renderTable(){
-      console.log(this.state.dataSearch)
-      let today = new Date();
       this.state.number = 0
       return _.map(this.state.dataSearch, data => {
         this.state.number = this.state.number+1
-        console.log(today)
-        let status = ""
-        let startDate = new Date(data.startDate)
-        if (startDate > today){
-          status = "รอดำเนินการ"
-        }
-        else{
-          status = "อยู่ระหว่างการดำเนินการ"
-        }
-        console.log(data.startDate)
-        console.log(status)
         return (
           <tr>
             <td>{ this.state.number}</td>
             <td>{ data.goalName }</td>
             <td>{ data.categoryName }</td>
             <td>{ data.circleName}</td>
-            <td><span className="badge bg-success" data-placement="bottom" title={"วันเริ่มต้น: "+ moment(new Date(data.startDate)).format('DD/MM/YYYY')}>{status}</span></td>
+            <td><span className="badge bg-success">{this.state.status}</span></td>
             <td>
-              <Link to={ {pathname: `/goal/view`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate: moment(new Date(data.startDate)).format('DD/MM/YYYY'),endDate: moment(new Date(data.endDate)).format('DD/MM/YYYY'),circleType:data.circleType}} }><button className="btn btn-success btn-xs" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/goal/update`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate: moment(new Date(data.startDate)).format('YYYY-MM-DD'),endDate: moment(new Date(data.endDate)).format('YYYY-MM-DD'),circleType:data.circleType}} }><button className="btn btn-primary btn-xs" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs"  data-toggle="modal" data-target={"#"+data.goalName}><i className="fa fa-trash-o " data-placement="bottom" title="ลบ"></i></button>
+              <Link to={ {pathname: `/goal/view`, query: {id: data.id}} }><button className="btn btn-success btn-xs" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/goal/update`, query: {id: data.id}} }><button className="btn btn-primary btn-xs" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs" data-toggle="modal" data-target={"#"+data.goalName} data-placement="bottom" title="ลบ"><i className="fa fa-trash-o " ></i></button>
                                       <div id={data.goalName} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">
@@ -241,7 +164,7 @@ class Goalmanagement extends Component {
                                           <p>{data.goalName}  จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
                                           </div>
                                           <div className="modal-footer">
-                                          <button type="button" className="btn btn-success"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
+                                          <button type="button" className="btn btn-sucess"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
                                           <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
                                           </div>
                                           </div>
@@ -255,11 +178,14 @@ class Goalmanagement extends Component {
     }
 
     renderFromSearch(){
+      let circleList = this.state.circleList;
+      let categoryList = this.state.categoryList;
       return (
         <div className="row mt">
               <div className="col-lg-12">
+
                       <div className="content-panel">
-                          <h4><i className="fa fa-angle-right"></i> รายการเป้าหมายของฉัน</h4>
+                          <h4><i className="fa fa-angle-right"></i> รายการเป้าหมายผู้ใต้บังคับบัญชา</h4>
                           <hr />
                           <table className="table table-striped table-advance table-hover">
                             <thead>
@@ -290,22 +216,24 @@ class Goalmanagement extends Component {
       return (
         <section id="main-content">
           <section className="wrapper">
-
+    			
             <div className="row"> 
                 <div className="col-md-8">
-                    <h3><i className="fa fa-angle-right"></i> การจัดการเป้าหมาย</h3>
+                    <h3><i className="fa fa-angle-right"></i> การจัดการเป้าหมายหลักสูตร</h3>
                 </div>
                 <div className="col-md-4 text-right" style={{marginTop: '15px'}}>
-                  <Link to={ {pathname: `/goal/create`} }><button type="button" className="btn btn-primary" >เพิ่มเป้าหมาย</button></Link>
+
+                  <Link to={ {pathname: `/goal/createGoalCourse`} }><button type="button" className="btn btn-primary" >เพิ่มเป้าหมายหลักสูตร</button></Link>
                 </div>        
             </div>
+
 
             <div className="row">
                 <div className="col-lg-12">
                   <div className="form-panel">           
                       <form className="form-horizontal style-form" id="search-goal" onSubmit={this.handleSubmit}>
                           <div className="form-group">
-                            <br></br>
+                          <br></br>
                               <label className="col-sm-2 col-sm-2 control-label">ชื่อเป้าหมาย</label>
                               <div className="col-sm-3">
                                   <input type="text" className="form-control" name="goalName" value={this.state.goalName} onChange={this.handleChange}/>
@@ -323,7 +251,7 @@ class Goalmanagement extends Component {
                               <label className="col-sm-2 col-sm-2 control-label">สถานะของเป้าหมาย</label>
                               <div className="col-sm-3">
                               <div className="btn-group">
-                                <select className="form-control" name="status" value={this.state.username} onChange={this.handleChange} >
+                                <select className="form-control" name="status" value={this.state.username} onChange={this.handleChange} disabled>
                                     <option value="0">-- เลือกสถานะเป้าหมาย --</option>
                                     <option value="1">Open</option>
                                     <option value="2">In Progrees</option>
@@ -356,53 +284,9 @@ class Goalmanagement extends Component {
             {this.renderFromSearch()}
 
           </section>
-          
-          <div id="modal" className="modal fade" role="dialog" >
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <button type="button" className="close" data-dismiss="modal">&times;</button>
-                  <h4 className="modal-title">ปรับปรุงความคืบหน้ารายการตรวจสอบ</h4>
-                </div>
-                <div className="modal-body">
-                <ProgressBar width="50%" message="50%"/>
-              
-                  <div className="panel-heading">
-                    <div className="pull-left">
-                    <h5><i className="fa fa-tasks"></i> รายการตรวจสอบ</h5></div>
-                  </div>
-                  <div className="custom-check goleft mt">
-                    <table className="table table-hover custom-check" id="tableModal">
-                      <tbody>
-                        { this.renderTableChecklist() }
-                      </tbody>
-                    </table>
-                    <div className="form-group">
-                      <label >แนบไฟล์</label>
-                      <input type="file" className="form-control-file" id="attachFile" aria-describedby="fileHelp" name="attachFile"/>
-                    </div>
-                    <div className="widget-area no-padding blank">
-                      <div className="status-upload">
-                      <form>
-                        <textarea className="form-control rounded-0" rows="5" name="comment" placeholder="แสดงความคิดเห็นของคุณ"/>
-                      </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="modal-footer">
-                <button type="submit" className="btn btn-success"  data-dismiss="modal" onClick={this.handleSaveProgress}>ตกลง</button>
-                <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </section>
-
       );
     }
   }
   
-  export default Goalmanagement;
+  export default GoalmanagementGoalCourse ; 

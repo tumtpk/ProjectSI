@@ -241,7 +241,7 @@ class GoalCreate extends Component {
                                 <div className="btn-group">
                                     <select className="form-control" name="circleType" value={this.state.circleType} onChange={this.handleChange}>
                                     <option value="0">--เลือกรูปแบบรอบการดำเนินงาน--</option>
-                                    <option value="1"> รอบการดำเนินงานตามกำหนด</option>
+                                    <option value="1"> รอบการดำเนินงานตามปฏิทินการศึกษา</option>
                                     <option value="2"> รอบการดำเนินงานกำหนดเอง</option>
                                     </select>
                                     <span id="circleType" className="error-message"></span>

@@ -9,14 +9,14 @@ class CircleUpdate extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            circleName: "",
+            circleName: null,
             status: 1,
             redirect: false,
             duplicateMessage1: "",
             duplicateMessage2: "",
             duplicate: true,
-            startDate: "",
-            endDate:""
+            startDate: null,
+            endDate:null
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -77,9 +77,6 @@ class CircleUpdate extends Component {
 
         console.log(this.state);
 
-        if (this.state.circleTime == null || this.state.circleTime == "" ){
-            this.state.circleTime = 0
-        }
         CommonApi.instance.post('/circle/UpdateisDuplicateName' ,this.state)
         .then(response => {
             if(response.status == 200 && response.data.result == false){
