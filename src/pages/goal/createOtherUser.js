@@ -25,7 +25,8 @@ class GoalCreateOtherUser extends Component {
             duplicateMessage1: "",
             duplicateMessage2: "",
             duplicate: true,
-            circleType:0
+            circleType:0,
+            flag: 2
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -130,7 +131,7 @@ class GoalCreateOtherUser extends Component {
 
             <div className="row"> 
                 <div className="col-md-12">
-                    <h3><i className="fa fa-angle-right"></i> กำหนดเป้าหมายให้ผู้ใต้บังคับบัญชา</h3>
+                    <h3><i className="fa fa-angle-right"></i> กำหนดเป้าหมายให้นักศึกษาในที่ปรึกษา</h3>
                 </div>
             </div>
 
@@ -258,7 +259,7 @@ class GoalCreateOtherUser extends Component {
                           </div>
                     </div>
                         <div className="text-right">
-                            <Link to={ {pathname: `/goal/selectuser`, query: {goalName:this.state.goalName, description:this.state.description, startDate:this.state.startDate, endDate:this.state.endDate, checklists:this.state.checklists, categoryID:this.state.categoryID, circleID:this.state.circleID,circleType:this.state.circleType}} }><button type="submit" className="btn btn-success">ถัดไป</button></Link>
+                            <Link to={ {pathname: `/goal/selectuser`, query: {goalName:this.state.goalName, description:this.state.description, startDate:this.state.startDate, endDate:this.state.endDate, checklists:this.state.checklists, categoryID:this.state.categoryID, circleID:this.state.circleID,circleType:this.state.circleType,flag:this.state.flag}} }><button type="submit" className="btn btn-success">ถัดไป</button></Link>
                             <Link to={ {pathname: `/goalmanagementOtherUser`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>
                             
                         </div>

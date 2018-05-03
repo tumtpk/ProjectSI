@@ -25,7 +25,8 @@ class GoalCreateGoalCourse extends Component {
             duplicateMessage1: "",
             duplicateMessage2: "",
             duplicate: true,
-            circleType:0
+            circleType:0,
+            flag: 3
         }
   
         this.handleChange = this.handleChange.bind(this);
@@ -258,7 +259,7 @@ class GoalCreateGoalCourse extends Component {
                           </div>
                     </div>
                         <div className="text-right">
-                            <Link to={ {pathname: `/goal/selectuserteacher`, query: {goalName:this.state.goalName, description:this.state.description, startDate:this.state.startDate, endDate:this.state.endDate, checklists:this.state.checklists, categoryID:this.state.categoryID, circleID:this.state.circleID,circleType:this.state.circleType}} }><button type="submit" className="btn btn-success">ถัดไป</button></Link>
+                            <Link to={ {pathname: `/goal/selectuserteacher`, query: {goalName:this.state.goalName, description:this.state.description, startDate:this.state.startDate, endDate:this.state.endDate, checklists:this.state.checklists, categoryID:this.state.categoryID, circleID:this.state.circleID,circleType:this.state.circleType,flag:this.state.flag}} }><button type="submit" className="btn btn-success">ถัดไป</button></Link>
                             <Link to={ {pathname: `/goalmanagementgoalCourse`} }><button type="button" className="btn btn-danger">ยกเลิก</button></Link>
                             
                         </div>

@@ -25,7 +25,8 @@ class GoalCreate extends Component {
             duplicateMessage1: "",
             duplicateMessage2: "",
             duplicate: true,
-            circleType:0
+            circleType:0,
+            flag:1
         }
   
         this.handleChange = this.handleChange.bind(this);
