@@ -108,6 +108,7 @@ class ProgressMe extends Component {
         CommonApi.instance.post('/checklistprogress/saveProgress' ,this.state)
         .then(response => {
           if(response.status == 200 && response.data.result){
+              this.setState({select: null});
               this.setState({redirect: true});
           }else{
               console.log(response.data.message)
