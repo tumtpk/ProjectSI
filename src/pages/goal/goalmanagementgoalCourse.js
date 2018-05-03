@@ -13,6 +13,7 @@ import {
 
 import ProgressBar from "bootstrap-progress-bar";
 import DateTimeField from "react-bootstrap-datetimepicker";
+import moment from "moment";
 
 const initialState = {
   id: null,
@@ -28,7 +29,9 @@ const initialState = {
   number: 1,
   circleList: [],
   categoryList: [],
-  status: "Open"
+  circleType: null,
+  status: "รอดำเนินการ",
+  userID: null
 };
 
 class GoalmanagementGoalCourse extends Component { 
@@ -101,7 +104,7 @@ class GoalmanagementGoalCourse extends Component {
               CommonApi.instance.post('/goal/searchbyCommanderStudent', {
               goalName: this.state.goalName,
               categoryID: this.state.categoryID,
-              circleID: this.state.circleID,
+              circleType: this.state.circleType,
               //status: this.state.status
             }) 
             .then(response => {
@@ -139,20 +142,29 @@ class GoalmanagementGoalCourse extends Component {
     };
 
     renderTable(){
+      let today = new Date();
       this.state.number = 0
       return _.map(this.state.dataSearch, data => {
         this.state.number = this.state.number+1
+        let status = ""
+        let startDate = new Date(data.startDate)
+        if (startDate > today){
+          status = "รอดำเนินการ"
+        }
+        else{
+          status = "อยู่ระหว่างการดำเนินการ"
+        }
         return (
           <tr>
             <td>{ this.state.number}</td>
             <td>{ data.goalName }</td>
             <td>{ data.categoryName }</td>
-            <td>{ data.circleName}</td>
-            <td><span className="badge bg-success">{this.state.status}</span></td>
-            <td>
-              <Link to={ {pathname: `/goal/view`, query: {id: data.id}} }><button className="btn btn-success btn-xs" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/goal/update`, query: {id: data.id}} }><button className="btn btn-primary btn-xs" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
-              <button className="btn btn-danger btn-xs" data-toggle="modal" data-target={"#"+data.goalName} data-placement="bottom" title="ลบ"><i className="fa fa-trash-o " ></i></button>
+            <td>{ (data.circleType == 1) ? "รอบการดำเนินการตามปฎิทินการศึกษา" : "รอบการดำเนินงานกำหนดเอง" }</td>
+            <td><span className="badge bg-success" data-placement="bottom" title={"วันเริ่มต้น: "+ moment(new Date(data.startDate)).format('DD/MM/YYYY')}>{status}</span></td>
+            <td> 
+              <Link to={ {pathname: `/goal/view`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate: moment(new Date(data.startDate)).format('DD/MM/YYYY'),endDate: moment(new Date(data.endDate)).format('DD/MM/YYYY'),circleType:data.circleType}} }><button className="btn btn-success btn-xs" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
+              <Link to={ {pathname: `/goal/update`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate: moment(new Date(data.startDate)).format('YYYY-MM-DD'),endDate: moment(new Date(data.endDate)).format('YYYY-MM-DD'),circleType:data.circleType}} }><button className="btn btn-primary btn-xs" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
+              <button className="btn btn-danger btn-xs"  data-toggle="modal" data-target={"#"+data.goalName}><i className="fa fa-trash-o " data-placement="bottom" title="ลบ"></i></button>
                                       <div id={data.goalName} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
                                           <div className="modal-content">
@@ -164,7 +176,7 @@ class GoalmanagementGoalCourse extends Component {
                                           <p>{data.goalName}  จะถูกลบอย่างถาวร ยืนยันเพื่อทำการลบ</p>
                                           </div>
                                           <div className="modal-footer">
-                                          <button type="button" className="btn btn-sucess"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
+                                          <button type="button" className="btn btn-success"  data-dismiss="modal" onClick={this.handleDelete(data.id)}>ตกลง</button>
                                           <button type="button" className="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
                                           </div>
                                           </div>
@@ -185,7 +197,7 @@ class GoalmanagementGoalCourse extends Component {
               <div className="col-lg-12">
 
                       <div className="content-panel">
-                          <h4><i className="fa fa-angle-right"></i> รายการเป้าหมายผู้ใต้บังคับบัญชา</h4>
+                          <h4><i className="fa fa-angle-right"></i> รายการเป้าหมายของหลักสูตร</h4>
                           <hr />
                           <table className="table table-striped table-advance table-hover">
                             <thead>
@@ -248,24 +260,12 @@ class GoalmanagementGoalCourse extends Component {
                                     </select>
                                 </div>
                               <br></br><br></br><br></br>
-                              <label className="col-sm-2 col-sm-2 control-label">สถานะของเป้าหมาย</label>
-                              <div className="col-sm-3">
-                              <div className="btn-group">
-                                <select className="form-control" name="status" value={this.state.username} onChange={this.handleChange} disabled>
-                                    <option value="0">-- เลือกสถานะเป้าหมาย --</option>
-                                    <option value="1">Open</option>
-                                    <option value="2">In Progrees</option>
-                                    <option value="3">Achieved</option>
-                                </select>
-                              </div>
-                              </div>
                               <label className="col-sm-2 col-sm-2 control-label">รอบการดำเนินงาน</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
                               <div className="btn-group">
-                                    <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
+                                    <select className="form-control" name="circleType" value={this.state.circleType} onChange={this.handleChange}>
                                     <option value="0">-- เลือกรอบการดำเนินงาน --</option>
-                                    {circleList.map((circle, index) => (
-                                        <option value={circle.id}>{circle.circleName}</option>
-                                    ))}
+                                    <option value="1"> รอบการดำเนินการตามปฎิทินการศึกษา </option>
+                                    <option value="2"> รอบการดำเนินงานกำหนดเอง </option>
                                     </select>
                                 </div>
                         </div>

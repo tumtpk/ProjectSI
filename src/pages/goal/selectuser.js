@@ -28,6 +28,7 @@ class GoalCreateOtherUserSelectUser extends Component {
         redirect: false,
         hiddenAll: true,
         personalID: "",
+        titlename:"",
        }
     
   
@@ -52,6 +53,7 @@ class GoalCreateOtherUserSelectUser extends Component {
         this.state.endDate = this.props.location.query.endDate;  
         this.state.checklists = this.props.location.query.checklists;
         this.state.circleType = this.props.location.query.circleType;
+        this.titlename = this.props.location.query.titlename;
         this.setState(this.state);
         console.log(this.state)
         CommonApi.instance.get('/user/getuserByCommanderId', {
@@ -182,7 +184,7 @@ class GoalCreateOtherUserSelectUser extends Component {
                         <div className="text-center">
                         <img src="/theme/img/pagenation2.jpg"  width="150" height="70" />
                     </div>
-                          <h4><i className="fa fa-angle-right"></i> รายการผู้ใต้บังคับบัญชา</h4>
+                          <h4><i className="fa fa-angle-right"></i> รายการนักศึกษาในที่ปรึกษา</h4>
                           <hr />
                           <table className="table table-striped table-advance table-hover">
                             <thead>
@@ -190,11 +192,9 @@ class GoalCreateOtherUserSelectUser extends Component {
                                 <th><button type="button" className={ this.state.hiddenAll == true ? "btn btn-theme03 btn-xs show":"btn btn-theme04 btn-xs hidden" } onClick={this.handleAddAll()} > เลือกทั้งหมด</button>
                                     <button type="button" className={ this.state.hiddenAll == true ? "btn btn-theme03 btn-xs hidden": "btn btn-theme04 btn-xs show" } onClick={this.handledelAll()} > เอาออกทั้งหมด</button>
                                 </th>
-                                  <th> รหัสนักศึกษา </th>
                                   <th> ชื่อ</th>
                                   <th> นามสกุล</th>
                                   <th> บทบาท </th>
-                                  <th> สถานะ</th>
                                 </tr>
                               </thead>
                               
@@ -205,15 +205,13 @@ class GoalCreateOtherUserSelectUser extends Component {
                                     <button type="button" className={ data.isShow == undefined || data.isShow == true  ? "btn btn-theme03 btn-xs show ":"btn btn-theme03 btn-xs hidden" } onClick={this.handleAddTodoItem(data.userID, index)}><i className="fa fa-square-o"  > </i> </button>
                                     <button type="button" className={ data.isShow == undefined || data.isShow == true  ? "btn btn-theme03 btn-xs hidden ":"btn btn-theme03 btn-xs show" } onClick={this.handledelTodoItem(data.userID, index)}><i className="fa fa-check-square-o"></i> </button>
                                   </td>
-                                  <td>{ data.personalID}</td>
-                                  <td>{ data.firstname }</td>
+                                  <td>{ data.titilename+data.firstname }</td>
                                   <td>{ data.lastname }</td>
                                   <td>{ data.userTypeID}</td>
-                                  <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
                                 </tr>
                               ))}
                               </tbody>
-                              
+                               
                           </table>
                           <div className="text-right" style={{marginRight: '10px'}}>
                           <button type="button" className="btn btn-success" onClick={this.handleSubmit}> บันทึก </button>

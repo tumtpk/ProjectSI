@@ -13,6 +13,7 @@ import {
 
 import ProgressBar from "bootstrap-progress-bar";
 import DateTimeField from "react-bootstrap-datetimepicker";
+import moment from "moment";
 
 class ProgressMe extends Component { 
 
@@ -172,7 +173,7 @@ class ProgressMe extends Component {
       CommonApi.instance.post('/goal/searchbyself', {
             goalName: this.state.goalName,
             categoryID: this.state.categoryID,
-            circleID: this.state.circleID,
+            circleType: this.state.circleType,
 
         }) 
         .then(response => {
@@ -229,15 +230,24 @@ class ProgressMe extends Component {
 
     renderTable(){
       this.state.number = 0
+      let today = new Date();
       return _.map(this.state.dataSearch, data => {
         this.state.number = this.state.number+1
+        let status = ""
+        let startDate = new Date(data.startDate)
+        if (startDate > today){
+          status = "รอดำเนินการ"
+        }
+        else{
+          status = "อยู่ระหว่างการดำเนินการ"
+        }
         return (
           <tr>
             <td>{ this.state.number}</td>
             <td>{ data.goalName }</td>
             <td>{ data.categoryName }</td>
-            <td>{ data.circleName}</td>
-            <td><span className="badge bg-success" data-placement="bottom" title={"วันเริ่มต้น: "+data.startDate}>{this.state.status}</span></td>
+            <td>{ (data.circleType == 1) ? "รอบการดำเนินการตามปฎิทินการศึกษา" : "รอบการดำเนินงานกำหนดเอง" }</td>
+            <td><span className="badge bg-success" data-placement="bottom" title={"วันเริ่มต้น: "+ moment(new Date(data.startDate)).format('DD/MM/YYYY')}>{status}</span></td>
             <td>
               <button className="btn btn-warning btn-xs" data-toggle="modal" data-target="#modal"  data-placement="bottom" title="รายงานความคืบหน้ารายการตรวจสอบ" onClick={this.handleProgress(data.id)}><i className="fa fa-tasks" ></i></button> 
           </td>
@@ -286,7 +296,7 @@ class ProgressMe extends Component {
 
             <div className="row"> 
                 <div className="col-md-8">
-                    <h3><i className="fa fa-angle-right"></i> การจัดการเป้าหมาย</h3>
+                    <h3><i className="fa fa-angle-right"></i> รายงานความคืบหน้ารายการตรวจสอบ</h3>
                 </div>      
             </div>
 
@@ -310,24 +320,13 @@ class ProgressMe extends Component {
                                     </select>
                                 </div>
                               <br></br><br></br><br></br>
-                              <label className="col-sm-2 col-sm-2 control-label">สถานะของเป้าหมาย</label>
-                              <div className="col-sm-3">
-                              <div className="btn-group">
-                                <select className="form-control" name="status" value={this.state.username} onChange={this.handleChange} >
-                                    <option value="0">-- เลือกสถานะเป้าหมาย --</option>
-                                    <option value="1">Open</option>
-                                    <option value="2">In Progrees</option>
-                                    <option value="3">Achieved</option>
-                                </select>
-                              </div>
-                              </div>
+
                               <label className="col-sm-2 col-sm-2 control-label">รอบการดำเนินงาน</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
                               <div className="btn-group">
-                                    <select className="form-control" name="circleID" value={this.state.circleID} onChange={this.handleChange}>
+                                    <select className="form-control" name="circleType" value={this.state.circleType} onChange={this.handleChange}>
                                     <option value="0">-- เลือกรอบการดำเนินงาน --</option>
-                                    {circleList.map((circle, index) => (
-                                        <option value={circle.id}>{circle.circleName}</option>
-                                    ))}
+                                    <option value="1"> รอบการดำเนินการตามปฎิทินการศึกษา </option>
+                                    <option value="2"> รอบการดำเนินงานกำหนดเอง </option>
                                     </select>
                                 </div>
                         </div>
@@ -367,17 +366,6 @@ class ProgressMe extends Component {
                         { this.renderTableChecklist() }
                       </tbody>
                     </table>
-                    <div className="form-group">
-                      <label >แนบไฟล์</label>
-                      <input type="file" className="form-control-file" id="attachFile" aria-describedby="fileHelp" name="attachFile"/>
-                    </div>
-                    <div className="widget-area no-padding blank">
-                      <div className="status-upload">
-                      <form>
-                        <textarea className="form-control rounded-0" rows="5" name="comment" placeholder="แสดงความคิดเห็นของคุณ"/>
-                      </form>
-                      </div>
-                    </div>
                   </div>
                 </div>
 

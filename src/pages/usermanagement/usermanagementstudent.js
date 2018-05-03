@@ -266,7 +266,6 @@ class Usermanagement extends Component {
                     <h3><i className="fa fa-angle-right"></i> การจัดการผู้ใช้งาน</h3>
                 </div>
                 <div className="col-md-4 text-right" style={{marginTop: '15px'}}>
-                <Link to={ {pathname: `/importUser`} }><button type="button" className="btn btn-theme02" >นำเข้าข้อมูลใช้งาน</button></Link>
                   <Link to={ {pathname: `/usermanagement/createstudent`} }><button type="button" className="btn btn-primary" >เพิ่มผู้ใช้งาน</button></Link>
                 </div>
             </div>

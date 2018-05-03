@@ -207,6 +207,7 @@ class CircleCreate extends Component {
                             <div className="col-sm-3">
                             <div className="btn-group">
                                         <select className="form-control" name="year" value={circle.year} onChange={this.handleSValueChange4(index)}>
+                                            <option value="2017">2017</option>
                                             <option value="2018">2018</option>
                                             <option value="2019">2019</option>
                                             <option value="2020">2020</option>
