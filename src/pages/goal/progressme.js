@@ -366,17 +366,6 @@ class ProgressMe extends Component {
                         { this.renderTableChecklist() }
                       </tbody>
                     </table>
-                    <div className="form-group">
-                      <label >แนบไฟล์</label>
-                      <input type="file" className="form-control-file" id="attachFile" aria-describedby="fileHelp" name="attachFile"/>
-                    </div>
-                    <div className="widget-area no-padding blank">
-                      <div className="status-upload">
-                      <form>
-                        <textarea className="form-control rounded-0" rows="5" name="comment" placeholder="แสดงความคิดเห็นของคุณ"/>
-                      </form>
-                      </div>
-                    </div>
                   </div>
                 </div>
 

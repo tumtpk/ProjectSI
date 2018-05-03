@@ -233,7 +233,7 @@ class GoalCreateOtherUser extends Component {
                             <label className="col-sm-2 col-sm-2 control-label">วันเริ่มต้นเป้าหมาย</label>
                             <div className="col-sm-3">
                             <div className='input-group date' id='datetimepicker1'>
-                                <input type='date' className="form-control" name="startDate" value={this.state.circleList.startDate} onChange={this.handleChange} />
+                                <input type='date' className="form-control" name="startDate" value={this.state.startDate} onChange={this.handleChange} />
                             <span className="input-group-addon">
                                 <span className="glyphicon glyphicon-calendar"></span>
                              </span>
