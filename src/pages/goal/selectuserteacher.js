@@ -28,6 +28,7 @@ class GoalCreateOtherUserSelectUserTeacher extends Component {
         redirect: false,
         hiddenAll: true,
         personalID: "",
+        titlename:"",
        }
     
   
@@ -172,7 +173,7 @@ class GoalCreateOtherUserSelectUserTeacher extends Component {
       const { redirect } = this.state;
 
       if (redirect) {
-        return <Redirect to='/goalmanagementOtherUser'/>;
+        return <Redirect to='/goalmanagementgoalCourse'/>;
       }
 
       return (
@@ -190,11 +191,9 @@ class GoalCreateOtherUserSelectUserTeacher extends Component {
                                 <th><button type="button" className={ this.state.hiddenAll == true ? "btn btn-theme03 btn-xs show":"btn btn-theme04 btn-xs hidden" } onClick={this.handleAddAll()} > เลือกทั้งหมด</button>
                                     <button type="button" className={ this.state.hiddenAll == true ? "btn btn-theme03 btn-xs hidden": "btn btn-theme04 btn-xs show" } onClick={this.handledelAll()} > เอาออกทั้งหมด</button>
                                 </th>
-                                  <th> รหัสนักศึกษา </th>
                                   <th> ชื่อ</th>
                                   <th> นามสกุล</th>
                                   <th> บทบาท </th>
-                                  <th> สถานะ</th>
                                 </tr>
                               </thead>
                               
@@ -205,11 +204,9 @@ class GoalCreateOtherUserSelectUserTeacher extends Component {
                                     <button type="button" className={ data.isShow == undefined || data.isShow == true  ? "btn btn-theme03 btn-xs show ":"btn btn-theme03 btn-xs hidden" } onClick={this.handleAddTodoItem(data.userID, index)}><i className="fa fa-square-o"  > </i> </button>
                                     <button type="button" className={ data.isShow == undefined || data.isShow == true  ? "btn btn-theme03 btn-xs hidden ":"btn btn-theme03 btn-xs show" } onClick={this.handledelTodoItem(data.userID, index)}><i className="fa fa-check-square-o"></i> </button>
                                   </td>
-                                  <td>{ data.personalID}</td>
-                                  <td>{ data.firstname }</td>
+                                  <td>{ data.titilename+data.firstname }</td>
                                   <td>{ data.lastname }</td>
                                   <td>{ data.userTypeID}</td>
-                                  <td>{ (data.status == 1) ? "เปิดใช้งาน" : "ปิดใช้งาน" }</td>
                                 </tr>
                               ))}
                               </tbody>
