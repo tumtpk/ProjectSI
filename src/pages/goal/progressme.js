@@ -40,6 +40,7 @@ class ProgressMe extends Component {
           startDate2: null,
           status2:null,
           dataSearch: [],
+          complete:"",
         };
   
         this.handleChange = this.handleChange.bind(this);
@@ -85,6 +86,22 @@ class ProgressMe extends Component {
           this.state.select[index] = true;
         }
         this.setState({select: this.state.select});
+        this.CalProgress();
+      }
+
+      CalProgress = () => {
+        const num = this.state.select.length;
+        let complete = 0.0;
+        let char = "";
+        this.state.select.forEach(data => {
+          if(data == true){
+            complete++;
+          }
+        });
+        complete = (complete*100) / num ;
+        char = complete.toString()+"%";
+        console.log(char,"test Char");
+        this.setState({complete: char});
       }
 
       // handlechangeProgress = (clpId) => (evt) => {
@@ -138,7 +155,8 @@ class ProgressMe extends Component {
               this.state.select[index] = false;
             }
           });
-
+          console.log(this.state.select,"test section");
+          this.CalProgress();
           this.setState({checklists: response.data});
         });
       }
@@ -387,7 +405,7 @@ class ProgressMe extends Component {
                   <h4 className="modal-title">รายงานความคืบหน้ารายการตรวจสอบ</h4>
                 </div>
                 <div className="modal-body">
-                <ProgressBar width="50%" message="50%"/>
+                <ProgressBar width={this.state.complete} message={this.state.complete}/>
               
                   <div className="panel-heading">
                     <div className="pull-left">
