@@ -33,7 +33,8 @@ const initialState = {
   status: "รอดำเนินการ",
   userID: null,
   startDate2: null,
-  status2:null
+  status2:null,
+    dataSearch: [],
 };
 
 class GoalmanagementGoalCourse extends Component { 
@@ -204,6 +205,7 @@ class GoalmanagementGoalCourse extends Component {
     renderFromSearch(){
       let circleList = this.state.circleList;
       let categoryList = this.state.categoryList;
+      if (this.state.dataSearch.length > 0){
       return (
         <div className="row mt">
               <div className="col-lg-12">
@@ -231,6 +233,25 @@ class GoalmanagementGoalCourse extends Component {
               </div>
       );
     }
+    else{
+      return (
+        <div className="row mt">
+              <div className="col-lg-12">
+              <div className="content-panel">
+              <hr/>
+                          <table className="table table-striped table-advance table-hover" >
+                            <thead>
+                                <tr>
+                                  <th className="text-center"> ---- ไม่พบข้อมูล ----</th>
+                                </tr>
+                              </thead>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+      );
+    }
+  }
 
     
     render() {

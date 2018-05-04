@@ -14,6 +14,7 @@ import {
 import ProgressBar from "bootstrap-progress-bar";
 import DateTimeField from "react-bootstrap-datetimepicker";
 import moment from "moment";
+import { isNull } from "util";
 
 
 const initialState = {
@@ -34,7 +35,9 @@ const initialState = {
   status: "รอดำเนินการ",
   userID: null,
   startDate2: null,
-  status2:null
+  status2:null,
+  me:null,
+  dataSearch: [],
 };
 
 class Goalmanagement extends Component { 
@@ -238,7 +241,7 @@ class Goalmanagement extends Component {
             <td>{ (data.circleType == 1) ? <span className="badge bg-success" data-placement="bottom" title={data.circleName +" "+"วันเริ่มต้น: "+ moment(new Date(data.startDate2)).format('DD/MM/YYYY') }>{status2}</span> : <span className="badge bg-success" data-placement="bottom" title={"วันเริ่มต้น: "+ moment(new Date(data.startDate)).format('DD/MM/YYYY')}>{status}</span>}</td>
             <td> 
               <Link to={ {pathname: `/goal/view`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate: moment(new Date(data.startDate)).format('DD/MM/YYYY'),endDate: moment(new Date(data.endDate)).format('DD/MM/YYYY'),circleType:data.circleType}} }><button className="btn btn-success btn-xs" data-placement="bottom" title="ดูรายละเอียด"><i className="fa fa-eye"></i></button></Link>
-              <Link to={ {pathname: `/goal/update`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate: moment(new Date(data.startDate)).format('YYYY-MM-DD'),endDate: moment(new Date(data.endDate)).format('YYYY-MM-DD'),circleType:data.circleType}} }><button className="btn btn-primary btn-xs" data-placement="bottom" title="แก้ไข"><i className="fa fa-edit"></i></button></Link>
+              <Link to={ {pathname: `/goal/update`, query: {id: data.id,goalName:data.goalName,description:data.description,categoryID:data.categoryID,categoryName:data.categoryName,circleID:data.circleID,circleName:data.circleName,startDate: moment(new Date(data.startDate)).format('YYYY-MM-DD'),endDate: moment(new Date(data.endDate)).format('YYYY-MM-DD'),circleType:data.circleType}} }>{data.userID == data.me ? <button className="btn btn-primary btn-xs" data-placement="bottom" title="แก้ไข" show><i className="fa fa-edit" show></i></button>: null}</Link>
               <button className="btn btn-danger btn-xs"  data-toggle="modal" data-target={"#"+data.goalName}><i className="fa fa-trash-o " data-placement="bottom" title="ลบ"></i></button>
                                       <div id={data.goalName} className="modal fade" role="dialog">
                                         <div className="modal-dialog">
@@ -265,6 +268,7 @@ class Goalmanagement extends Component {
     }
 
     renderFromSearch(){
+      if (this.state.dataSearch.length > 0){
       return (
         <div className="row mt">
               <div className="col-lg-12">
@@ -291,6 +295,25 @@ class Goalmanagement extends Component {
               </div>
       );
     }
+    else{
+      return (
+        <div className="row mt">
+              <div className="col-lg-12">
+              <div className="content-panel">
+              <hr/>
+                          <table className="table table-striped table-advance table-hover" >
+                            <thead>
+                                <tr>
+                                  <th className="text-center"> ---- ไม่พบข้อมูล ----</th>
+                                </tr>
+                              </thead>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+      );
+    }
+  }
 
     
     render() {

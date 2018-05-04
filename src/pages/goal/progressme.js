@@ -38,7 +38,8 @@ class ProgressMe extends Component {
           select: [],
           goalHandlerId:null,
           startDate2: null,
-          status2:null
+          status2:null,
+          dataSearch: [],
         };
   
         this.handleChange = this.handleChange.bind(this);
@@ -110,7 +111,6 @@ class ProgressMe extends Component {
         CommonApi.instance.post('/checklistprogress/saveProgress' ,this.state)
         .then(response => {
           if(response.status == 200 && response.data.result){
-              this.setState({select: null});
               this.setState({redirect: true});
           }else{
               console.log(response.data.message)
@@ -271,6 +271,7 @@ class ProgressMe extends Component {
     }
 
     renderFromSearch(){
+      if (this.state.dataSearch.length > 0){
       return (
         <div className="row mt">
               <div className="col-lg-12">
@@ -297,6 +298,25 @@ class ProgressMe extends Component {
               </div>
       );
     }
+    else{
+      return (
+        <div className="row mt">
+              <div className="col-lg-12">
+              <div className="content-panel">
+              <hr/>
+                          <table className="table table-striped table-advance table-hover" >
+                            <thead>
+                                <tr>
+                                  <th className="text-center"> ---- ไม่พบข้อมูล ----</th>
+                                </tr>
+                              </thead>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+      );
+    }
+  }
 
     
     render() {
